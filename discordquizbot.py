@@ -51,7 +51,6 @@ if __name__ == '__main__':
             print(f'Failed to load extension {extension}.', file=sys.stderr)
             traceback.print_exc()
 
-
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name='Try "322 help"'))
@@ -84,4 +83,4 @@ async def on_command_error(ctx, error):
         raise error
 
 
-bot.run('NzAyMjQ3Mzk2NzEyOTA2ODI0.Xp9Q2g.wlQdA8xe_Y8DPpkSIy_n9n1_nHU')
+bot.run(TOKEN)
