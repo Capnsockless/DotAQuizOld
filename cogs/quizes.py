@@ -27,13 +27,13 @@ questdict = {"What is Dark Seer's ultimate ability?":("Wall of Replica", "vacuum
 "Name a hero voiced by John Patrick Lowrie.":["Dark Seer", "Earthshaker", "shaker", "Pudge", "Storm Spirit", "aa", "Ancient Apparition", "sf", "Shadow Fiend", "nevermore" "Doom"], "Which hero is also known as The Nightcrawler?":"Slark",
 "What ability does Enchantress gain by acquiring an Aghanim's scepter?":"Sproink", "Name an ability that drains a PERCENTAGE of the targets' mana":["Sinister Gaze", "Fiend's grip"], "Name an active ability that requires no mana or health to cast":["puck out",
 "Phase Shift", "Chakra Magic", "Tempest Double"], "What is Earth Spirit's name?":"Kaolin", "According to the lore, which hero was rewarded with the belt of Omexe?":("Centaur Warrunner", "centaur", "cent"),
-"Name a hero that throws javelins or spears as their basic attack.":["Huskar", "Enchantress"], 'Which hero has the voiceline "Better to run than curse the road"?':"Clinkz", "Which professional player made the 6 Million dollar Echo slam?":"UNiVeRsE",
+"Name a hero that throws javelins or spears as their basic attack.":["Huskar", "Enchantress"], 'Which hero has the voiceline "Better to run than curse the road"?':("Clinkz", "bone fletcher"), "Which professional player made the 6 Million dollar Echo slam?":"UNiVeRsE",
 'How many heroes can be referred to as "ES"?':("3", "three"), 'Name one of the heroes released with the "Dueling fates"(7.07) update.':["Dark Willow", "mireska", "Pangolier", "pango"], "Which hero has been in the most amount of matches?":"Pudge",
 "Name a hero with a hook.":["rizzrack", "timber", "Timbersaw", "rattletrap", "Clockwerk", "Pudge"], "Fill in the blank: ____ gonna have your mana.":"Lich", "Name an ability that takes effect when the target enemy moves":["Chakra Magic", "Rupture"],
 "What was the prize pool for the victor at TI1?(in American dollars)":("One Million", "million", "1m", "1million", "1 000 000"), "Which professional team has the record for the longest losing streak?":("B8", "bait"),
 "Which non-ultimate ability has the longest cooldown?":"Metamorphosis", "What is blink dagger's max blink range?":("1200", "1.2k"), "How many heroes are in DotA 2 currently?":("119", "onehundreadnineteen", "hungreadninteen"),
 "Which neutral item can reset item cooldowns?":("Ex Machina"), "Name a hero that gains a new ability by acquiring Aghanim's Scepter.":["Grimstroke", "Tusk", "ymir", "Snapfire", "Enchantress", "Timbersaw", "timber", "rizzrack", "Arc Warden", "zet", "nyx",
-"Nyx Assassin", "Juggernaut", "jugger", "yurnero", "Zeus", "Ogre Magi", "Lycan", "Clockwerk", "rattletrap"], "Which hero has 2 ultimate abilities?":("Dark Willow", "mireska"), "What's Gabe Newell's favorite hero?":("Sand King", "sk", "crixalis"),
+"Nyx Assassin", "Juggernaut", "jugger", "yurnero", "Zeus", "Ogre Magi", "Lycan", "Clockwerk", "rattletrap", "Clinkz", "bone fletcher"], "Which hero has 2 ultimate abilities?":("Dark Willow", "mireska"), "What's Gabe Newell's favorite hero?":("Sand King", "sk", "crixalis"),
 "Name a hero that can speak Ozkavosh(The demon language).":["Shadow Demon", "sd", "sf", "Shadow Fiend", "nevermore" "Doom", "Terrorblade", "tb"], 'Who is the professional that player caused the "322 meme"?':"Solo",
 "Who commands The Bronze legion?":("Legion Commander", "tresdin", "legion", "lc"), "Fill in the blank: ____ need no armor.":"Wolves", "What's the most expensive item?":("Dagon 5", "dagon five"),
 "Name an item that drops when its holder dies.":["Divine Rapier", "rapira", "rapier", "gem", "Gem of True Sight"], "Name an item that can be assembled at the secret shop alone.":["Soul Booster", "rapira", "Divine Rapier",
@@ -86,7 +86,7 @@ questdict = {"What is Dark Seer's ultimate ability?":("Wall of Replica", "vacuum
 "Which item can cause a Break debuff on the enemy?":"Silver Edge", "Which item grants the strongest passive Status Resistance?":"Satanic", "Vhich item's description is vritten in this manner?":"Orb of Venom",
 "Which ability spawns trees?":"Sprout", "How many Power-Up runes are there?":("6", "six"), "What's the Movementspeed Cap for most units?":"550", "Which ability has the longest cast point?":"Teleportation", "Name an unit that deals bonus damage to buildings.":["Earth", "catapult", "Siege Creep", "Spirit Bear"],
 "How many heroes can deny themselves?":("3", "three"), "Name an ability that allows players to deny allies.":["Venemous Gale", "gale", "Shadow Strike", "Doom"], "How many abilities can grant cleave?":("3", "three"), "What's the maximum movement speed a courier can have?":"580",
-"Name a hero with a chance based bash.":["Faceless Void", "faceless", "Spirit Breaker", "bara", "sb", "barathrum"], """Which hero shouts "I SAID GOOD DAY SIR!"?""":("Axe", "Mogul Khan"), "Which actor voices Pangolier?":"Phil Lamarr"}
+"Name a hero with a chance based bash.":["Faceless Void", "faceless", "Spirit Breaker", "bara", "sb", "barathrum"], """Which hero shouts "I SAID GOOD DAY SIR!"?""":("Axe", "Mogul Khan"), "Which actor voices Pangolier?":"Phil Lamarr", "Name an ability that increases the caster's attack damage":["Enchant Totem", "Fade Bolt"]}
 #Getting the dictionary length and it's keys and values as seperate lists.
 questlen = len(questdict)-1
 questkeys, questvalues = list(questdict.keys()), list(questdict.values())
@@ -122,29 +122,82 @@ shopkeepdict = {"Oblivion_Staff.png":["Quarterstaff", "Sage's Mask", "Robe of th
 "Tranquil_Boots.png":[["Boots of Speed", "Wind Lace", "Ring of Regen"], ["boots", "wind lace", "ring of regen"]], "Urn_of_Shadows.png":["Sage's Mask", "Circlet", "Ring of Protection", "Recipe"],
 "Vanguard.png":["Ring of Health", "Vitality Booster"], "Veil_of_Discord.png":["Ring of Basilius", "Crown", "Recipe"], "Vladmirs_Offering.png":["Ring of Basilius", "Blades of Attack", "Morbid Mask", "Recipe"],
 "Wraith_Band.png":["Circlet", "Slippers of Agility", "Recipe"], "Yasha.png":["Blade of Alacrity", "Band of Elvenskin", "Recipe"]}
-
 shopkeeplen = len(shopkeepdict)-1
 shopkeepkeys, shopkeepvalues = list(shopkeepdict.keys()), list(shopkeepdict.values())
+
+#The dictionary of ability icons and their names, some abilities have multiple ways of naming them so the answers are written as tuples
+iconquizdict = {'Acid_Spray.png':'Acid Spray', 'Adaptive_Strike.png':'Adaptive Strike', 'Aether_Remnant.png':'Aether Remnant', 'Aftershock.png':'Aftershock', 'Alacrity.png':'Alacrity', 'Anchor_Smash.png':'Anchor Smash', 'Ancient_Seal.png':'Ancient Seal',
+'Aphotic_Shield.png':'Aphotic Shield', 'Arcane_Aura.png':'Arcane Aura', 'Arcane_Bolt.png':'Arcane Bolt', 'Arcane_Curse.png':'Arcane Curse', 'Arcane_Orb.png':'Arcane Orb', 'Arcane_Supremacy.png':'Arcane Supremacy', 'Arctic_Burn.png':'Arctic Burn', 'Arc_Lightning.png':'Arc Lightning', 'Arena_Of_Blood.png':'Arena Of Blood',
+'Assassinate.png':'Assassinate', 'Astral_Imprisonment.png':'Astral Imprisonment', 'Astral_Spirit.png':'Astral Spirit', 'Astral_Step.png':'Astral Step', 'Atrophy_Aura.png':'Atrophy Aura', 'Attribute_Shift.png':'Attribute Shift', 'Avalanche.png':'Avalanche', 'Bad_Juju.png':'Bad Juju', 'Ball_Lightning.png':'Ball Lightning',
+'Bash_of_the_Deep.png':'Bash of the Deep', 'Battery_Assault.png':'Battery Assault', 'Battle_Hunger.png':'Battle Hunger', 'Battle_Trance.png':'Battle Trance', 'Bedlam.png':'Bedlam', "Berserker's_Blood.png":"Berserker's Blood", "Berserker's_Call.png":"Berserker's Call", "Berserker's_Rage.png":"Berserker's Rage",
+'Black_Hole.png':'Black Hole', 'Blade_Dance.png':'Blade Dance', 'Blade_Fury.png':'Blade Fury', 'Blast_Off.png':'Blast Off', 'Blinding_Light.png':'Blinding Light', 'Blink (2).png':'Blink ', 'Blink.png':'Blink', 'Blink_Strike.png':'Blink Strike', 'Bloodlust.png':'Bloodlust', 'Bloodrage.png':'Bloodrage', 'Blood_Rite.png':'Blood Rite',
+'Blur.png':'Blur', 'Borrowed_Time.png':'Borrowed Time', 'Boulder_Smash.png':'Boulder Smash', 'Boundless_Strike.png':'Boundless Strike', 'Brain_Sap.png':'Brain Sap', 'Bramble_Maze.png':'Bramble Maze', 'Breathe_Fire.png':'Breathe Fire', 'Bristleback_ability.png':'Bristleback', 'Bulldoze.png':'Bulldoze', 'Bulwark.png':'Bulwark',
+'Burning_Army.png':'Burning Army', 'Burning_Spear.png':'Burning Spear', 'Burrow.png':'Burrow', 'Burrowstrike.png':'Burrowstrike', 'Call_Down.png':'Call Down', 'Call_of_the_Wild_Boar.png':'Call of the Wild Boar', 'Call_of_the_Wild_Hawk.png':'Call of the Wild Hawk', 'Caustic_Finale.png':'Caustic Finale', 'Chain_Frost.png':'Chain Frost',
+'Chain_Lightning.png':'Chain Lightning', 'Chakram.png':'Chakram', 'Chakra_Magic.png':'Chakra Magic', 'Chaos_Bolt.png':'Chaos Bolt', 'Chaos_Meteor.png':'Chaos Meteor', 'Chaos_Strike.png':'Chaos Strike', 'Chaotic_Offering.png':'Chaotic Offering', 'Charge_of_Darkness.png':'Charge of Darkness', 'Chemical_Rage.png':'Chemical Rage',
+'Chilling_Touch.png':'Chilling Touch', 'Chronosphere.png':'Chronosphere', 'Cinder_Brew.png':'Cinder Brew', 'Cloak_and_Dagger.png':'Cloak and Dagger', 'Cold_Embrace.png':'Cold Embrace', 'Cold_Feet.png':'Cold Feet', 'Cold_Snap.png':'Cold Snap', 'Concussive_Shot.png':'Concussive Shot', 'Conjure_Image.png':'Conjure Image',
+'Corrosive_Haze.png':'Corrosive Haze', 'Corrosive_Skin.png':'Corrosive Skin', 'Counterspell.png':'Counterspell', 'Counter_Helix.png':'Counter Helix', 'Coup_de_Grace.png':'Coup de Grace', 'Crippling_Fear.png':'Crippling Fear', 'Crypt_Swarm.png':'Crypt Swarm', 'Crystal_Nova.png':'Crystal Nova', 'Culling_Blade.png':'Culling Blade',
+'Cursed_Crown.png':'Cursed Crown', 'Curse_of_Avernus.png':'Curse of Avernus', 'Cyclone_(Storm).png':'Cyclone', 'Dark_Ascension.png':'Dark Ascension', 'Dark_Pact.png':'Dark Pact', 'Dark_Portrait.png':'Dark Portrait', 'Dark_Rift.png':'Dark Rift', 'Deafening_Blast.png':'Deafening Blast', 'Deathlust.png':'Deathlust', 'Death_Pact.png':'Death Pact',
+'Death_Pulse.png':'Death Pulse', 'Death_Ward.png':'Death Ward', 'Decay.png':'Decay', 'Decrepify.png':'Decrepify', 'Degen_Aura.png':'Degen Aura', 'Demonic_Conversion.png':'Demonic Conversion', 'Demonic_Purge.png':'Demonic Purge', 'Desolate.png':'Desolate', 'Devour.png':'Devour', 'Diabolic_Edict.png':'Diabolic Edict', 'Dismember.png':'Dismember',
+'Dispersion.png':'Dispersion', 'Disruption.png':'Disruption', 'Dissimilate.png':'Dissimilate', 'Divided_We_Stand.png':'Divided We Stand', 'Divine_Favor.png':'Divine Favor', 'Doom.png':'Doom', 'Doppelganger.png':'Doppelganger', 'Double_Edge.png':'Double Edge', 'Dragon_Blood.png':'Dragon Blood', 'Dragon_Slave.png':'Dragon Slave',
+'Dragon_Tail.png':'Dragon Tail', 'Dream_Coil.png':'Dream Coil', 'Drunken_Brawler.png':'Drunken Brawler', 'Dual_Breath.png':'Dual Breath', 'Duel.png':'Duel', 'Earthbind.png':'Earthbind', 'Earthshock.png':'Earthshock', 'Earth_Spike.png':'Earth Spike', 'Earth_Splitter.png':'Earth Splitter', 'Echo_Slam.png':('Echo Slam', "chaos dunk"),
+'Echo_Stomp.png':'Echo Stomp', 'Eclipse.png':'Eclipse', 'Elder_Dragon_Form.png':('Elder Dragon Form', "dragon form"), 'Electric_Vortex.png':'Electric Vortex', 'EMP.png':'EMP', 'Empower.png':'Empower', 'Enchant.png':'Enchant', 'Enchant_Totem.png':'Enchant Totem', 'Enfeeble.png':'Enfeeble', 'Enrage.png':'Enrage', 'Ensnare(2).png':'Ensnare',
+'Ensnare.png':'Ensnare', 'Entangling_Claws.png':'Entangling Claws', 'Epicenter.png':'Epicenter', 'Essence_Flux.png':'Essence Flux', 'Essence_Shift.png':'Essence Shift', 'Ethereal_Jaunt.png':'Ethereal Jaunt', 'Ether_Shock.png':'Ether Shock', 'Exorcism.png':'Exorcism', 'Eyes_in_the_Forest.png':'Eyes in the Forest', 'Eye_of_the_Storm.png':'Eye of the Storm',
+'Fade_Bolt.png':'Fade Bolt', 'False_Promise.png':'False Promise', 'Fatal_Bonds.png':'Fatal Bonds', "Fate's_Edict.png":"Fate's Edict", 'Feast.png':'Feast', 'Feral_Impulse.png':'Feral Impulse', 'Fervor.png':'Fervor', "Fiend's_Grip.png":"Fiend's Grip", 'Fiery_Soul.png':'Fiery Soul', 'Finger_of_Death.png':'Finger of Death', 'Fireball.png':'Fireball',
+'Fireblast.png':'Fireblast', 'Firefly.png':'Firefly', 'Firesnap_Cookie.png':'Firesnap Cookie', 'Firestorm.png':'Firestorm', 'Fire_Remnant.png':'Fire Remnant', 'Fire_Spirits.png':'Fire Spirits', 'Fissure.png':'Fissure', 'Flak_Cannon.png':'Flak Cannon', 'Flamebreak.png':'Flamebreak', 'Flame_Guard.png':'Flame Guard', 'Flaming_Lasso.png':'Flaming Lasso',
+'Flesh_Golem.png':'Flesh Golem', 'Flesh_Heap.png':'Flesh Heap', 'Flux.png':'Flux', 'Focused_Detonate.png':('Focused Detonate', "detonate"), 'Focus_Fire.png':'Focus Fire', 'Forge_Spirit.png':'Forge Spirit', "Fortune's_End.png":"Fortune's End", 'Freezing_Field.png':'Freezing Field', 'Frostbite.png':'Frostbite', 'Frost_Arrows.png':'Frost Arrows', 'Frost_Attack.png':'Frost Attack',
+'Frost_Blast.png':'Frost Blast', 'Frost_Shield.png':'Frost Shield', 'Fury_Swipes.png':'Fury Swipes', 'Geminate_Attack.png':'Geminate Attack', 'Geomagnetic_Grip.png':'Geomagnetic Grip', 'Ghostship.png':'Ghostship', 'Ghost_Shroud.png':'Ghost Shroud', 'Ghost_Walk.png':'Ghost Walk', 'Glaives_of_Wisdom.png':'Glaives of Wisdom', 'Glimpse.png':'Glimpse',
+'Global_Silence.png':'Global Silence', 'Gobble_Up.png':'Gobble Up', "God's_Rebuke.png":"God's Rebuke", "God's_Strength.png":"God's Strength", "Gravekeeper's_Cloak.png":"Gravekeeper's Cloak", 'Grave_Chill.png':'Grave Chill', 'Greater_Bash.png':'Greater Bash', 'Great_Cleave.png':'Great Cleave', "Greevil's_Greed.png":"Greevil's Greed", 'Grow.png':'Grow',
+'Guardian_Angel.png':'Guardian Angel', 'Guardian_Sprint.png':'Guardian Sprint', 'Gush.png':'Gush', 'Gust.png':'Gust', 'Hand_of_God.png':'Hand of God', 'Haunt.png':'Haunt', 'Headshot.png':'Headshot', 'Healing_Ward.png':'Healing Ward', 'Heartstopper_Aura.png':'Heartstopper Aura', 'Heat-Seeking_Missile.png':'Heat-Seeking Missile',
+'Heavenly_Grace.png':'Heavenly Grace', 'Hex.png':'Hex', 'Hex (2).png':'Hex', 'Holy_Persuasion.png':'Holy Persuasion', 'Homing_Missile.png':'Homing Missile', 'Hoof_Stomp.png':'Hoof Stomp', 'Hookshot.png':'Hookshot', 'Howl.png':'Howl', 'Hunter_in_the_Night.png':'Hunter in the Night', 'Hurl_Boulder.png':'Hurl Boulder', 'Icarus_Dive.png':'Icarus Dive',
+'Ice_Blast.png':'Ice Blast', 'Ice_Path.png':'Ice Path', 'Ice_Shards.png':'Ice Shards', 'Ice_Vortex.png':'Ice Vortex', 'Ice_Wall.png':'Ice Wall', 'Ignite.png':'Ignite', 'Illuminate.png':'Illuminate', 'Illusory_Orb.png':'Illusory Orb', 'Impale.png':'Impale', 'Impetus.png':'Impetus', 'Incapacitating_Bite.png':'Incapacitating Bite',
+'Infernal_Blade.png':'Infernal Blade', 'Infest.png':'Infest', 'Ink_Swell.png':'Ink Swell', 'Inner_Beast.png':'Inner Beast', 'Inner_Fire.png':'Inner Fire', 'Insatiable_Hunger.png':'Insatiable Hunger', 'Invoke.png':'Invoke', 'Ion_Shell.png':'Ion Shell', 'Jinada.png':'Jinada', 'Jingu_Mastery.png':'Jingu Mastery', 'Juxtapose.png':'Juxtapose',
+'Kinetic_Field.png':'Kinetic Field', 'Kraken_Shell.png':'Kraken Shell', 'Laguna_Blade.png':'Laguna Blade', 'Laser.png':'Laser', 'Last_Word.png':'Last Word', 'Leap.png':'Leap', 'Leech_Seed.png':'Leech Seed', 'Life_Break.png':'Life Break', 'Life_Drain.png':'Life Drain', 'Lightning_Bolt.png':'Lightning Bolt', 'Lightning_Storm.png':'Lightning Storm',
+'Light_Strike_Array.png':'Light Strike Array', "Lil'_Shredder.png":"Lil' Shredder", 'Liquid_Fire.png':'Liquid Fire', 'Living_Armor.png':'Living Armor', 'Lucent_Beam.png':'Lucent Beam', 'Lucky_Shot.png':'Lucky Shot', 'Lunar_Blessing.png':'Lunar Blessing', 'Macropyre.png':'Macropyre', 'Magic_Missile.png':'Magic Missile', 'Magnetic_Field.png':'Magnetic Field',
+'Magnetize.png':'Magnetize', 'Maledict.png':'Maledict', 'Malefice.png':'Malefice', 'Mana_Break.png':'Mana Break', 'Mana_Burn (2).png':'Mana Burn', 'Mana_Burn.png':'Mana Burn', 'Mana_Drain.png':'Mana Drain', 'Mana_Shield.png':'Mana Shield', 'Mana_Void.png':'Mana Void', 'March_of_the_Machines.png':'March of the Machines', 'Marksmanship.png':'Marksmanship',
+'Mass_Serpent_Ward.png':'Mass Serpent Ward', 'Meat_Hook.png':'Meat Hook', 'Meld.png':'Meld', 'Metamorphosis.png':'Metamorphosis', 'Midnight_Pulse.png':'Midnight Pulse', 'Minefield_Sign.png':'Minefield Sign', 'Mirror_Image.png':'Mirror Image', 'Mischief.png':'Mischief', 'Mist_Coil.png':'Mist Coil', 'Moment_of_Courage.png':'Moment of Courage',
+'Moonlight_Shadow.png':'Moonlight Shadow', 'Moon_Glaives.png':('Moon Glaives', "moon glaive"), 'Morph.png':'Morph', 'Mortal_Strike.png':'Mortal Strike', 'Mortimer_Kisses.png':'Mortimer Kisses', 'Multicast.png':'Multicast', 'Multishot.png':'Multishot', 'Mystic_Flare.png':'Mystic Flare', 'Mystic_Snake.png':'Mystic Snake', 'Natural_Order.png':'Natural Order',
+"Nature's_Call.png":"Nature's Call", "Nature's_Attendants.png":"Nature's Attendants", "Nature's_Grasp.png":"Nature's Grasp", "Nature's_Guise.png":"Nature's Guise", 'Necromastery.png':'Necromastery', 'Nethertoxin.png':'Nethertoxin', 'Nether_Blast.png':'Nether Blast', 'Nether_Strike.png':'Nether Strike', 'Nether_Swap.png':'Nether Swap',
+'Nether_Ward.png':'Nether Ward', 'Nightmare.png':'Nightmare', 'Nimbus.png':'Nimbus', 'Omnislash.png':'Omnislash', 'Open_Wounds.png':'Open Wounds', 'Overcharge.png':'Overcharge', 'Overclocking.png':'Overclocking', 'Overgrowth.png':'Overgrowth', 'Overload.png':'Overload', 'Overpower.png':'Overpower', 'Overwhelming_Odds.png':'Overwhelming Odds',
+'Paralyzing_Cask.png':'Paralyzing Cask', 'Penitence.png':'Penitence', 'Phantasm.png':'Phantasm', "Phantom's_Embrace.png":"Phantom's Embrace", 'Phantom_Rush.png':'Phantom Rush', 'Phantom_Strike.png':'Phantom Strike', 'Phase_Shift.png':'Phase Shift', 'Pinpoint_Detonate.png':('Pinpoint Detonate', "detonate"), 'Pit_of_Malice.png':'Pit of Malice',
+'Plague_Ward.png':'Plague Ward', 'Plasma_Field.png':'Plasma Field', 'Poison_Attack.png':'Poison Attack', 'Poison_Nova.png':'Poison Nova', 'Poison_Sting.png':'Poison Sting', 'Poison_Touch.png':'Poison Touch', 'Poof.png':'Poof', 'Pounce.png':'Pounce', 'Powershot.png':'Powershot', 'Power_Cogs.png':('Power Cogs', "cogs"),
+'Presence_of_the_Dark_Lord.png':'Presence of the Dark Lord', 'Press_the_Attack.png':'Press the Attack', 'Primal_Roar.png':'Primal Roar', 'Primal_Split.png':'Primal Split', 'Primal_Spring.png':'Primal Spring', 'Proximity_Mines.png':'Proximity Mines', 'Psionic_Projection.png':'Psionic Projection', 'Psionic_Trap.png':'Psionic Trap',
+'Psi_Blades.png':'Psi Blades', 'Pulse_Nova.png':'Pulse Nova', 'Purge.png':'Purge', 'Purification.png':'Purification', 'Purifying_Flames.png':'Purifying Flames', 'Quill_Spray.png':'Quill Spray', 'Rage.png':'Rage', 'Raise_Dead.png':'Raise Dead', 'Ransack.png':'Ransack', 'Ravage.png':'Ravage', 'Reactive_Armor.png':'Reactive Armor',
+'Reality_Rift.png':'Reality Rift', "Reaper's_Scythe.png":"Reaper's Scythe", 'Rearm.png':'Rearm', 'Reflection.png':'Reflection', 'Refraction.png':'Refraction', 'Reincarnation.png':'Reincarnation', 'Relocate.png':'Relocate', 'Remote_Mines.png':'Remote Mines', 'Requiem_of_Souls.png':'Requiem of Souls', 'Resonant_Pulse.png':'Resonant Pulse',
+'Retaliate.png':'Retaliate', 'Reverse_Polarity.png':('Reverse Polarity', "rp"), 'Rip_Tide.png':'Rip Tide', 'Rocket_Barrage.png':'Rocket Barrage', 'Rocket_Flare.png':'Rocket Flare', 'Rolling_Boulder.png':'Rolling Boulder', 'Rolling_Thunder.png':'Rolling Thunder', 'Rot.png':'Rot', 'Rune_Forge.png':'Rune Forge', 'Rupture.png':'Rupture',
+'Sacred_Arrow.png':'Sacred Arrow', 'Sand_Storm.png':'Sand Storm', "Sanity's_Eclipse.png":"Sanity's Eclipse", 'Savage_Roar.png':'Savage Roar', 'Scatterblast.png':'Scatterblast', 'Scorched_Earth.png':'Scorched Earth', 'Scream_of_Pain.png':'Scream of Pain', 'Searing_Arrows.png':'Searing Arrows', 'Searing_Chains.png':'Searing Chains',
+'Shackles.png':'Shackleshot', 'Shackleshot.png':'Shackles', 'Shadowraze.png':'Shadowraze', 'Shadow_Dance.png':'Shadow Dance', 'Shadow_Poison.png':'Shadow Poison', 'Shadow_Realm.png':'Shadow Realm', 'Shadow_Step.png':'Shadow Step', 'Shadow_Strike.png':'Shadow Strike', 'Shadow_Walk.png':'Shadow Walk',
+'Shadow_Wave.png':'Shadow Wave', 'Shadow_Word.png':'Shadow Word', 'Shallow_Grave.png':'Shallow Grave', 'Shapeshift.png':'Shapeshift', 'Shard_Split.png':'Shard Split', 'Shield_Crash.png':'Shield Crash', 'Shockwave (2).png':'Shockwave', 'Shockwave.png':'Shockwave', 'Shrapnel.png':'Shrapnel', 'Shukuchi.png':'Shukuchi', 'Shuriken_Toss.png':'Shuriken Toss',
+'Silence.png':'Silence', 'Sinister_Gaze.png':'Sinister Gaze', 'Skeleton_Walk.png':'Skeleton Walk', 'Skewer.png':'Skewer', 'Slam.png':'Slam', 'Sleight_of_Fist.png':'Sleight of Fist', 'Slithereen_Crush.png':'Slithereen Crush', 'Smoke_Screen.png':'Smoke Screen', 'Snowball.png':'Snowball', 'Song_of_the_Siren.png':'Song of the Siren',
+'Sonic_Wave.png':'Sonic Wave', 'Soulbind.png':'Soulbind', 'Soul_Assumption.png':'Soul Assumption', 'Soul_Catcher.png':'Soul Catcher', 'Soul_Rip.png':'Soul Rip', 'Spark_Wraith.png':'Spark Wraith', 'Spawn_Spiderlings.png':('Spawn Spiderlings', "Spiderlings"), 'Spear_of_Mars.png':'Spear of Mars', 'Spectral_Dagger.png':'Spectral Dagger',
+'Spell_Block.png':'Spell Block', 'Spell_Steal.png':'Spell Steal', 'Spiked_Carapace.png':'Spiked Carapace', 'Spin_Web.png':'Spin Web', 'Spirits.png':'Spirits', 'Spirit_Lance.png':'Spirit Lance', 'Spirit_Link.png':'Spirit Link', 'Spirit_Siphon.png':'Spirit Siphon', 'Spit_Out.png':'Spit Out', 'Splinter_Blast.png':'Splinter Blast',
+'Split_Earth.png':'Split Earth', 'Split_Shot.png':'Split Shot', 'Sproink.png':'Sproink', 'Sprout.png':'Sprout', 'Stampede.png':'Stampede', 'Starstorm.png':'Starstorm', 'Stasis_Trap.png':'Stasis Trap', 'Static_Field.png':'Static Field', 'Static_Link.png':'Static Link', 'Static_Remnant.png':'Static Remnant', 'Static_Storm.png':'Static Storm',
+'Sticky_Napalm.png':'Sticky Napalm', 'Stifling_Dagger.png':'Stifling Dagger', 'Stone_Form.png':'Stone Form', 'Stone_Gaze.png':'Stone Gaze', 'Stone_Remnant.png':'Stone Remnant', 'Storm_Hammer.png':('Storm Hammer', "storm bolt"), 'Storm_Surge.png':'Storm Surge', 'Strafe.png':'Strafe', 'Stroke_of_Fate.png':'Stroke of Fate', 'Summon_Familiars.png':'Summon Familiars',
+'Summon_Spirit_Bear.png':'Summon Spirit Bear', 'Summon_Wolves.png':'Summon Wolves', 'Sunder.png':'Sunder', 'Sun_Ray.png':'Sun Ray', 'Sun_Strike.png':'Sun Strike', 'Supernova.png':'Supernova', 'Surge.png':'Surge', 'Swashbuckle.png':'Swashbuckle', 'Swiftslash.png':'Swiftslash', 'Tag_Team.png':'Tag Team', 'Take_Aim.png':'Take Aim',
+'Telekinesis.png':'Telekinesis', 'Teleportation.png':('Teleportation', "tp"), 'Tempest_Double.png':'Tempest Double', 'Terrorize.png':'Terrorize', 'Terror_Wave.png':'Terror Wave', 'Tether.png':'Tether', 'The_Swarm.png':'The Swarm', 'Thirst.png':'Thirst', "Thundergod's_Wrath.png":"Thundergod's Wrath", 'Thunder_Clap.png':'Thunder Clap',
+'Thunder_Strike.png':'Thunder Strike', 'Tidebringer.png':'Tidebringer', 'Timber_Chain.png':'Timber Chain', 'Time_Dilation.png':'Time Dilation', 'Time_Lapse.png':'Time Lapse', 'Time_Lock.png':'Time Lock', 'Time_Walk.png':'Time Walk', 'Tombstone.png':'Tombstone', 'Tornado (2).png':'Tornado', 'Tornado.png':'Tornado', 'Torrent.png':'Torrent',
+'Toss.png':'Toss', 'Track.png':'Track', 'Tree_Dance.png':'Tree Dance', 'Tree_Grab.png':'Tree Grab', 'Tree_Throw.png':'Tree Throw', 'Tree_Volley.png':'Tree Volley', 'Tricks_of_the_Trade.png':'Tricks of the Trade', 'True_Form.png':'True Form', 'Unburrow.png':'Unburrow', 'Unholy_Aura.png':'Unholy Aura', 'Unrefined_Fireblast.png':'Unrefined Fireblast',
+'Unstable_Concoction.png':'Unstable Concoction', 'Untouchable.png':'Untouchable', 'Upheaval.png':'Upheaval', 'Vacuum.png':'Vacuum', 'Vampiric_Aura.png':'Vampiric Aura', 'Vendetta.png':'Vendetta', 'Vengeance_Aura.png':'Vengeance Aura', 'Venomous_Gale.png':'Venomous Gale', 'Viper_Strike.png':'Viper Strike', 'Viscous_Nasal_Goo.png':'Viscous Nasal Goo',
+'Void.png':'Void', 'Voodoo_Restoration.png':'Voodoo Restoration', 'Wall_of_Replica.png':'Wall of Replica', 'Walrus_Punch.png':'Walrus Punch', 'Waning_Rift.png':'Waning Rift', 'Warcry.png':'Warcry', 'Warpath.png':'Warpath', 'War_Stomp.png':'War Stomp', 'Waveform.png':'Waveform', 'Wave_of_Terror.png':'Wave of Terror', 'Whirling_Axes.png':'Whirling Axes',
+'Whirling_Axes (2).png':'Whirling Axes', 'Whirling_Death.png':'Whirling Death', 'Wild_Axes.png':'Wild Axes', 'Will-O-Wisp.png':'Will-O-Wisp', 'Windrun.png':'Windrun', 'Wind_Walk.png':'Wind Walk', "Winter's_Curse.png":"Winter's Curse", 'Wolf_Bite.png':'Wolf Bite', 'Wraithfire_Blast.png':'Wraithfire Blast', 'Wrath_of_Nature.png':'Wrath of Nature', "Wukong's_Command.png":"Wukong's Command",
+'X_Marks_the_Spot.png':'X Marks the Spot'}
+iconquizlen = len(iconquizdict)-1
+iconquizkeys, iconquizvalues = list(iconquizdict.keys()), list(iconquizdict.values())
 
 #lists of Replies in case of right, wrong or no/late answers
 rightansw = ["That is correct!", "That's correct.", "Correct answer!", "You're right!", "Your answer is correct!", "Nice one.", "That answer is correct!"]
 wrongansw = ["That's not quite right.", "That's not right...", "Your answer isn't correct.", "You're mistaken.", "Not correct...", "Not quite it...", "From the Ghastly Eyrie I can see to the ends of the world, and from this vantage point I declare with utter certainty that your answer is wrong." , "YOU GET NOTHING, GOOD DAY SIR!"]
 lateansw = ["You ran out of time.", "Too late.", "You didn't answer in time.", "Be quicker next time...", "You're out of time.", "Out of time.", "Time grinds even questions to dust.", "You took too much time."]
 
-#with open("users.json", "r") as fp:      #load the users.json file
-#        users = json.load(fp)
-#with open("rngfix.json", "r") as fp:     #load the rngfix.json file
-#        rng = json.load(fp)
 
 def open_json(jsonfile):
     with open(jsonfile, "r") as fp:      #load the users.json file
         return json.load(fp)       #openfunc for jsonfiles
 
-def save_json(jsonfile, name):           #savefunc for jsonfiles
+def save_json(jsonfile, name):       #savefunc for jsonfiles
     with open(jsonfile, "w") as fp:
         json.dump(name, fp)
 
-def add_gold(user: discord.User, newgold: int):           #add gold to users
+def add_gold(user: discord.User, newgold: int):        #add gold to users
     users = open_json("users.json")
     id = str(user.id)
     if id not in users.keys():                  #if user not already in users.json add user
@@ -166,7 +219,7 @@ def pseudorandomizer(server, length, listkey: str):  #pseudorandomizer used in p
     rng = open_json("rngfix.json")
     serv_id = str(server.id)
     if serv_id not in rng.keys():                #add channel to rngfix.json if not already in
-        rng[serv_id] = {"questnumbers":"[]", "shopkeepnumbers":"[]", "vacuumcd":16}
+        rng[serv_id] = {"questnumbers":"[]", "shopkeepnumbers":"[]", "iconquiznumbers":"[]", "vacuumcd":16}
         save_json("rngfix.json", rng)
     numlist = ast.literal_eval(rng[serv_id][listkey])        #convert list string to list
     if len(numlist) > round(length*3/4):         #if list of numbers in rngfix goes over 100 delete the first number
@@ -194,9 +247,9 @@ def calc_time(question, answer):           #Function to calculate time for each 
         answlen = len(answer)
     else:                         #takes the average length of all answers
         answlen = sum(map(len, answer))/len(answer)
-    seconds = queslen/7 + answlen/4
-    if seconds > 12:          #balances it(I think)
-        seconds -= 3
+    seconds = queslen/9 + answlen/5
+    if seconds > 11:          #balances it(I think)
+        seconds -= 2
     return seconds
 
 def set_time(author, duration):      #Set duration for quiz commands(30% more time if shiva is held)
@@ -375,135 +428,175 @@ class Quizes(commands.Cog):
                             lives -= 1
                             await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
 
-    @commands.command(brief = "Sends quizes and items to assemble endlessly.")
-    @commands.cooldown(1, 300, commands.BucketType.user)
+    @commands.command(brief = "Endless mix of questions, items and icons.")
+    @commands.cooldown(1, 400, commands.BucketType.user)
     async def endless(self, ctx):
+        users = open_json("users.json")
         server, channel, author = ctx.guild, ctx.channel, ctx.author  #the server, channel and author of the command activator
-        accumulated_g = 0    #accumulated gold during the quiz
-        ncorrectansws = 0    #number of correct answers
-        lives = aegis(author, 5)
-        while True:              #keeps asking questions till it breaks
-            if lives == 0:               #break the whole command if lives are 0 or 322(which means the command was stopped by user)
-                g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 2  n = ncorrectansws
-                await ctx.send(f"You ran out of lives and you accumulated ``{g}`` gold by getting ``{ncorrectansws}`` correct answers.")
-                break
-            if lives == 322:
-                g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1))))
-                await ctx.send(f"You have stopped the endless quiz, you accumulated ``{g}`` gold by getting ``{ncorrectansws}`` correct answers.")
-                break
-            if random.randint(0, 1) == 0:          #if random number is 0 the question will be quiz
-                    questn = pseudorandomizer(server, questlen, "questnumbers") #Random number to give a random question
-                    correctansw = ""                      #obtaining the correct answer to display later
-                    if type(questvalues[questn]) == str:
-                        correctansw = questvalues[questn]
-                    elif type(questvalues[questn]) == tuple:
-                        correctansw = questvalues[questn][0]
-                    else:
-                        correctansw = random.choice([z for z in questvalues[questn] if z[0].isupper()])
-                    if type(questkeys[questn]) == tuple:           #if the question comes with an image
-                        await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
-                    else:                                          #for normal string questions
-                        await ctx.send(f"**```{questkeys[questn]}```**")
-                    def check(m):
-                        return m.channel == channel and m.author == author      #checks if the reply came from the same person in the same channel
-                    try:
-                        msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 16.322))
-                    except asyncio.TimeoutError:               #If too late
-                        lives -= 1
-                        await channel.send(f"**{random.choice(lateansw)}**, the correct answer was ``{correctansw}``, ``{lives}`` lives left.")
-                        accumulated_g -= 15
-                    else:
-                        if strip_str(msg.content) == "skip":         #if user skips a question
-                            lives -= 1
-                            await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` remaining.")
-                        elif strip_str(msg.content) == "stop":       #if user stops the "endless" quiz
-                            lives = 322
-                        elif type(questvalues[questn]) == str or type(questvalues[questn]) == tuple and strip_str(msg.content) != "skip" and strip_str(msg.content) != "stop":
-                            if strip_str(msg.content) == strip_str(questvalues[questn]) or strip_str(msg.content) in [strip_str(x) for x in questvalues[questn] if type(questvalues[questn]) == tuple]:     #If there is only one correct answer
-                                accumulated_g += 14
-                                ncorrectansws += 1
+        try:
+            if 4200 in ast.literal_eval(users[str(author.id)]["items"]):
+                accumulated_g = 0    #accumulated gold during the quiz
+                ncorrectansws = 0    #number of correct answers
+                lives = aegis(author, 5)
+                while True:              #keeps asking questions till it breaks
+                    if lives == 0:               #break the whole command if lives are 0 or 322(which means the command was stopped by user)
+                        g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 2  n = ncorrectansws
+                        await ctx.send(f"You ran out of lives and you accumulated ``{g}`` gold by getting ``{ncorrectansws}`` correct answers.")
+                        break
+                    if lives == 322:
+                        g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1))))
+                        await ctx.send(f"You have stopped the endless quiz, you accumulated ``{g}`` gold by getting ``{ncorrectansws}`` correct answers.")
+                        break
+                    decider = random.randint(0, 2)
+                    if decider == 0:          #if random number is 0 the question will be quiz
+                            questn = pseudorandomizer(server, questlen, "questnumbers") #Random number to give a random question
+                            correctansw = ""                      #obtaining the correct answer to display later
+                            if type(questvalues[questn]) == str:
+                                correctansw = questvalues[questn]
+                            elif type(questvalues[questn]) == tuple:
+                                correctansw = questvalues[questn][0]
                             else:
+                                correctansw = random.choice([z for z in questvalues[questn] if z[0].isupper()])
+                            if type(questkeys[questn]) == tuple:           #if the question comes with an image
+                                await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
+                            else:                                          #for normal string questions
+                                await ctx.send(f"**```{questkeys[questn]}```**")
+                            def check(m):
+                                return m.channel == channel and m.author == author      #checks if the reply came from the same person in the same channel
+                            try:
+                                msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 16.322))
+                            except asyncio.TimeoutError:               #If too late
                                 lives -= 1
-                                await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
+                                await channel.send(f"**{random.choice(lateansw)}**, the correct answer was ``{correctansw}``, ``{lives}`` lives left.")
+                                accumulated_g -= 25
+                            else:
+                                if strip_str(msg.content) == "skip":         #if user skips a question
+                                    lives -= 1
+                                    await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` remaining.")
+                                elif strip_str(msg.content) == "stop":       #if user stops the "endless" quiz
+                                    lives = 322
+                                elif type(questvalues[questn]) == str or type(questvalues[questn]) == tuple and strip_str(msg.content) != "skip" and strip_str(msg.content) != "stop":
+                                    if strip_str(msg.content) == strip_str(questvalues[questn]) or strip_str(msg.content) in [strip_str(x) for x in questvalues[questn] if type(questvalues[questn]) == tuple]:     #If there is only one correct answer
+                                        accumulated_g += 12
+                                        ncorrectansws += 1
+                                    else:
+                                        lives -= 1
+                                        await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 
-                        else:           #If correct answer is in a list(there are multiple answers)
-                            if strip_str(msg.content) in [strip_str(y) for y in questvalues[questn]]:
+                                else:           #If correct answer is in a list(there are multiple answers)
+                                    if strip_str(msg.content) in [strip_str(y) for y in questvalues[questn]]:
+                                        accumulated_g += 8
+                                        ncorrectansws += 1
+                                    else:
+                                        lives -= 1
+                                        await channel.send(f"**{random.choice(wrongansw)}** One of the possible answers was ``{correctansw}``, ``{lives}`` lives remaining")
+
+                    elif decider == 1:       #if random integer is 1 the question is a single shopquiz
+                        shopkeepn = pseudorandomizer(server, shopkeeplen, "shopkeepnumbers")
+                        #create two lists of correct answers, itemanswers takes in stripped correct answers inside multiple lists while itemanswersmerged takes it all as one list
+                        itemanswers, itemanswersmerged = [], []
+                        if type(shopkeepvalues[shopkeepn][0]) == list:
+                            correctansw = "``, ``".join(shopkeepvalues[shopkeepn][0])   #creating string of highlighted correct answers
+                            for index, items in enumerate(shopkeepvalues[shopkeepn]):
+                                itemanswers.append([])         #to create a list within a list which gets appended later
+                                for answ in items:
+                                    itemanswers[index].append(strip_str(answ))
+                                    itemanswersmerged.append(strip_str(answ))
+                        else:
+                            correctansw = "``, ``".join(shopkeepvalues[shopkeepn])   #creating string of highlighted correct answers
+                            for k in shopkeepvalues[shopkeepn]:
+                                itemanswers.append(strip_str(k))
+                                itemanswersmerged.append(strip_str(k))
+
+                        await ctx.send("List the items that are required to assemble the shown item **One By One**.", file=discord.File(f"./shopkeepimages/{shopkeepkeys[shopkeepn]}"))
+
+                        while True:                    #while item is yet to be completed it takes in answers, checks them and uses them
+                            if len(itemanswersmerged) == 0:      #stops the individual item answer collecting
+                                ncorrectansws += 1
+                                accumulated_g += 28
+                                await ctx.send("*Item complete.*")
+                                break
+                            elif lives == 0:
+                                await ctx.send(f"You could've built this item with ``{correctansw}``.")
+                                break
+
+                            def check(m):                #simple checker
+                                return m.channel == channel and m.author == author
+                            try:
+                                msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 15.322))
+                            except asyncio.TimeoutError:
+                                lives -= 1                                #If too late
+                                await channel.send(f"**{random.choice(lateansw)}**, you have ``{lives}`` lives remaining.")
+                                accumulated_g -= 18
+                            else:
+                                if strip_str(msg.content) == "skip":       #to skip an item
+                                    lives -= 1
+                                    await ctx.send(f"You have ``{lives}`` lives remaining, this item is built with ``{correctansw}``.")
+                                    break
+                                elif strip_str(msg.content) == "stop":     #to stop the endless quiz
+                                    lives = 322
+                                    break
+                                elif type(itemanswers[0]) == list:                         #if itemanswers has lists of correct answers it checks the correct answ in
+                                    if strip_str(msg.content) in itemanswersmerged:            #itemanswersmerged, gives reward
+                                        await ctx.send(f"**{random.choice(rightansw)}**")
+                                        accumulated_g += 3
+                                        itemstopop = []                                #create a new list of items that must be removed from itemanswersmerged
+                                        for itemlist in itemanswers:
+                                            if strip_str(msg.content) in itemlist:          #check index of correct answer to remove from all lists of itemanswers
+                                                n = itemlist.index(strip_str(msg.content))
+                                        for index, itemlist in enumerate(itemanswers):
+                                            itemstopop.append(itemanswers[index][n])
+                                            itemanswers[index].pop(n)                     #pop answered item out of all lists of the itemanswers
+                                        for item in itemstopop:                      #loop through itemstopop and remove each item of it from itemanswersmerged
+                                            itemanswersmerged.remove(item)
+                                    else:
+                                        lives -= 1
+                                        await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
+                                else:
+                                    if strip_str(msg.content) in itemanswers:               #if itemanswers is just a list of strings, remove answered item from both lists.
+                                        await ctx.send(f"**{random.choice(rightansw)}**")
+                                        accumulated_g += 4
+                                        itemanswers.remove(strip_str(msg.content))
+                                        itemanswersmerged.remove(strip_str(msg.content))
+                                    else:
+                                        lives -= 1
+                                        await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
+                    else:
+                        iconn = pseudorandomizer(server, iconquizlen, "iconquiznumbers") #Random number to give a random icon
+                        correctansw = ""                         #Find the correct answer to be displayed incase user gets it wrong
+                        if type(iconquizvalues[iconn]) == str:
+                            correctansw = iconquizvalues[iconn]
+                        else:
+                            correctansw = iconquizvalues[iconn][0]
+
+                        await ctx.send(f"**``Name the shown ability.``**", file=discord.File(f"./iconquizimages/{iconquizkeys[iconn]}"))
+                        def check(m):
+                            return m.channel == channel and m.author == author      #checks if the reply came from the same person in the same channel
+                        try:
+                            msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 12.322))
+                        except asyncio.TimeoutError:          #If too late
+                            lives -= 1
+                            await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
+                            accumulated_g -= 15
+
+                        else:
+                            if strip_str(msg.content) == "skip":
+                                lives -= 1
+                                await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` lives remaining.")
+                            elif strip_str(msg.content) == "stop":
+                                lives = 322
+                            elif strip_str(msg.content) == strip_str(iconquizvalues[iconn]) or strip_str(msg.content) in [strip_str(x) for x in iconquizvalues[iconn] if type(iconquizvalues[iconn]) == tuple]:
+                                await channel.send(f"**{random.choice(rightansw)}**")
                                 accumulated_g += 9
                                 ncorrectansws += 1
                             else:
                                 lives -= 1
-                                await channel.send(f"**{random.choice(wrongansw)}** One of the possible answers was ``{correctansw}``, ``{lives}`` lives remaining")
-
-            else:       #if random integer is 1 the question is a single shopquiz
-                shopkeepn = pseudorandomizer(server, shopkeeplen, "shopkeepnumbers")
-                #create two lists of correct answers, itemanswers takes in stripped correct answers inside multiple lists while itemanswersmerged takes it all as one list
-                itemanswers, itemanswersmerged = [], []
-                if type(shopkeepvalues[shopkeepn][0]) == list:
-                    correctansw = "``, ``".join(shopkeepvalues[shopkeepn][0])   #creating string of highlighted correct answers
-                    for index, items in enumerate(shopkeepvalues[shopkeepn]):
-                        itemanswers.append([])         #to create a list within a list which gets appended later
-                        for answ in items:
-                            itemanswers[index].append(strip_str(answ))
-                            itemanswersmerged.append(strip_str(answ))
-                else:
-                    correctansw = "``, ``".join(shopkeepvalues[shopkeepn])   #creating string of highlighted correct answers
-                    for k in shopkeepvalues[shopkeepn]:
-                        itemanswers.append(strip_str(k))
-                        itemanswersmerged.append(strip_str(k))
-
-                await ctx.send("List the items that are required to assemble the shown item **One By One**.", file=discord.File(f"./shopkeepimages/{shopkeepkeys[shopkeepn]}"))
-
-                while True:                    #while item is yet to be completed it takes in answers, checks them and uses them
-                    if len(itemanswersmerged) == 0:      #stops the individual item answer collecting
-                        ncorrectansws += 1
-                        accumulated_g += 24
-                        await ctx.send("*Item complete.*")
-                        break
-                    elif lives == 0:
-                        await ctx.send(f"You could've built this item with ``{correctansw}``.")
-                        break
-
-                    def check(m):                #simple checker
-                        return m.channel == channel and m.author == author
-                    try:
-                        msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 15.322))
-                    except asyncio.TimeoutError:
-                        lives -= 1                                #If too late
-                        await channel.send(f"**{random.choice(lateansw)}**, you have ``{lives}`` lives remaining.")
-                        accumulated_g -= 18
-                    else:
-                        if strip_str(msg.content) == "skip":       #to skip an item
-                            lives -= 1
-                            await ctx.send(f"You have ``{lives}`` lives remaining, this item is built with ``{correctansw}``.")
-                            break
-                        elif strip_str(msg.content) == "stop":     #to stop the endless quiz
-                            lives = 322
-                            break
-                        elif type(itemanswers[0]) == list:                         #if itemanswers has lists of correct answers it checks the correct answ in
-                            if strip_str(msg.content) in itemanswersmerged:            #itemanswersmerged, gives reward
-                                await ctx.send(f"**{random.choice(rightansw)}**")
-                                accumulated_g += 6
-                                itemstopop = []                                #create a new list of items that must be removed from itemanswersmerged
-                                for itemlist in itemanswers:
-                                    if strip_str(msg.content) in itemlist:          #check index of correct answer to remove from all lists of itemanswers
-                                        n = itemlist.index(strip_str(msg.content))
-                                for index, itemlist in enumerate(itemanswers):
-                                    itemstopop.append(itemanswers[index][n])
-                                    itemanswers[index].pop(n)                     #pop answered item out of all lists of the itemanswers
-                                for item in itemstopop:                      #loop through itemstopop and remove each item of it from itemanswersmerged
-                                    itemanswersmerged.remove(item)
-                            else:
-                                lives -= 1
-                                await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
-                        else:
-                            if strip_str(msg.content) in itemanswers:               #if itemanswers is just a list of strings, remove answered item from both lists.
-                                await ctx.send(f"**{random.choice(rightansw)}**")
-                                accumulated_g += 7
-                                itemanswers.remove(strip_str(msg.content))
-                                itemanswersmerged.remove(strip_str(msg.content))
-                            else:
-                                lives -= 1
-                                await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
+                                await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
+            else:
+                self.endless.reset_cooldown(ctx)
+                await ctx.send("You don't have an **Aghanim's Scepter** to use Endless. Try 322 store to see all items.")
+        except KeyError:
+            pass
 
     @commands.command(brief = "A single DotA related question for a bit of gold.")
     @commands.cooldown(1, 7, commands.BucketType.user)
@@ -645,6 +738,54 @@ class Quizes(commands.Cog):
                 elif strip_str(msg.content) == "decline":
                     await ctx.send("The opponent has declined the offer.")
 
+    @commands.command(brief = "Endlessly sends DotA 2 ability icons to name.")
+    @commands.cooldown(1, 50, commands.BucketType.user)
+    async def iconquiz(self, ctx):
+        server, channel, author = ctx.guild, ctx.channel, ctx.author  #the server, channel and author of the command activator
+        lives = aegis(author, 3)
+        accumulated_g = 0
+        ncorrectansws = 0
+        while True:
+            if lives < 0.4:
+                g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 2  n = ncorrectansws
+                await ctx.send(f"You ran out of lives, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
+                break
+            elif lives == 322:
+                g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 2  n = ncorrectansws
+                await ctx.send(f"You have stopped the iconquiz, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
+                break
+
+            iconn = pseudorandomizer(server, iconquizlen, "iconquiznumbers") #Random number to give a random icon
+            correctansw = ""                         #Find the correct answer to be displayed incase user gets it wrong
+            if type(iconquizvalues[iconn]) == str:
+                correctansw = iconquizvalues[iconn]
+            else:
+                correctansw = iconquizvalues[iconn][0]
+
+            await ctx.send(f"**``Name the shown ability.``**", file=discord.File(f"./iconquizimages/{iconquizkeys[iconn]}"))
+            def check(m):
+                return m.channel == channel and m.author == author      #checks if the reply came from the same person in the same channel
+            try:
+                msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 15.322))
+            except asyncio.TimeoutError:          #If too late
+                lives -= 1
+                await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
+                accumulated_g -= 10
+
+            else:
+                if strip_str(msg.content) == "skip":
+                    lives -= 0.5
+                    await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` lives remaining.")
+                elif strip_str(msg.content) == "stop":
+                    lives = 322
+                elif strip_str(msg.content) == strip_str(iconquizvalues[iconn]) or strip_str(msg.content) in [strip_str(x) for x in iconquizvalues[iconn] if type(iconquizvalues[iconn]) == tuple]:
+                    await channel.send(f"**{random.choice(rightansw)}**")
+                    accumulated_g += 10
+                    ncorrectansws += 1
+                else:
+                    lives -= 1
+                    await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
+
 
     @quiz.error
     async def quizerror(self, ctx, error):
@@ -682,13 +823,26 @@ class Quizes(commands.Cog):
         if isinstance(error, commands.CommandOnCooldown):
             users = open_json("users.json")
             if 5000 in ast.literal_eval(users[str(ctx.message.author.id)]["items"]):
-                if error.retry_after < 75:
+                if error.retry_after < 100:
                     await ctx.reinvoke()
                     return
                 else:
                     await ctx.send("**Endless** is on **cooldown** at the moment.")
             else:
                 await ctx.send("**Endless** is on **cooldown** at the moment. You can buy an Octarine Core in the store to decrease command cooldowns.")
+
+    @iconquiz.error
+    async def iconquizerror(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            users = open_json("users.json")
+            if 5000 in ast.literal_eval(users[str(ctx.message.author.id)]["items"]):
+                if error.retry_after < 13:
+                    await ctx.reinvoke()
+                    return
+                else:
+                    await ctx.send("**IconQuiz** is on **cooldown** at the moment.")
+            else:
+                await ctx.send("**IconQuiz** is on **cooldown** at the moment. You can buy an Octarine Core in the store to decrease command cooldowns.")
 
     @duel.error
     async def duelerror(self, ctx, error):

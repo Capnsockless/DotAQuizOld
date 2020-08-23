@@ -7,10 +7,10 @@ from discord.ext import commands
 os.chdir(r"D:\Discordbot\DotaQuizbot")
 
 #The store system:
-store_items = {"Hand of Midas":2200, "Octarine Core":5000, '''Shiva's guard''':4850,
-"Aegis of the Immortal":8000, "Cheese":30000,}
-store_descriptions = {"Hand of Midas":"Earn bonus gold.", "Cheese":"Waste of money.", "Octarine Core":"Lower cooldowns for commands.",
-'''Shiva's guard''':"Have more time during time based commands.", "Aegis of the Immortal":"One extra life on Shopquiz and Endless."}
+store_items = {"Hand of Midas":2200, "Aghanim's Scepter":4200, '''Shiva's guard''':4850, "Octarine Core":5000,
+"Aegis":8000, "Cheese":30000, "Cursed Rapier":100000}
+store_descriptions = {"Hand of Midas":"Earn bonus gold.", "Cheese":"Waste of money.", "Octarine Core":"Lower cooldowns for commands.", "Cursed Rapier":"Weird flex.",
+'''Shiva's guard''':"Have more time during time based commands.", "Aegis":"One extra life on Shopquiz, Iconquiz and Endless.", "Aghanim's Scepter":"Allows you to use 322 endless."}
 storekeys, storevalues = list(store_items.keys()), list(store_items.values())
 
 #with open("users.json", "r") as fp:      #load the users.json file
@@ -135,8 +135,8 @@ class Store(commands.Cog):
     async def store(self, ctx):
         artifacts = ""
         for item in store_items:               #concatenates all the names and prices together to form a list of store items
-            multiplier = 22 - len(item)
-            multiplier2 = 9 - len(str(store_items[item]))
+            multiplier = 18 - len(item)
+            multiplier2 = 10 - len(str(store_items[item]))
             artifacts = artifacts + item + (multiplier * " ") + str(store_items[item]) + (multiplier2 * " ") + store_descriptions[item] + " \n"
         await ctx.send(f"``` Item:             Price:   Description: \n{artifacts}```")
 
