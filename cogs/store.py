@@ -7,10 +7,11 @@ from discord.ext import commands
 os.chdir(r"D:\Discordbot\DotaQuizbot")
 
 #The store system:
-store_items = {"Hand of Midas":2200, "Aghanim's Scepter":4200, '''Shiva's guard''':4850, "Octarine Core":5000,
-"Aegis":8000, "Cheese":30000, "Cursed Rapier":100000}
-store_descriptions = {"Hand of Midas":"Earn bonus gold.", "Cheese":"Waste of money.", "Octarine Core":"Lower cooldowns for commands.", "Cursed Rapier":"Weird flex.",
-'''Shiva's guard''':"Have more time during time based commands.", "Aegis":"One extra life on Shopquiz, Iconquiz and Endless.", "Aghanim's Scepter":"Allows you to use 322 endless."}
+store_items = {"Hand of Midas":2200, "Aghanim's Scepter":4200, "Shiva's guard":4850, "Monkey King Bar":4852,
+"Octarine Core":5000, "Pirate Hat":6500, "Aegis":8000, "Cheese":30000, "Cursed Rapier":100000}
+store_descriptions = {"Hand of Midas":"Earn 25% bonus gold.", "Cheese":"Waste of money.", "Octarine Core":"Lower cooldowns for commands by 25%.", "Cursed Rapier":"Weird flex.",
+"Shiva's guard":"Add 30% time to answer quizes.", "Aegis":"One extra life for certain commands", "Aghanim's Scepter":"Allows you to use 322 endless.",
+"Pirate Hat":"Increases the maximum wager by 1000 of 322 duel.", "Monkey King Bar":"Improves typo recognition for quizes."}
 storekeys, storevalues = list(store_items.keys()), list(store_items.values())
 
 #with open("users.json", "r") as fp:      #load the users.json file
