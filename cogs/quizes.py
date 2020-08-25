@@ -442,13 +442,13 @@ class Quizes(commands.Cog):
                         await ctx.send(f"This item could've been built with ``{correctansw}``, you have ``{lives}`` lives remaining.")
                         break
                     elif type(itemanswers[0]) == list:                         #if itemanswers has lists of correct answers it checks the correct answ in
-                        if strip_str(msg.content) in itemanswersmerged:            #itemanswersmerged, gives reward
+                        if compare_strings(author, msg.content, itemanswersmerged)[1]:            #itemanswersmerged, gives reward
                             await ctx.send(f"**{random.choice(rightansw)}**")
                             accumulated_g += 6
                             itemstopop = []                                #create a new list of items that must be removed from itemanswersmerged
                             for itemlist in itemanswers:
-                                if strip_str(msg.content) in itemlist:          #check index of correct answer to remove from all lists of itemanswers
-                                    n = itemlist.index(strip_str(msg.content))
+                                if compare_strings(author, msg.content, itemlist)[1]:          #check index of correct answer to remove from all lists of itemanswers
+                                    n = itemlist.index(compare_strings(author, msg.content, itemanswersmerged)[0])
                             for index, itemlist in enumerate(itemanswers):
                                 itemstopop.append(itemanswers[index][n])
                                 itemanswers[index].pop(n)                     #pop answered item out of all lists of the itemanswers
@@ -458,11 +458,11 @@ class Quizes(commands.Cog):
                             lives -= 1
                             await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
                     else:
-                        if strip_str(msg.content) in itemanswers:               #if itemanswers is just a list of strings, remove answered item from both lists.
+                        if compare_strings(author, msg.content, itemanswersmerged)[1]:               #if itemanswers is just a list of strings, remove answered item from both lists.
                             await ctx.send(f"**{random.choice(rightansw)}**")
                             accumulated_g += 7
-                            itemanswers.remove(strip_str(msg.content))
-                            itemanswersmerged.remove(strip_str(msg.content))
+                            itemanswers.remove(compare_strings(author, msg.content, itemanswersmerged)[0])
+                            itemanswersmerged.remove(compare_strings(author, msg.content, itemanswersmerged)[0])
                         else:
                             lives -= 1
                             await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
