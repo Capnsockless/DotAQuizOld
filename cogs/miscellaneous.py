@@ -36,6 +36,11 @@ class Miscellaneous(commands.Cog):
         await ctx.send(f"""Vacuum cooldown has been increased, it is now **{rng[id]["vacuumcd"]}** seconds long.""")
         save_json("rngfix.json", rng)
 
+    @commands.command()
+    async def cheeseboard(self, ctx):
+        users = open_json("users.json")
+        await ctx.send("command not made yet")    
+
     async def cog_command_error(self, ctx, error):
         raise error
 

@@ -8,10 +8,10 @@ os.chdir(r"D:\Discordbot\DotaQuizbot")
 
 #The store system:
 store_items = {"Hand of Midas":2200, "Aghanim's Scepter":4200, "Shiva's guard":4850, "Monkey King Bar":4852,
-"Octarine Core":5000, "Pirate Hat":6500, "Aegis":8000, "Cheese":30000, "Cursed Rapier":100000}
+"Octarine Core":5000, "Pirate Hat":6500, "Aegis":8000, "Cheese":20000, "Cursed Rapier":100000}
 store_descriptions = {"Hand of Midas":"Earn 25% bonus gold.", "Cheese":"Waste of money.", "Octarine Core":"Lower cooldowns for commands by 25%.", "Cursed Rapier":"Weird flex.",
-"Shiva's guard":"Add 30% time to answer quizes.", "Aegis":"One extra life for certain commands", "Aghanim's Scepter":"Allows you to use 322 endless.",
-"Pirate Hat":"Increases the maximum wager by 1000 of 322 duel.", "Monkey King Bar":"Improves typo recognition for quizes."}
+"Shiva's guard":"Add 30% time to answer quizes.", "Aegis":"One extra life for certain commands.", "Aghanim's Scepter":"Allows you to use 322 endless.",
+"Pirate Hat":"Increases the max wager of duel by 1k.", "Monkey King Bar":"Improves typo recognition for quizes."}
 storekeys, storevalues = list(store_items.keys()), list(store_items.values())
 
 #with open("users.json", "r") as fp:      #load the users.json file
@@ -67,7 +67,8 @@ class Store(commands.Cog):
         users = open_json("users.json")
         if str(ctx.author.id) in users.keys():
             authorgold = users[str(ctx.author.id)]["gold"]
-            await ctx.send(f"**{ctx.author.display_name}** you currently have **``{authorgold}``** gold.")
+            authorcheese = users[str(ctx.author.id)]["cheese"]
+            await ctx.send(f"**{ctx.author.display_name}** you currently have **``{authorgold}``** gold and ``{authorcheese}`` cheese.")
         else:
             await ctx.send("""You haven't got any gold yet, try "322 help" and use Quiz commands to earn some.""")
 
@@ -76,15 +77,23 @@ class Store(commands.Cog):
         users = open_json("users.json")
         id = str(ctx.author.id)
         if id not in users.keys():                  #if user not already in users.json add user
-            users[id] = {"gold":10, "items":"[]"}
+            users[id] = {"gold":10, "items":"[]", "cheese":0}
             save_json("users.json", users)
 
         purchasestr = strip_str(purchase)
+        user_items = ast.literal_eval(users[id]["items"])    #turn string of list into list
+        user_gold = users[id]["gold"]
         if purchasestr not in [strip_str(x) for x in storekeys]:
             await ctx.send("That item doesn't exist.")             #<<
+        elif purchasestr == "cheese":
+            if user_gold < 20000:
+                await ctx.send("You don't have enough gold to purchase cheese yet, it costs ``20000`` gold.")
+            else:
+                users[id]["cheese"] = users[id]["cheese"] + 1
+                users[id]["gold"] = users[id]["gold"] - 20000
+                await ctx.send("You have purchased a cheese!")
+                save_json("users.json", users)
         else:                                                      #list of user items is stored as the item prices in json file
-            user_items = ast.literal_eval(users[id]["items"])    #turn string of list into list
-            user_gold = users[id]["gold"]
             itemindex = [strip_str(x) for x in storekeys].index(purchasestr)  #get the index of the item being purchased
             if storevalues[itemindex] in user_items:               #if item is already bought
                 await ctx.send("You already have that item.")
@@ -104,7 +113,15 @@ class Store(commands.Cog):
         soldstr = strip_str(itemtosell)                      #stripped item to be sold
         user_items = ast.literal_eval(users[id]["items"])       #user inventory
         strippeditems = [strip_str(x) for x in storekeys]        #list of stripped store items
-        if soldstr in strippeditems:                        #if item exists
+        if soldstr == "cheese":
+            if users[id]["cheese"] <= 0:
+                await ctx.send("You don't have any cheese to sell.")
+            else:
+                users[id]["gold"] = users[id]["gold"] + 12000
+                users[id]["cheese"] = users[id]["cheese"] - 1
+                await ctx.send(f"You have sold the cheese for ``12000`` gold.")
+                save_json("users.json", users)
+        elif soldstr in strippeditems:                        #if item exists
             itemindex = strippeditems.index(soldstr)      #gets index to get item's cost
             itemcost = storevalues[itemindex]
             if itemcost in user_items:                #if item is inside user inventory
@@ -139,7 +156,27 @@ class Store(commands.Cog):
             multiplier = 18 - len(item)
             multiplier2 = 10 - len(str(store_items[item]))
             artifacts = artifacts + item + (multiplier * " ") + str(store_items[item]) + (multiplier2 * " ") + store_descriptions[item] + " \n"
-        await ctx.send(f"``` Item:             Price:   Description: \n{artifacts}```")
+        await ctx.send(f"``` Item:          Price:     Description: \n{artifacts}```")
+
+    @commands.command(brief = "Give someone cheese.")
+    async def givecheese(self, ctx, reciever: discord.Member, amount:int):
+        users = open_json("users.json")
+        giver = str(ctx.author.id)
+        reciever = str(reciever.id)
+        if giver == reciever:
+            await ctx.send("Nice try.")
+        elif giver not in users.keys():
+            await ctx.send("You haven't got any cheese yet.")
+        elif users[giver]["cheese"] < amount:
+            await ctx.send("You haven't got that much cheese.")
+        elif reciever not in users.keys():
+            await ctx.send("That user doesn't have an inventory yet.")
+        else:
+            users[giver]["cheese"] = users[giver]["cheese"] - amount
+            users[reciever]["cheese"] = users[reciever]["cheese"] + amount
+            await ctx.send(f"You have successfully transferred {amount} cheese.")
+            save_json("users.json", users)
+
 
     @buy.error
     async def buyerror(self, ctx, error):

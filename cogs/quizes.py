@@ -25,7 +25,7 @@ questdict = {"What is Dark Seer's ultimate ability?":("Wall of Replica", "vacuum
 "Name a hero that rides a horse.":["Chaos Knight", "ck", "kotl", "Keeper of the Light", "Abaddon"], "How much gold does a Reaver cost?":("3000", "3k"), 'Which hero has an ability named "Essense Flux"?':("Outworld Devourer", "od", "obsidian destroyer"),
 "Which God does Omniknight worship?":"Omniscience", "How many maximum units can Chen take control of with Holy Persuasion?(with talents)":("8", "eight"), "Which hero has the shortest average ability cooldown?":("Bristleback", "bb", "bristle"),
 "Which ability allows you to steal gold?":"Jinada", "According to the lore, which hero patrols the Narrow Maze?":"Razor", "Name a hero voiced by Gary Schwartz.":["Lich", "Pugna", "Shadow Shaman", "shaman", "Sniper"],
-"Name a hero voiced by John Patrick Lowrie.":["Dark Seer", "Earthshaker", "shaker", "Pudge", "Storm Spirit", "aa", "Ancient Apparition", "sf", "Shadow Fiend", "nevermore" "Doom"], "Which hero is also known as The Nightcrawler?":"Slark",
+"Name a hero voiced by John Patrick Lowrie.":["Dark Seer", "ds", "Earthshaker", "shaker", "Pudge", "Storm Spirit", "aa", "Ancient Apparition", "sf", "Shadow Fiend", "nevermore" "Doom"], "Which hero is also known as The Nightcrawler?":"Slark",
 "What ability does Enchantress gain by acquiring an Aghanim's scepter?":"Sproink", "Name an ability that drains a PERCENTAGE of the targets' mana":["Sinister Gaze", "Fiend's grip"], "Name an active ability that requires no mana or health to cast":["puck out",
 "Phase Shift", "Chakra Magic", "Tempest Double"], "What is Earth Spirit's name?":"Kaolin", "According to the lore, which hero was rewarded with the belt of Omexe?":("Centaur Warrunner", "centaur", "cent"),
 "Name a hero that throws javelins or spears as their basic attack.":["Huskar", "Enchantress"], 'Which hero has the voiceline "Better to run than curse the road"?':("Clinkz", "bone fletcher"), "Which professional player made the 6 Million dollar Echo slam?":"UNiVeRsE",
@@ -43,14 +43,14 @@ questdict = {"What is Dark Seer's ultimate ability?":("Wall of Replica", "vacuum
 "How else is The Ancient often referred as?":"The Throne", "Which hero is a pope?":("Necrophos", "necro", "necrolyte"), "What's the name of the wisp Keeper of the Light summons with his ultimate ability?":"Ignis Fatuus",
 "Which hero can bring a teammate to himself anywhere from the map?":"Chen", "Which spell does Wex-Wex-Exort invoke?":"Alacrity", "Name a hero with a flying mount.":"Batrider", "Which hero has the lowest agility gain?":"Tiny",
 "Which passive skill heals the hero with a fixed amount of HP on each hit?":"Ransack", "Which Strength hero has the lowest strength?":("Io", "wisp"), "What did Naga Siren say at Tidehunter's grave?":"RIP Tide",
-"Name a hero that uses its voice in battle.":["Beastmaster", "qop", "akasha", "Queen of Pain", "naga", "Naga Siren"], "Which hero works for the Flayed Twins?":"Bloodseeker", "Which hero's primary attribute is also its lowest?":("Arc Warden", "zet"),
-"What nickname is the professional player Daryl Koh Pei Xiang known as?":("iceiceice", "ice3"), "Which hero is notorious for having a long head?":"Dark Seer", "How many DotA heroes are arthropods?":("4", "four"),
+"Name a hero that uses its voice in battle.":["Beastmaster", "qop", "akasha", "Queen of Pain", "naga", "Naga Siren"], "Which hero works for the Flayed Twins?":("Bloodseeker", "bs"), "Which hero's primary attribute is also its lowest?":("Arc Warden", "zet"),
+"What nickname is the professional player Daryl Koh Pei Xiang known as?":("iceiceice", "ice3"), "Which hero is notorious for having a long head?":("Dark Seer", "ds"), "How many DotA heroes are arthropods?":("4", "four"),
 "Which color signifies mystery or The Unknown in the world of DotA?":"Purple", "How many ring items are there?(including neutral items)":("10", "ten"), ("Which unit has this ability?", "Poison_Sting.png"):("Spiderite", "spiderling"),
 ("What's the name of the shown spell?", "LVL_Death.png"):("LVL? Death", "level? death"), 'Which hero says "Come back and die again." after killing an enemy?':("Troll Warlord", "troll", "jah'rakal"),
 "Which hero has the slowest basic attack projectile?":("Winter Wyvern", "ww", "wyvern"), "What's the longest duration channelling ability?":"tornado", 'Which neutral creeps are sometimes referred to as "Tomato" and "Potato"?':("Hellbears", "hellbear"),
 "Which neutral Satyr can cast purge?":("Satyr Banisher", "banisher"), "Which unit has the Fireball ability?":("Ancient Black dragon", "black dragon"), "Which hero has the highest base attack range?":"Techies",
 "Which item can assembled in mutliple different ways?":("Power Treads", "treads"), "Name a hero that has lower vision during the day.":("Night Stalker", "balanar"), "Which item grants True Strike?":("Divine Rapier", "rapira", "rapier"),
-"Which hero has the lowest base attack time?":"Doom", "Which ability counters Shallow Grave?":"Culling Blade", "Which hero can steal its targets movement and attack speed?":"Visage",
+"Which hero has the worst base attack time?":"Doom", "Which ability counters Shallow Grave?":"Culling Blade", "Which hero can steal its targets movement and attack speed?":"Visage",
 "Name a hero with an odd number of natural horns.":["Magnus", "Tiny"], "Which hero is the son of a Vigil Knight?":"Sven", "Which hero has a 17% chance to bash on hit?(Without talents)":("Spirit breaker", "bara", "sb", "barathrum"),
 "How many Reactive Armor stacks can Timbersaw have at max?(With talents)":("30", "thirty"), "Which hero can have a bonus while on the river?":"Slardar", "What's Underlords name?":"Vrogros",
 "Except Pheonix and Tinker, which hero can reset its cooldowns without Refresher Orb?":["Clockwerk", "rattletrap", "Rubick"], "What is Snapfire to Timbersaw?(as a relative)":"Aunt", "Which hero is oldest by age?":"Void Spirit",
@@ -75,7 +75,7 @@ questdict = {"What is Dark Seer's ultimate ability?":("Wall of Replica", "vacuum
 'Which hero has the voiceline "No room to swing a cat in this crowd."?':"Kunkka", "Which hero was the first to be released exclusively in DotA 2?":("Monkey King", "mk", "makaka"), "What is the name of Chaos Knight's horse?":"Armageddon",
 "Which hero did Pudge barely win the arcana vote against in 2018?":"Rubick", "Name a hero of the Oglodi race.":["Warlock", "Axe", "Disruptor", "Lifestealer", "naix"], "Name a hero that has multiple charges of his/her ultimate ability.":["Ember Spirit", "Void Spirit", "xin", "inai", "ember", "Vengeful Spirit", "vengeful", "venge"],
 "Who is Rubick's father?":"Aghanim", "Name one of the two heroes who were main characters of Wronchi's DotA animations.":["Rubick", "Enigma"], "What type of damage do proximity mines deal?":"Magical",
-"Which hero has a cosmetic set dedicated to Ixmike88?":("Crystal Maiden", "cm"), "Name a mountless knight.":["Dragon Knight", "dk", "Omniknight", "Sven", "rogue knight"], "Who's was the youngest professional player to play in a TI?":"SumaiL",
+"Which hero has a cosmetic set dedicated to Ixmike88?":("Crystal Maiden", "cm", "rylai"), "Name a mountless knight.":["Dragon Knight", "dk", "Omniknight", "Sven", "rogue knight"], "Who's was the youngest professional player to play in a TI?":"SumaiL",
 "How many seconds does it take to teleport to an outpost for the first player?":("6", "six", "way too long", "too long"), "Name an item that has a Strong Dispel.":["Aeon Disk", "Magic Lamp"], "How many minutes is the buyback cooldown?":("8", "eight"),
 "How much max health does Roshan gain every minute?":"115", "Which item decreases enemy attack speeds?":("Shiva's Guard", "shiva"), "What type of incoming damage does Vanguard decrease?":"Physical",
 "Which type of debuff disables all use of items?":"Mute", "Name an ability increases Status Resistance.":["Bullldoze", "Enrage"], "According to the lore, which item was made for Thor?":"Mjollnir", "How else is Scythe of Vyse often referred as?":("Sheepstick", "hex"),
@@ -85,10 +85,26 @@ questdict = {"What is Dark Seer's ultimate ability?":("Wall of Replica", "vacuum
 "Which item has different cooldowns for ranged and melee heroes?":("Manta Style", "manta"), "Which item has a percentage based manacost?":"BloodStone", "Which item can be used on an ally for a Basic Dispel?":("Lotus Orb", "lotus"), "Which item can deal magical damage to buildings?":"Meteor Hammer",
 """Which item is an "upgrade" of Crystalys?""":"Daedalus", "What's the cast range of Abyssal Blade's active ability?":"550", "Name an item that gives evasion.":["Radiance", "Talisman of Evasion", "talisman", "Butterfly", "Heaven's Halberd", "halberd"],
 "Which item can cause a Break debuff on the enemy?":"Silver Edge", "Which item grants the strongest passive Status Resistance?":"Satanic", "Vhich item's description is vritten in this manner?":"Orb of Venom",
-"Which ability spawns trees?":"Sprout", "How many Power-Up runes are there?":("6", "six"), "What's the Movementspeed Cap for most units?":"550", "Which ability has the longest cast point?":"Teleportation", "Name an unit that deals bonus damage to buildings.":["Earth", "catapult", "Siege Creep", "Spirit Bear"],
+"Which ability spawns trees?":"Sprout", "How many Power-Up runes are there?":("6", "six"), "What's the Movement Speed Cap for most units?":"550", "Which ability has the longest cast point?":"Teleportation", "Name an unit that deals bonus damage to buildings.":["Earth", "catapult", "Siege Creep", "Spirit Bear"],
 "How many heroes can deny themselves?":("3", "three"), "Name an ability that allows players to deny allies.":["Venemous Gale", "gale", "Shadow Strike", "Doom"], "How many abilities can grant cleave?":("3", "three"), "What's the maximum movement speed a courier can have?":"580",
 "Name a hero with a chance based bash.":["Faceless Void", "faceless", "Spirit Breaker", "bara", "sb", "barathrum"], """Which hero shouts "I SAID GOOD DAY SIR!"?""":("Axe", "Mogul Khan"), "Which actor voices Pangolier?":"Phil Lamarr", "Name an ability that increases the caster's attack damage":["Enchant Totem", "Fade Bolt"],
-"What's the name of Luna's lion?":"Nova"}
+"What's the name of Luna's lion?":"Nova", "Fill in the blank: Failure is just another kind of success. The ____  ___.":"wrong kind", "Which hero is named Kaldr?":("Ancient Apparition", "aa"), "Name a hero that is able to make a greater use of Hand of Midas than others.":["Dazzle", "Ogre magi", "Arc Warden", "zet"],
+"Fill in the blank: You die as you lived: ___ and ignorant.":"insipid", "Which Goddess was Bane born from?":"Nyctasha", """Which hero has the voiceline: "Keepin my knees in the breeze."?""":"Batrider", "Name a hero that has the same voice actor as The Shopkeeper.":["Anti-mage", "am", "Slardar", "Necrophos", "necro",
+"Warlock", "Clockwerk", "rattletrap", "Beastmaster"], """Which hero has the voiceline: "Lie down... have a cookie."?""":("Bloodseeker", "bs"), """Which hero uses this voiceline upon respawning: "Screw business, it just got personal."?""":("Bounty Hunter", "gondar", "bh"),
+"""Which ultimate creates the "boozin' buddies"?""":("Primal Split"), "Fill in the blank: Where ride the ___, death shall follow.":"horsemen", "Who's as swift as the wolves of Icewrack?":("Crystal Maiden", "cm", "rylai"), "What does Dark Willow call her pet wisp?":"Jex",
+"Name a hero with a bipedal mount.":("Alchemist", "Disruptor"), "Fill in the blank: Steel wins battles, ___ wins wars.":"gold", """Which hero has the voiceline: "I know I should respect the dead, but first you have to earn it."?""":("Drow Ranger", "drow", "traxex"),
+"Who's the last Worldsmith?":"Elder Titan", """Which hero has the voiceline: "Hey, I'm a predator"?""":"Enchantress", "Fill in the blank: If ___ cannot escape me, what hope have you?":"light", """Which hero has this voiceline upon killing an enemy: "I have seen the future, you're not in it."?""":"Faceless Void",
+"Name a hero with no audible voicelines.":["Io", "wisp", "icarus", "Pheonix"], "How else is Gyrocopters Rocket Barrage often named?":"Raining Hell", "Name a hero that can benefit from being low on health.":["Huskar", "Terrorblade", "tb"], "Fill in the blank: There's a fine line between ___ and stupidity.":"bravery",
+"""Which hero says the following voiceline when beginning the battle: "A quest? A quest! A-questing I shall go!"?""":("Keeper of the Light", "kotl"), "Who bites the hand that feeds him?":("Lifestealer", "N'aix"), "Fill in the blank: It's not the heat, it's the _____.":"humiliation",
+"Name a hero that can change between melee and ranged attacks.":["Troll Warlord", "troll", "Terrorblade", "tb", "Dragon Knight", "dk", "Lone Druid"], """Who has the voiceline: "Let my beauty still your breath."?""":("Medusa", "dusa", "gorgon"), """Which hero has the voiceline: "It was not luck, but skill!"?""":("Mirana", "potm"),
+"Fill in the blank: day ____, night stalker.":"walker", "Fill in the blank: Nyx, Nyx, ___, Nyx.":"Nyx", "Fill in the blank: Running's not as fun as ____. Not one bit fun.":"hitting", """Who has the voiceline: "Like the past, I'm never dead. I'm not even past."?""":"Oracle",
+"Fill in the blank: Good news travels slowly, bad news has ___.":"wings", "Fill in the blank of Pugna's voiceline: Who needs a blade when you have ____?":"oblivion", "Which metal is a great conductor according to Razor?":"Gold", "Which hero is a satyr?":("Riki", "rikimaru"),
+"Name a hero voiced by Barry Dennen.":["Rubick", "Phantom Lancer", "pl", "Chaos Knight", "ck"], "Which TI final ended with a 3:0 score?":"TI7", "Which hero has slain a Sea Dragon?":"Slardar", """Who has the voiceline"Your body was a cage, I just let you free!"?""":("Slark", "nightcrawler"),
+"Fill in the blank: My trigger finger is itching for _____.":"vengence", """Who has the voiceline: "It was but a scratch."?""":("Sven", "rogue knight"), "Name one of the goblins of Techies.":["Squee", "Speel", "Spoon"], "Which hero is from the hell of hells?":("Terrorblade", "tb"),
+"""Which hero has the voiceline: "It's probably not a problem, probably."?""":("Tinker", "dr. kleiner"), "Fill in the blank: ___ are not so good with motion, you know.":"trees", "Who's also known as the Snowball from Cobalt?":("Tusk", "ymir"), "Which hero loves gummy vitamins?":("Undying", "dirge"),
+"Who only wanted to kill everyone?":("Venomancer", "veno"), "Fill in the blank: Shuttle and loom, I ___ your doom.":"weave", """Which hero has the voiceline: "Death is my bitch."?""":("Wraith King", "wk"), "Fill in the blank: You can't run from ___.":"heaven",
+"Name an item that was removed but returned as a neutral item.":["Poor Mans Shield", "pms", "Ring of Aquila", "aquila", "Iron Talon"], "Which hero was the first to get a custom persona?":("Invoker", "carl", "injoker"), "Which hero is a creature of the black mist?":("Abaddon", "lord of avernus"),
+"What race is Shadow Shaman?":("Hill Troll", "troll"), "Who's Tusk's pub nemesis?":("Bristleback", "bb", "bristle"), "Who's the lord of hell?":("Doom", "lucifer"), "Which hero is obsessed with Blink Dagger?":"Earthshaker", "Name a hero with no turn-rate.":["Io", "io", "pango", "Pangolier"]}
 #Getting the dictionary length and it's keys and values as seperate lists.
 questlen = len(questdict)-1
 questkeys, questvalues = list(questdict.keys()), list(questdict.values())
@@ -160,7 +176,7 @@ iconquizdict = {'Acid_Spray.png':'Acid Spray', 'Adaptive_Strike.png':'Adaptive S
 'Moonlight_Shadow.png':'Moonlight Shadow', 'Moon_Glaives.png':('Moon Glaives', "moon glaive"), 'Morph.png':'Morph', 'Mortal_Strike.png':'Mortal Strike', 'Mortimer_Kisses.png':'Mortimer Kisses', 'Multicast.png':'Multicast', 'Multishot.png':'Multishot', 'Mystic_Flare.png':'Mystic Flare', 'Mystic_Snake.png':'Mystic Snake', 'Natural_Order.png':'Natural Order',
 "Nature's_Call.png":"Nature's Call", "Nature's_Attendants.png":"Nature's Attendants", "Nature's_Grasp.png":"Nature's Grasp", "Nature's_Guise.png":"Nature's Guise", 'Necromastery.png':'Necromastery', 'Nethertoxin.png':'Nethertoxin', 'Nether_Blast.png':'Nether Blast', 'Nether_Strike.png':'Nether Strike', 'Nether_Swap.png':'Nether Swap',
 'Nether_Ward.png':'Nether Ward', 'Nightmare.png':'Nightmare', 'Nimbus.png':'Nimbus', 'Omnislash.png':'Omnislash', 'Open_Wounds.png':'Open Wounds', 'Overcharge.png':'Overcharge', 'Overclocking.png':'Overclocking', 'Overgrowth.png':'Overgrowth', 'Overload.png':'Overload', 'Overpower.png':'Overpower', 'Overwhelming_Odds.png':'Overwhelming Odds',
-'Paralyzing_Cask.png':'Paralyzing Cask', 'Penitence.png':'Penitence', 'Phantasm.png':'Phantasm', "Phantom's_Embrace.png":"Phantom's Embrace", 'Phantom_Rush.png':'Phantom Rush', 'Phantom_Strike.png':'Phantom Strike', 'Phase_Shift.png':'Phase Shift', 'Pinpoint_Detonate.png':('Pinpoint Detonate', "detonate"), 'Pit_of_Malice.png':'Pit of Malice',
+'Paralyzing_Cask.png':'Paralyzing Cask', 'Penitence.png':'Penitence', 'Phantasm.png':'Phantasm', "Phantom's_Embrace.png":"Phantom's Embrace", 'Phantom_Rush.png':'Phantom Rush', 'Phantom_Strike.png':'Phantom Strike', 'Phase_Shift.png':('Phase Shift', "puck out"), 'Pinpoint_Detonate.png':('Pinpoint Detonate', "detonate"), 'Pit_of_Malice.png':'Pit of Malice',
 'Plague_Ward.png':'Plague Ward', 'Plasma_Field.png':'Plasma Field', 'Poison_Attack.png':'Poison Attack', 'Poison_Nova.png':'Poison Nova', 'Poison_Sting.png':'Poison Sting', 'Poison_Touch.png':'Poison Touch', 'Poof.png':'Poof', 'Pounce.png':'Pounce', 'Powershot.png':'Powershot', 'Power_Cogs.png':('Power Cogs', "cogs"),
 'Presence_of_the_Dark_Lord.png':'Presence of the Dark Lord', 'Press_the_Attack.png':'Press the Attack', 'Primal_Roar.png':'Primal Roar', 'Primal_Split.png':'Primal Split', 'Primal_Spring.png':'Primal Spring', 'Proximity_Mines.png':'Proximity Mines', 'Psionic_Projection.png':'Psionic Projection', 'Psionic_Trap.png':'Psionic Trap',
 'Psi_Blades.png':'Psi Blades', 'Pulse_Nova.png':'Pulse Nova', 'Purge.png':'Purge', 'Purification.png':'Purification', 'Purifying_Flames.png':'Purifying Flames', 'Quill_Spray.png':'Quill Spray', 'Rage.png':'Rage', 'Raise_Dead.png':'Raise Dead', 'Ransack.png':'Ransack', 'Ravage.png':'Ravage', 'Reactive_Armor.png':'Reactive Armor',
@@ -203,7 +219,7 @@ def add_gold(user: discord.User, newgold: int):        #add gold to users
     users = open_json("users.json")
     id = str(user.id)
     if id not in users.keys():                  #if user not already in users.json add user
-        users[id] = {"gold":10, "items":"[]"}
+        users[id] = {"gold":10, "items":"[]", "cheese":0}
         users[id]["gold"] = users[id]["gold"] + round(newgold)
         save_json("users.json", users)
         return round(newgold)
@@ -414,7 +430,6 @@ class Quizes(commands.Cog):
                     itemanswersmerged.append(strip_str(k))
 
             await ctx.send("List the items that are required to assemble the shown item **One By One**.", file=discord.File(f"./shopkeepimages/{shopkeepkeys[shopkeepn]}"))
-
             while True:                    #while item is yet to be completed it takes in answers, checks them and uses them
                 if len(itemanswersmerged) == 0:      #stops the single item answer collecting
                     correctitems += 1
@@ -442,13 +457,13 @@ class Quizes(commands.Cog):
                         await ctx.send(f"This item could've been built with ``{correctansw}``, you have ``{lives}`` lives remaining.")
                         break
                     elif type(itemanswers[0]) == list:                         #if itemanswers has lists of correct answers it checks the correct answ in
-                        if strip_str(msg.content) in itemanswersmerged:            #itemanswersmerged, gives reward
+                        if compare_strings(author, msg.content, itemanswersmerged)[1]:            #itemanswersmerged, gives reward
                             await ctx.send(f"**{random.choice(rightansw)}**")
-                            accumulated_g += 6
+                            accumulated_g += 5
                             itemstopop = []                                #create a new list of items that must be removed from itemanswersmerged
                             for itemlist in itemanswers:
-                                if strip_str(msg.content) in itemlist:          #check index of correct answer to remove from all lists of itemanswers
-                                    n = itemlist.index(strip_str(msg.content))
+                                if compare_strings(author, msg.content, itemlist)[1]:          #check index of correct answer to remove from all lists of itemanswers
+                                    n = itemlist.index(compare_strings(author, msg.content, itemlist)[0])
                             for index, itemlist in enumerate(itemanswers):
                                 itemstopop.append(itemanswers[index][n])
                                 itemanswers[index].pop(n)                     #pop answered item out of all lists of the itemanswers
@@ -458,11 +473,11 @@ class Quizes(commands.Cog):
                             lives -= 1
                             await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
                     else:
-                        if strip_str(msg.content) in itemanswers:               #if itemanswers is just a list of strings, remove answered item from both lists.
+                        if compare_strings(author, msg.content, itemanswersmerged)[1]:     #if itemanswers is just a list of strings, remove answered item from both lists.
                             await ctx.send(f"**{random.choice(rightansw)}**")
-                            accumulated_g += 7
-                            itemanswers.remove(strip_str(msg.content))
-                            itemanswersmerged.remove(strip_str(msg.content))
+                            accumulated_g += 6
+                            itemanswers.remove(compare_strings(author, msg.content, itemanswers)[0])
+                            itemanswersmerged.remove(compare_strings(author, msg.content, itemanswersmerged)[0])
                         else:
                             lives -= 1
                             await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
@@ -587,12 +602,10 @@ class Quizes(commands.Cog):
                                 itemanswersmerged.append(strip_str(k))
 
                         await ctx.send("List the items that are required to assemble the shown item **One By One**.", file=discord.File(f"./shopkeepimages/{shopkeepkeys[shopkeepn]}"))
-
                         while True:                    #while item is yet to be completed it takes in answers, checks them and uses them
                             if len(itemanswersmerged) == 0:      #stops the individual item answer collecting
                                 ncorrectansws += 1
                                 accumulated_g += 28
-                                await ctx.send("*Item complete.*")
                                 break
                             elif lives == 0:
                                 await ctx.send(f"You could've built this item with ``{correctansw}``.")
@@ -608,20 +621,20 @@ class Quizes(commands.Cog):
                                 accumulated_g -= 18
                             else:
                                 if strip_str(msg.content) == "skip":       #to skip an item
-                                    lives -= 1
+                                    lives -= 0.5
                                     await ctx.send(f"You have ``{lives}`` lives remaining, this item is built with ``{correctansw}``.")
                                     break
                                 elif strip_str(msg.content) == "stop":     #to stop the endless quiz
                                     lives = 322
                                     break
                                 elif type(itemanswers[0]) == list:                         #if itemanswers has lists of correct answers it checks the correct answ in
-                                    if strip_str(msg.content) in itemanswersmerged:            #itemanswersmerged, gives reward
+                                    if compare_strings(author, msg.content, itemanswersmerged)[1]:            #itemanswersmerged, gives reward
                                         await ctx.send(f"**{random.choice(rightansw)}**")
                                         accumulated_g += 3
                                         itemstopop = []                                #create a new list of items that must be removed from itemanswersmerged
                                         for itemlist in itemanswers:
-                                            if strip_str(msg.content) in itemlist:          #check index of correct answer to remove from all lists of itemanswers
-                                                n = itemlist.index(strip_str(msg.content))
+                                            if compare_strings(author, msg.content, itemalist)[1]:          #check index of correct answer to remove from all lists of itemanswers
+                                                n = itemlist.index(compare_strings(author, msg.content, itemlist)[0])
                                         for index, itemlist in enumerate(itemanswers):
                                             itemstopop.append(itemanswers[index][n])
                                             itemanswers[index].pop(n)                     #pop answered item out of all lists of the itemanswers
@@ -631,11 +644,11 @@ class Quizes(commands.Cog):
                                         lives -= 1
                                         await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
                                 else:
-                                    if strip_str(msg.content) in itemanswers:               #if itemanswers is just a list of strings, remove answered item from both lists.
+                                    if compare_strings(author, msg.content, itemanswers)[1]:               #if itemanswers is just a list of strings, remove answered item from both lists.
                                         await ctx.send(f"**{random.choice(rightansw)}**")
                                         accumulated_g += 4
-                                        itemanswers.remove(strip_str(msg.content))
-                                        itemanswersmerged.remove(strip_str(msg.content))
+                                        itemanswers.remove(compare_strings(author, msg.content, itemanswers)[0])
+                                        itemanswersmerged.remove(compare_strings(author, msg.content, itemanswersmerged)[0])
                                     else:
                                         lives -= 1
                                         await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
@@ -657,7 +670,6 @@ class Quizes(commands.Cog):
                             lives -= 1
                             await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
                             accumulated_g -= 15
-
                         else:
                             if strip_str(msg.content) == "skip":
                                 lives -= 0.5
@@ -665,7 +677,6 @@ class Quizes(commands.Cog):
                             elif strip_str(msg.content) == "stop":
                                 lives = 322
                             elif compare_strings(author, msg.content, iconquizvalues[iconn])[1]:
-                                await channel.send(f"**{random.choice(rightansw)}**")
                                 accumulated_g += 9
                                 ncorrectansws += 1
                             else:
@@ -806,7 +817,6 @@ class Quizes(commands.Cog):
                     await channel.send(f"**{random.choice(wrongansw)}** One of the possible correct answer was ``{correctansw}``")
                 else:
                     await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
-
 
     @quiz.error
     async def quizerror(self, ctx, error):
