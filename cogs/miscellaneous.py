@@ -36,10 +36,25 @@ class Miscellaneous(commands.Cog):
         await ctx.send(f"""Vacuum cooldown has been increased, it is now **{rng[id]["vacuumcd"]}** seconds long.""")
         save_json("rngfix.json", rng)
 
-    @commands.command()
+    @commands.command(brief = "See the top 10 cheese collectors")
     async def cheeseboard(self, ctx):
         users = open_json("users.json")
-        await ctx.send("command not made yet")    
+        onlycheese = {k: v["cheese"] for k, v in users.items()}          #create a dict of user ids and their cheese
+        sort = {k: v for k, v in sorted(onlycheese.items(), key=lambda item: item[1])}  #sort the dictionary according to cheese amounts
+        sortkeys, sortvalues = list(sort.keys()), list(sort.values())     #obtain lists of the keys and values for later use
+        basetext = "Collector:               Amount:\n"
+        for n in range(0, 7):
+            user = ctx.guild.get_member(int(sortkeys[n]))
+            if type(user) == discord.Member:                #if user is in the server it will display the name
+                multiplier = 28 - len(user.display_name)
+                basetext = basetext + str(n+1) + ")" + user.display_name + " "*multiplier + str(sortvalues[n]) + "\n"
+            else:                                           #otherwise it will just say "hidden" instead
+                basetext = basetext + str(n+1) + ")Hidden" + " "*22 + str(sortvalues[n]) + "\n"
+        await ctx.send(f"```{basetext}```")
+
+    @commands.command()
+    async def missedhook(self, ctx):
+        await ctx.send(f"""You missed your hook "because" the ping is {round(self.bot.latency * 1000)}ms""")
 
     async def cog_command_error(self, ctx, error):
         raise error
