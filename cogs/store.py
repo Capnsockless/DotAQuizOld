@@ -117,9 +117,9 @@ class Store(commands.Cog):
             if users[id]["cheese"] <= 0:
                 await ctx.send("You don't have any cheese to sell.")
             else:
-                users[id]["gold"] = users[id]["gold"] + 12000
+                users[id]["gold"] = users[id]["gold"] + 15000
                 users[id]["cheese"] = users[id]["cheese"] - 1
-                await ctx.send(f"You have sold the cheese for ``12000`` gold.")
+                await ctx.send(f"You have sold the cheese for ``15000`` gold.")
                 save_json("users.json", users)
         elif soldstr in strippeditems:                        #if item exists
             itemindex = strippeditems.index(soldstr)      #gets index to get item's cost
@@ -161,10 +161,12 @@ class Store(commands.Cog):
     @commands.command(brief = "Give someone cheese.")
     async def givecheese(self, ctx, reciever: discord.Member, amount:int):
         users = open_json("users.json")
-        giver = str(ctx.author.id)
+        giver = str(ctx.author.id)        #obtain ids of the cheese giver and reciever
         reciever = str(reciever.id)
         if giver == reciever:
             await ctx.send("Nice try.")
+        elif amount <= 0:
+            await ctx.send("That amount won't work.")
         elif giver not in users.keys():
             await ctx.send("You haven't got any cheese yet.")
         elif users[giver]["cheese"] < amount:
