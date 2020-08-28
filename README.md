@@ -19,16 +19,17 @@ Quizes:
  - shopquiz
  - duel
  - endless
+ 
 Store:
-  store
-  buy
-  sell
-  gold
-  inventory
+- store
+- buy
+- sell
+- gold 
+- givecheese
+- inventory
+
 Miscallenous:
-  oversight
-  hohoohahaa
-  newpatch
+  ....
 ...
 Store and Miscallenous commands being sorted don't have much of an impact but the "Quizes" cog should be sorted.
 
