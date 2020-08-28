@@ -62,7 +62,7 @@ class Store(commands.Cog):
         self.bot = bot
 
     #store commands
-    @commands.command(brief = "Check how much gold you own.")
+    @commands.command(brief = "Check how much gold and cheese you own.")
     async def gold(self, ctx):
         users = open_json("users.json")
         if str(ctx.author.id) in users.keys():

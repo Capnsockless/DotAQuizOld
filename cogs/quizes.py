@@ -99,7 +99,7 @@ questdict = {"What is Dark Seer's ultimate ability?":("Wall of Replica", "vacuum
 "Name a hero that can change between melee and ranged attacks.":["Troll Warlord", "troll", "Terrorblade", "tb", "Dragon Knight", "dk", "Lone Druid"], """Who has the voiceline: "Let my beauty still your breath."?""":("Medusa", "dusa", "gorgon"), """Which hero has the voiceline: "It was not luck, but skill!"?""":("Mirana", "potm"),
 "Fill in the blank: day ____, night stalker.":"walker", "Fill in the blank: Nyx, Nyx, ___, Nyx.":"Nyx", "Fill in the blank: Running's not as fun as ____. Not one bit fun.":"hitting", """Who has the voiceline: "Like the past, I'm never dead. I'm not even past."?""":"Oracle",
 "Fill in the blank: Good news travels slowly, bad news has ___.":"wings", "Fill in the blank of Pugna's voiceline: Who needs a blade when you have ____?":"oblivion", "Which metal is a great conductor according to Razor?":"Gold", "Which hero is a satyr?":("Riki", "rikimaru"),
-"Name a hero voiced by Barry Dennen.":["Rubick", "Phantom Lancer", "pl", "Chaos Knight", "ck"], "Which TI final ended with a 3:0 score?":"TI7", "Which hero has slain a Sea Dragon?":"Slardar", """Who has the voiceline"Your body was a cage, I just let you free!"?""":("Slark", "nightcrawler"),
+"Name a hero voiced by Barry Dennen.":["Rubick", "Phantom Lancer", "pl", "Chaos Knight", "ck"], "Which TI final ended with a 3:0 score?":("TI7", "7", "seven"), "Which hero has slain a Sea Dragon?":"Slardar", """Who has the voiceline"Your body was a cage, I just let you free!"?""":("Slark", "nightcrawler"),
 "Fill in the blank: My trigger finger is itching for _____.":"vengence", """Who has the voiceline: "It was but a scratch."?""":("Sven", "rogue knight"), "Name one of the goblins of Techies.":["Squee", "Speel", "Spoon"], "Which hero is from the hell of hells?":("Terrorblade", "tb"),
 """Which hero has the voiceline: "It's probably not a problem, probably."?""":("Tinker", "dr. kleiner"), "Fill in the blank: ___ are not so good with motion, you know.":"trees", "Who's also known as the Snowball from Cobalt?":("Tusk", "ymir"), "Which hero loves gummy vitamins?":("Undying", "dirge"),
 "Who only wanted to kill everyone?":("Venomancer", "veno"), "Fill in the blank: Shuttle and loom, I ___ your doom.":"weave", """Which hero has the voiceline: "Death is my bitch."?""":("Wraith King", "wk"), "Fill in the blank: You can't run from ___.":"heaven",
@@ -183,7 +183,7 @@ iconquizdict = {'Acid_Spray.png':'Acid Spray', 'Adaptive_Strike.png':'Adaptive S
 'Reality_Rift.png':'Reality Rift', "Reaper's_Scythe.png":"Reaper's Scythe", 'Rearm.png':'Rearm', 'Reflection.png':'Reflection', 'Refraction.png':'Refraction', 'Reincarnation.png':'Reincarnation', 'Relocate.png':'Relocate', 'Remote_Mines.png':'Remote Mines', 'Requiem_of_Souls.png':'Requiem of Souls', 'Resonant_Pulse.png':'Resonant Pulse',
 'Retaliate.png':'Retaliate', 'Reverse_Polarity.png':('Reverse Polarity', "rp"), 'Rip_Tide.png':'Rip Tide', 'Rocket_Barrage.png':'Rocket Barrage', 'Rocket_Flare.png':'Rocket Flare', 'Rolling_Boulder.png':'Rolling Boulder', 'Rolling_Thunder.png':'Rolling Thunder', 'Rot.png':'Rot', 'Rune_Forge.png':'Rune Forge', 'Rupture.png':'Rupture',
 'Sacred_Arrow.png':'Sacred Arrow', 'Sand_Storm.png':'Sand Storm', "Sanity's_Eclipse.png":"Sanity's Eclipse", 'Savage_Roar.png':'Savage Roar', 'Scatterblast.png':'Scatterblast', 'Scorched_Earth.png':'Scorched Earth', 'Scream_of_Pain.png':'Scream of Pain', 'Searing_Arrows.png':'Searing Arrows', 'Searing_Chains.png':'Searing Chains',
-'Shackles.png':'Shackleshot', 'Shackleshot.png':'Shackles', 'Shadowraze.png':'Shadowraze', 'Shadow_Dance.png':'Shadow Dance', 'Shadow_Poison.png':'Shadow Poison', 'Shadow_Realm.png':'Shadow Realm', 'Shadow_Step.png':'Shadow Step', 'Shadow_Strike.png':'Shadow Strike', 'Shadow_Walk.png':'Shadow Walk',
+'Shackles.png':'Shackles', 'Shackleshot.png':'Shackleshot', 'Shadowraze.png':'Shadowraze', 'Shadow_Dance.png':'Shadow Dance', 'Shadow_Poison.png':'Shadow Poison', 'Shadow_Realm.png':'Shadow Realm', 'Shadow_Step.png':'Shadow Step', 'Shadow_Strike.png':'Shadow Strike', 'Shadow_Walk.png':'Shadow Walk',
 'Shadow_Wave.png':'Shadow Wave', 'Shadow_Word.png':'Shadow Word', 'Shallow_Grave.png':'Shallow Grave', 'Shapeshift.png':'Shapeshift', 'Shard_Split.png':'Shard Split', 'Shield_Crash.png':'Shield Crash', 'Shockwave (2).png':'Shockwave', 'Shockwave.png':'Shockwave', 'Shrapnel.png':'Shrapnel', 'Shukuchi.png':'Shukuchi', 'Shuriken_Toss.png':'Shuriken Toss',
 'Silence.png':'Silence', 'Sinister_Gaze.png':'Sinister Gaze', 'Skeleton_Walk.png':'Skeleton Walk', 'Skewer.png':'Skewer', 'Slam.png':'Slam', 'Sleight_of_Fist.png':'Sleight of Fist', 'Slithereen_Crush.png':'Slithereen Crush', 'Smoke_Screen.png':'Smoke Screen', 'Snowball.png':'Snowball', 'Song_of_the_Siren.png':'Song of the Siren',
 'Sonic_Wave.png':'Sonic Wave', 'Soulbind.png':'Soulbind', 'Soul_Assumption.png':'Soul Assumption', 'Soul_Catcher.png':'Soul Catcher', 'Soul_Rip.png':'Soul Rip', 'Spark_Wraith.png':'Spark Wraith', 'Spawn_Spiderlings.png':('Spawn Spiderlings', "Spiderlings"), 'Spear_of_Mars.png':'Spear of Mars', 'Spectral_Dagger.png':'Spectral Dagger',
@@ -340,6 +340,173 @@ class Quizes(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command(brief = "A single DotA related question for a bit of gold.")
+    @commands.cooldown(1, 7, commands.BucketType.user)
+    async def quiz(self, ctx):
+        server, channel, author = ctx.guild, ctx.channel, ctx.author  #the server, channel and author of the command activator
+        questn = pseudorandomizer(server, questlen, "questnumbers") #Random number to give a random question
+        correctansw = ""                         #Find the correct answer to be displayed incase user gets it wrong
+        if type(questvalues[questn]) == str:
+            correctansw = questvalues[questn]
+        elif type(questvalues[questn]) == tuple:
+            correctansw = questvalues[questn][0]
+        else:
+            correctansw = random.choice([z for z in questvalues[questn] if z[0].isupper()])
+        if type(questkeys[questn]) == tuple:           #if the question comes with an image
+            await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
+        else:                                          #for normal string questions
+            await ctx.send(f"**```{questkeys[questn]}```**")
+        def check(m):
+            return m.channel == channel and m.author == author      #checks if the reply came from the same person in the same channel
+        try:
+            msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 22.322))
+        except asyncio.TimeoutError:                                #If too late
+            await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``")
+            add_gold(author, -4)
+        else:
+            if compare_strings(author, msg.content, questvalues[questn])[1]:
+                g = add_gold(author, 16)
+                await channel.send(f"**{random.choice(rightansw)}** you got ``{g}`` gold.")
+            else:
+                if type(questvalues[questn]) == list:
+                    await channel.send(f"**{random.choice(wrongansw)}** One of the possible correct answer was ``{correctansw}``")
+                else:
+                    await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
+
+    @commands.command(brief = "Endlessly sends DotA 2 ability icons to name.")
+    @commands.cooldown(1, 50, commands.BucketType.user)
+    async def iconquiz(self, ctx):
+        server, channel, author = ctx.guild, ctx.channel, ctx.author  #the server, channel and author of the command activator
+        lives = aegis(author, 3)
+        accumulated_g = 0
+        ncorrectansws = 0
+        while True:
+            if lives < 0.4:
+                g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 2  n = ncorrectansws
+                await ctx.send(f"You ran out of lives, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
+                break
+            elif lives == 322:
+                g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 2  n = ncorrectansws
+                await ctx.send(f"You have stopped the iconquiz, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
+                break
+            iconn = pseudorandomizer(server, iconquizlen, "iconquiznumbers") #Random number to give a random icon
+            correctansw = ""                         #Find the correct answer to be displayed incase user gets it wrong
+            if type(iconquizvalues[iconn]) == str:
+                correctansw = iconquizvalues[iconn]
+            else:
+                correctansw = iconquizvalues[iconn][0]
+            await ctx.send(f"**``Name the shown ability.``**", file=discord.File(f"./iconquizimages/{iconquizkeys[iconn]}"))
+            def check(m):
+                return m.channel == channel and m.author == author      #checks if the reply came from the same person in the same channel
+            try:
+                msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 15.322))
+            except asyncio.TimeoutError:          #If too late
+                lives -= 1
+                await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
+                accumulated_g -= 10
+            else:
+                if strip_str(msg.content) == "skip":
+                    lives -= 0.5
+                    await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` lives remaining.")
+                elif strip_str(msg.content) == "stop":
+                    lives = 322
+                elif compare_strings(author, msg.content, iconquizvalues[iconn])[1]:
+                    await channel.send(f"**{random.choice(rightansw)}**")
+                    accumulated_g += 10
+                    ncorrectansws += 1
+                else:
+                    lives -= 1
+                    await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
+
+    @commands.command(brief = "Endlessly sends DotA2 items to be assembled.")
+    @commands.cooldown(1, 30, commands.BucketType.user)
+    async def shopquiz(self, ctx):
+        server, channel, author = ctx.guild, ctx.channel, ctx.author     #get users server, channel and author
+        accumulated_g = 0             #gold that will be given to the user at the end
+        lives = aegis(author, 3)      #tries they have for the shopkeeperquiz
+        ncorrectansws = 0              #number of items they completed
+        while True:                   #while lives are more than 0 it keeps sending new items to build once the previous item is completed/skipped
+            if lives <= 0.4:            #ends the shopquiz
+                g = add_gold(author, accumulated_g + (5*ncorrectansws*(ncorrectansws - 1)))
+                await ctx.send(f"**{author.display_name}** You're out of lives, You built ``{ncorrectansws}`` items and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
+                break
+            elif lives == 322:          #if the quiz is stopped by command
+                g = add_gold(author, accumulated_g + (5*ncorrectansws*(ncorrectansws - 1)))
+                await ctx.send(f"**{author.display_name}** You built ``{ncorrectansws}`` items and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
+                break
+            elif correctitems == 85:
+                g = add_gold(author, (accumulated_g+5000))
+                await ctx.send(f"**{author.display_name}** You built every item and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
+                break
+            shopkeepn = pseudorandomizer(server, shopkeeplen, "shopkeepnumbers")
+            #create two lists of correct answers, itemanswers takes in stripped correct answers inside multiple lists while itemanswersmerged takes it all as one list
+            itemanswers, itemanswersmerged = [], []
+            if type(shopkeepvalues[shopkeepn][0]) == list:
+                correctansw = "``, ``".join(shopkeepvalues[shopkeepn][0])  #creates a highlighted string of correct items
+                for index, items in enumerate(shopkeepvalues[shopkeepn]):
+                    itemanswers.append([])         #to create a list within a list which gets appended later
+                    for answ in items:
+                        itemanswers[index].append(strip_str(answ))
+                        itemanswersmerged.append(strip_str(answ))
+            else:
+                correctansw = "``, ``".join(shopkeepvalues[shopkeepn])   #creates a highlighted string of correct items
+                for k in shopkeepvalues[shopkeepn]:
+                    itemanswers.append(strip_str(k))
+                    itemanswersmerged.append(strip_str(k))
+
+            await ctx.send("List the items that are required to assemble the shown item **One By One**.", file=discord.File(f"./shopkeepimages/{shopkeepkeys[shopkeepn]}"))
+            while True:                    #while item is yet to be completed it takes in answers, checks them and uses them
+                if len(itemanswersmerged) == 0:      #stops the single item answer collecting
+                    correctitems += 1
+                    accumulated_g += 10
+                    await ctx.send("*Item complete.*")
+                    break
+                elif lives == 322 or lives <= 0.4:
+                    await ctx.send(f"You could've built this item with ``{correctansw}``.")
+                    break
+
+                def check(m):                #simple checker
+                    return m.channel == channel and m.author == author
+                try:
+                    msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 20.322))
+                except asyncio.TimeoutError:                                #If too late
+                    lives -= 1
+                    await channel.send(f"**{random.choice(lateansw)}**, you have ``{lives}`` lives remaining.")
+                    accumulated_g -= 10
+                else:
+                    if strip_str(msg.content) == "stop":           #changes lives number to 322 and stops the quiz
+                        lives = 322
+                        break
+                    elif strip_str(msg.content) == "skip":      #skip a single item and lose 0.5 life for it
+                        lives -= 0.5
+                        await ctx.send(f"This item could've been built with ``{correctansw}``, you have ``{lives}`` lives remaining.")
+                        break
+                    elif type(itemanswers[0]) == list:                         #if itemanswers has lists of correct answers it checks the correct answ in
+                        if compare_strings(author, msg.content, itemanswersmerged)[1]:            #itemanswersmerged, gives reward
+                            await ctx.send(f"**{random.choice(rightansw)}**")
+                            accumulated_g += 5
+                            itemstopop = []                                #create a new list of items that must be removed from itemanswersmerged
+                            for itemlist in itemanswers:
+                                if compare_strings(author, msg.content, itemlist)[1]:          #check index of correct answer to remove from all lists of itemanswers
+                                    n = itemlist.index(compare_strings(author, msg.content, itemlist)[0])
+                            for index, itemlist in enumerate(itemanswers):
+                                itemstopop.append(itemanswers[index][n])
+                                itemanswers[index].pop(n)                     #pop answered item out of all lists of the itemanswers
+                            for item in itemstopop:                      #loop through itemstopop and remove each item of it from itemanswersmerged
+                                itemanswersmerged.remove(item)
+                        else:
+                            lives -= 1
+                            await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
+                    else:
+                        if compare_strings(author, msg.content, itemanswersmerged)[1]:     #if itemanswers is just a list of strings, remove answered item from both lists.
+                            await ctx.send(f"**{random.choice(rightansw)}**")
+                            accumulated_g += 6
+                            itemanswers.remove(compare_strings(author, msg.content, itemanswers)[0])
+                            itemanswersmerged.remove(compare_strings(author, msg.content, itemanswersmerged)[0])
+                        else:
+                            lives -= 1
+                            await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
+
     @commands.command(brief = "Rapid questions that give more gold but with a risk.")
     @commands.cooldown(1, 52, commands.BucketType.channel)
     async def blitz(self, ctx):
@@ -393,139 +560,102 @@ class Quizes(commands.Cog):
                     else:
                         await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``.")
 
-    @commands.command(brief = "Endlessly sends DotA2 items to be assembled.")
-    @commands.cooldown(1, 30, commands.BucketType.user)
-    async def shopquiz(self, ctx):
-        server, channel, author = ctx.guild, ctx.channel, ctx.author     #get users server, channel and author
-        accumulated_g = 0             #gold that will be given to the user at the end
-        lives = aegis(author, 3)      #tries they have for the shopkeeperquiz
-        correctitems = 0              #number of items they completed
-        while True:                   #while lives are more than 0 it keeps sending new items to build once the previous item is completed/skipped
-            if lives <= 0.4:            #ends the shopquiz
-                g = add_gold(author, accumulated_g)
-                await ctx.send(f"**{author.display_name}** You're out of lives, You built ``{correctitems}`` items and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
-                break
-            elif lives == 322:          #if the quiz is stopped by command
-                g = add_gold(author, accumulated_g)
-                await ctx.send(f"**{author.display_name}** You built ``{correctitems}`` items and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
-                break
-            elif correctitems == 88:
-                g = add_gold(author, (accumulated_g+5000))
-                await ctx.send(f"**{author.display_name}** You built every item and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
-                break
-            shopkeepn = pseudorandomizer(server, shopkeeplen, "shopkeepnumbers")
-            #create two lists of correct answers, itemanswers takes in stripped correct answers inside multiple lists while itemanswersmerged takes it all as one list
-            itemanswers, itemanswersmerged = [], []
-            if type(shopkeepvalues[shopkeepn][0]) == list:
-                correctansw = "``, ``".join(shopkeepvalues[shopkeepn][0])  #creates a highlighted string of correct items
-                for index, items in enumerate(shopkeepvalues[shopkeepn]):
-                    itemanswers.append([])         #to create a list within a list which gets appended later
-                    for answ in items:
-                        itemanswers[index].append(strip_str(answ))
-                        itemanswersmerged.append(strip_str(answ))
-            else:
-                correctansw = "``, ``".join(shopkeepvalues[shopkeepn])   #creates a highlighted string of correct items
-                for k in shopkeepvalues[shopkeepn]:
-                    itemanswers.append(strip_str(k))
-                    itemanswersmerged.append(strip_str(k))
-
-            await ctx.send("List the items that are required to assemble the shown item **One By One**.", file=discord.File(f"./shopkeepimages/{shopkeepkeys[shopkeepn]}"))
-            while True:                    #while item is yet to be completed it takes in answers, checks them and uses them
-                if len(itemanswersmerged) == 0:      #stops the single item answer collecting
-                    correctitems += 1
-                    accumulated_g += 20 + (correctitems * 8)
-                    await ctx.send("*Item complete.*")
-                    break
-                elif lives == 322 or lives <= 0.4:
-                    await ctx.send(f"You could've built this item with ``{correctansw}``.")
-                    break
-
-                def check(m):                #simple checker
-                    return m.channel == channel and m.author == author
-                try:
-                    msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 20.322))
-                except asyncio.TimeoutError:                                #If too late
-                    lives -= 1
-                    await channel.send(f"**{random.choice(lateansw)}**, you have ``{lives}`` lives remaining.")
-                    accumulated_g -= 10
-                else:
-                    if strip_str(msg.content) == "stop":           #changes lives number to 322 and stops the quiz
-                        lives = 322
-                        break
-                    elif strip_str(msg.content) == "skip":      #skip a single item and lose 0.5 life for it
-                        lives -= 0.5
-                        await ctx.send(f"This item could've been built with ``{correctansw}``, you have ``{lives}`` lives remaining.")
-                        break
-                    elif type(itemanswers[0]) == list:                         #if itemanswers has lists of correct answers it checks the correct answ in
-                        if compare_strings(author, msg.content, itemanswersmerged)[1]:            #itemanswersmerged, gives reward
-                            await ctx.send(f"**{random.choice(rightansw)}**")
-                            accumulated_g += 5
-                            itemstopop = []                                #create a new list of items that must be removed from itemanswersmerged
-                            for itemlist in itemanswers:
-                                if compare_strings(author, msg.content, itemlist)[1]:          #check index of correct answer to remove from all lists of itemanswers
-                                    n = itemlist.index(compare_strings(author, msg.content, itemlist)[0])
-                            for index, itemlist in enumerate(itemanswers):
-                                itemstopop.append(itemanswers[index][n])
-                                itemanswers[index].pop(n)                     #pop answered item out of all lists of the itemanswers
-                            for item in itemstopop:                      #loop through itemstopop and remove each item of it from itemanswersmerged
-                                itemanswersmerged.remove(item)
-                        else:
-                            lives -= 1
-                            await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
-                    else:
-                        if compare_strings(author, msg.content, itemanswersmerged)[1]:     #if itemanswers is just a list of strings, remove answered item from both lists.
-                            await ctx.send(f"**{random.choice(rightansw)}**")
-                            accumulated_g += 6
-                            itemanswers.remove(compare_strings(author, msg.content, itemanswers)[0])
-                            itemanswersmerged.remove(compare_strings(author, msg.content, itemanswersmerged)[0])
-                        else:
-                            lives -= 1
-                            await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
-
-    @commands.command(brief = "Endlessly sends DotA 2 ability icons to name.")
-    @commands.cooldown(1, 50, commands.BucketType.user)
-    async def iconquiz(self, ctx):
+    @commands.command(brief = "Duel another user for gold.")
+    @commands.cooldown(1, 80, commands.BucketType.channel)
+    async def duel(self, ctx, opponent: discord.Member, wager:int):
         server, channel, author = ctx.guild, ctx.channel, ctx.author  #the server, channel and author of the command activator
-        lives = aegis(author, 3)
-        accumulated_g = 0
-        ncorrectansws = 0
-        while True:
-            if lives < 0.4:
-                g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 2  n = ncorrectansws
-                await ctx.send(f"You ran out of lives, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
-                break
-            elif lives == 322:
-                g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 2  n = ncorrectansws
-                await ctx.send(f"You have stopped the iconquiz, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
-                break
-            iconn = pseudorandomizer(server, iconquizlen, "iconquiznumbers") #Random number to give a random icon
-            correctansw = ""                         #Find the correct answer to be displayed incase user gets it wrong
-            if type(iconquizvalues[iconn]) == str:
-                correctansw = iconquizvalues[iconn]
-            else:
-                correctansw = iconquizvalues[iconn][0]
-            await ctx.send(f"**``Name the shown ability.``**", file=discord.File(f"./iconquizimages/{iconquizkeys[iconn]}"))
+        users = open_json("users.json")
+        maxwager = pirate_hat(author, 1000)
+        if str(author.id) not in users.keys():
+            await ctx.send("You don't any have gold yet, use some quiz commands to earn money first")
+            self.duel.reset_cooldown(ctx)
+        elif str(opponent.id) not in users.keys():
+            await ctx.send("That user doesn't have any gold to duel.")
+            self.duel.reset_cooldown(ctx)
+        elif author == opponent:
+            await ctx.send("Why are you trying to duel yourself?")
+            self.duel.reset_cooldown(ctx)
+        elif wager < 300:
+            await ctx.send("The minimum wager of a duel is 300 gold.")
+            self.duel.reset_cooldown(ctx)
+        elif wager > maxwager:
+            await ctx.send(f"The maximum wager you can set is {maxwager} gold.")
+            self.duel.reset_cooldown(ctx)
+        elif users[str(ctx.author.id)]["gold"] < gold:
+            await ctx.send("You don't have enough gold to start a duel.")
+            self.duel.reset_cooldown(ctx)
+        elif users[str(opponent.id)]["gold"] < gold:
+            await ctx.send("Your chosen opponent doesn't have enough gold to start a duel.")
+            self.duel.reset_cooldown(ctx)
+        else:
+            await ctx.send(f"{opponent.mention} Do you wish to duel {author.display_name} for {wager} gold? Write **Accept** in chat if you wish to duel or **Decline** if otherwise.")
             def check(m):
-                return m.channel == channel and m.author == author      #checks if the reply came from the same person in the same channel
+                return m.channel == channel and m.author == opponent      #checks if the reply came from the same person in the same channel
             try:
-                msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 15.322))
-            except asyncio.TimeoutError:          #If too late
-                lives -= 1
-                await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
-                accumulated_g -= 10
+                msg = await self.bot.wait_for("message", check=check, timeout=25)
+            except asyncio.TimeoutError:                                #If too late
+                await channel.send("The opponent didn't accept the duel.")
             else:
-                if strip_str(msg.content) == "skip":
-                    lives -= 0.5
-                    await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` lives remaining.")
-                elif strip_str(msg.content) == "stop":
-                    lives = 322
-                elif compare_strings(author, msg.content, iconquizvalues[iconn])[1]:
-                    await channel.send(f"**{random.choice(rightansw)}**")
-                    accumulated_g += 10
-                    ncorrectansws += 1
-                else:
-                    lives -= 1
-                    await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
+                if strip_str(msg.content) == "accept":
+                    questionsasked = 0
+                    questionsanswered1 = 0
+                    questionsanswered2 = 0
+                    await ctx.send("The opponent has accepted the duel, ``17`` questions will be asked and the one to get the most amount of correct answers wins!")
+                    time.sleep(3.25)
+                    while True:
+                        time.sleep(0.75)
+                        if questionsasked == 17:
+                            if questionsanswered1 > questionsanswered2:
+                                winner = author
+                                loser = opponent
+                            else:
+                                winner = opponent
+                                loser = author
+                            g_win = add_gold(winner, (gold - 200))
+                            g_lose = add_gold(loser, -gold)
+                            await ctx.send(f"The winner is {winner.display_name}, {winner.display_name} you won ``{g_win}`` gold and {loser.display_name} lost ``{g_lose}``...")
+                            break
+
+                        questn = pseudorandomizer(server, questlen, "questnumbers") #Random number to give a random question
+                        correctansw = ""                         #Find the correct answer to be displayed incase user gets it wrong
+                        if type(questvalues[questn]) == str:
+                            correctansw = questvalues[questn]
+                        elif type(questvalues[questn]) == tuple:
+                            correctansw = questvalues[questn][0]
+                        else:
+                            correctansw = random.choice([z for z in questvalues[questn] if z[0].isupper()])
+
+                        if type(questkeys[questn]) == tuple:           #if the question comes with an image
+                            await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
+                            questionsasked += 1
+                        else:                                          #for normal string questions
+                            await ctx.send(f"**```{questkeys[questn]}```**")
+                            questionsasked += 1
+                        def check(m):
+                            return m.channel == channel and (m.author == author or m.author == opponent)      #checks if the reply came from the same person in the same channel
+                        try:
+                            msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 20.322))
+                        except asyncio.TimeoutError:                                #If too late
+                            await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``")
+                        else:
+                            if compare_strings(msg.author, msg.content, questvalues[questn])[1]:     #If there is one correct answer
+                                await channel.send(f"**{random.choice(rightansw)}**.")
+                                if msg.author == author:
+                                    questionsanswered1 += 1
+                                elif msg.author == opponent:
+                                    questionsanswered2 += 1
+                            else:
+                                if type(questvalues[questn]) == list:
+                                    await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
+                                else:
+                                    channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
+                                if msg.author == author:
+                                    questionsanswered1 -= 1
+                                elif msg.author == opponent:
+                                    questionsanswered2 -= 1
+
+                elif strip_str(msg.content) == "decline":
+                    await ctx.send("The opponent has declined the offer.")
 
     @commands.command(brief = "Endless mix of questions, items and icons.")
     @commands.cooldown(1, 400, commands.BucketType.user)
@@ -688,135 +818,9 @@ class Quizes(commands.Cog):
         except KeyError:
             pass
 
-    @commands.command(brief = "Duel another user for gold.")
-    @commands.cooldown(1, 80, commands.BucketType.channel)
-    async def duel(self, ctx, opponent: discord.Member, wager:int):
-        server, channel, author = ctx.guild, ctx.channel, ctx.author  #the server, channel and author of the command activator
-        users = open_json("users.json")
-        maxwager = pirate_hat(author, 1000)
-        if str(author.id) not in users.keys():
-            await ctx.send("You don't any have gold yet, use some quiz commands to earn money first")
-            self.duel.reset_cooldown(ctx)
-        elif str(opponent.id) not in users.keys():
-            await ctx.send("That user doesn't have any gold to duel.")
-            self.duel.reset_cooldown(ctx)
-        elif author == opponent:
-            await ctx.send("Why are you trying to duel yourself?")
-            self.duel.reset_cooldown(ctx)
-        elif wager < 300:
-            await ctx.send("The minimum wager of a duel is 300 gold.")
-            self.duel.reset_cooldown(ctx)
-        elif wager > maxwager:
-            await ctx.send(f"The maximum wager you can set is {maxwager} gold.")
-            self.duel.reset_cooldown(ctx)
-        elif users[str(ctx.author.id)]["gold"] < gold:
-            await ctx.send("You don't have enough gold to start a duel.")
-            self.duel.reset_cooldown(ctx)
-        elif users[str(opponent.id)]["gold"] < gold:
-            await ctx.send("Your chosen opponent doesn't have enough gold to start a duel.")
-            self.duel.reset_cooldown(ctx)
-        else:
-            await ctx.send(f"{opponent.mention} Do you wish to duel {author.display_name} for {wager} gold? Write **Accept** in chat if you wish to duel or **Decline** if otherwise.")
-            def check(m):
-                return m.channel == channel and m.author == opponent      #checks if the reply came from the same person in the same channel
-            try:
-                msg = await self.bot.wait_for("message", check=check, timeout=25)
-            except asyncio.TimeoutError:                                #If too late
-                await channel.send("The opponent didn't accept the duel.")
-            else:
-                if strip_str(msg.content) == "accept":
-                    questionsasked = 0
-                    questionsanswered1 = 0
-                    questionsanswered2 = 0
-                    await ctx.send("The opponent has accepted the duel, ``17`` questions will be asked and the one to get the most amount of correct answers wins!")
-                    time.sleep(3.25)
-                    while True:
-                        time.sleep(0.75)
-                        if questionsasked == 17:
-                            if questionsanswered1 > questionsanswered2:
-                                winner = author
-                                loser = opponent
-                            else:
-                                winner = opponent
-                                loser = author
-                            g_win = add_gold(winner, (gold - 200))
-                            g_lose = add_gold(loser, -gold)
-                            await ctx.send(f"The winner is {winner.display_name}, {winner.display_name} you won ``{g_win}`` gold and {loser.display_name} lost ``{g_lose}``...")
-                            break
 
-                        questn = pseudorandomizer(server, questlen, "questnumbers") #Random number to give a random question
-                        correctansw = ""                         #Find the correct answer to be displayed incase user gets it wrong
-                        if type(questvalues[questn]) == str:
-                            correctansw = questvalues[questn]
-                        elif type(questvalues[questn]) == tuple:
-                            correctansw = questvalues[questn][0]
-                        else:
-                            correctansw = random.choice([z for z in questvalues[questn] if z[0].isupper()])
 
-                        if type(questkeys[questn]) == tuple:           #if the question comes with an image
-                            await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
-                            questionsasked += 1
-                        else:                                          #for normal string questions
-                            await ctx.send(f"**```{questkeys[questn]}```**")
-                            questionsasked += 1
-                        def check(m):
-                            return m.channel == channel and (m.author == author or m.author == opponent)      #checks if the reply came from the same person in the same channel
-                        try:
-                            msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 20.322))
-                        except asyncio.TimeoutError:                                #If too late
-                            await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``")
-                        else:
-                            if compare_strings(msg.author, msg.content, questvalues[questn])[1]:     #If there is one correct answer
-                                await channel.send(f"**{random.choice(rightansw)}**.")
-                                if msg.author == author:
-                                    questionsanswered1 += 1
-                                elif msg.author == opponent:
-                                    questionsanswered2 += 1
-                            else:
-                                if type(questvalues[questn]) == list:
-                                    await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
-                                else:
-                                    channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
-                                if msg.author == author:
-                                    questionsanswered1 -= 1
-                                elif msg.author == opponent:
-                                    questionsanswered2 -= 1
 
-                elif strip_str(msg.content) == "decline":
-                    await ctx.send("The opponent has declined the offer.")
-
-    @commands.command(brief = "A single DotA related question for a bit of gold.")
-    @commands.cooldown(1, 7, commands.BucketType.user)
-    async def quiz(self, ctx):
-        server, channel, author = ctx.guild, ctx.channel, ctx.author  #the server, channel and author of the command activator
-        questn = pseudorandomizer(server, questlen, "questnumbers") #Random number to give a random question
-        correctansw = ""                         #Find the correct answer to be displayed incase user gets it wrong
-        if type(questvalues[questn]) == str:
-            correctansw = questvalues[questn]
-        elif type(questvalues[questn]) == tuple:
-            correctansw = questvalues[questn][0]
-        else:
-            correctansw = random.choice([z for z in questvalues[questn] if z[0].isupper()])
-        if type(questkeys[questn]) == tuple:           #if the question comes with an image
-            await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
-        else:                                          #for normal string questions
-            await ctx.send(f"**```{questkeys[questn]}```**")
-        def check(m):
-            return m.channel == channel and m.author == author      #checks if the reply came from the same person in the same channel
-        try:
-            msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, 22.322))
-        except asyncio.TimeoutError:                                #If too late
-            await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``")
-            add_gold(author, -4)
-        else:
-            if compare_strings(author, msg.content, questvalues[questn])[1]:
-                g = add_gold(author, 16)
-                await channel.send(f"**{random.choice(rightansw)}** you got ``{g}`` gold.")
-            else:
-                if type(questvalues[questn]) == list:
-                    await channel.send(f"**{random.choice(wrongansw)}** One of the possible correct answer was ``{correctansw}``")
-                else:
-                    await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
 
     @quiz.error
     async def quizerror(self, ctx, error):
