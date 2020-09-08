@@ -9,6 +9,10 @@ items they can purchase enhance how they get to use the quiz commands mentioned 
 https://discord.gg/nhBvdqV here's the discord server where users can hear bot updates, give feedback and report mistakes and typos
 that might be present in cogs.quizes.py questdict dictionary.
 
+Images used for regular quiz questions, for shopquiz and iconquiz are stored in seperate folders inside the main folder (next to discordquizbot.py)
+I didn't include these files here since they contain over 600 images in total. Folders are named: "quizimages", "shopkeepimages" and "iconquizimages",
+You can see these folders being called in various commands in /cogs/quizes.py
+
 # Issues
 There are many issues, mostly OOP related ones:
 I can't sort the help command, optimally, it would be as such:
