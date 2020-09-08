@@ -104,7 +104,8 @@ questdict = {"What is Dark Seer's ultimate ability?":("Wall of Replica", "vacuum
 """Which hero has the voiceline: "It's probably not a problem, probably."?""":("Tinker", "dr. kleiner"), "Fill in the blank: ___ are not so good with motion, you know.":"trees", "Who's also known as the Snowball from Cobalt?":("Tusk", "ymir"), "Which hero loves gummy vitamins?":("Undying", "dirge"),
 "Who only wanted to kill everyone?":("Venomancer", "veno"), "Fill in the blank: Shuttle and loom, I ___ your doom.":"weave", """Which hero has the voiceline: "Death is my bitch."?""":("Wraith King", "wk"), "Fill in the blank: You can't run from ___.":"heaven",
 "Name an item that was removed but returned as a neutral item.":["Poor Mans Shield", "pms", "Ring of Aquila", "aquila", "Iron Talon"], "Which hero was the first to get a custom persona?":("Invoker", "carl", "injoker"), "Which hero is a creature of the black mist?":("Abaddon", "lord of avernus"),
-"What race is Shadow Shaman?":("Hill Troll", "troll"), "Who's Tusk's pub nemesis?":("Bristleback", "bb", "bristle"), "Who's the lord of hell?":("Doom", "lucifer"), "Which hero is obsessed with Blink Dagger?":"Earthshaker", "Name a hero with no turn-rate.":["Io", "io", "pango", "Pangolier"]}
+"What race is Shadow Shaman?":("Hill Troll", "troll"), "Who's Tusk's pub nemesis?":("Bristleback", "bb", "bristle"), "Who's the lord of hell?":("Doom", "lucifer"), "Which hero is obsessed with Blink Dagger?":"Earthshaker", "Name a hero with no turn-rate.":["Io", "io", "pango", "Pangolier"],
+"Which hero's every active ability deal pure damage?":("Timbersaw", "timber", "rizzrack")}
 #Getting the dictionary length and it's keys and values as seperate lists.
 questlen = len(questdict)-1
 questkeys, questvalues = list(questdict.keys()), list(questdict.values())
@@ -240,8 +241,8 @@ def pseudorandomizer(server, length, listkey: str):  #pseudorandomizer used in p
         rng[serv_id] = {"questnumbers":"[]", "shopkeepnumbers":"[]", "iconquiznumbers":"[]", "vacuumcd":16}
         save_json("rngfix.json", rng)
     numlist = ast.literal_eval(rng[serv_id][listkey])        #convert list string to list
-    if len(numlist) > round(length*3/4):         #if list of numbers in rngfix goes over 100 delete the first number
-        del numlist[:round(length/5)]
+    if len(numlist) > round(length*5/6):         #if amount of numbers surpass 5/6ths of the total amount delete a chunk of the numbers at the start
+        del numlist[:round(length/4)]
         save_json("rngfix.json", rng)
     while True:
         n = random.randint(0, length)
@@ -261,7 +262,7 @@ def strip_str(text):                 #function to remove punctuations, spaces an
 
 def compare_strings(author, text, answer):   #function to compare user input and actual answer
     users = open_json("users.json")
-    output = []                         #output is a list of the most similar answer and the boolean which decides if it's true enough
+    output = []                         #output is a list of the most similar answer and the boolean which shows if it's true enough
     striptext = strip_str(text)          #first we use strip_str on both strings which removes spaces, "the" and unwanted symbols
     stripanswer = ""
     if type(answer) == str:
@@ -301,8 +302,10 @@ def calc_time(question, answer):           #Function to calculate time for each 
     else:                         #takes the average length of all answers
         answlen = sum(map(len, answer))/len(answer)
     seconds = queslen/9 + answlen/5
-    if seconds > 11:          #balances it(I think)
+    if seconds >= 11:          #balances it(I think)
         seconds -= 2
+    if seconds <= 9:
+        seconds += 1
     return seconds
 
 def set_time(author, duration):      #Set duration for quiz commands(30% more time if shiva is held)
@@ -419,7 +422,7 @@ class Quizes(commands.Cog):
                     await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 
     @commands.command(brief = "Endlessly sends DotA2 items to be assembled.")
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(1, 50, commands.BucketType.user)
     async def shopquiz(self, ctx):
         server, channel, author = ctx.guild, ctx.channel, ctx.author     #get users server, channel and author
         accumulated_g = 0             #gold that will be given to the user at the end
@@ -561,7 +564,7 @@ class Quizes(commands.Cog):
                         await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``.")
 
     @commands.command(brief = "Duel another user for gold.")
-    @commands.cooldown(1, 80, commands.BucketType.channel)
+    @commands.cooldown(1, 45, commands.BucketType.channel)
     async def duel(self, ctx, opponent: discord.Member, wager:int):
         server, channel, author = ctx.guild, ctx.channel, ctx.author  #the server, channel and author of the command activator
         users = open_json("users.json")
@@ -613,7 +616,7 @@ class Quizes(commands.Cog):
                                 loser = author
                             g_win = add_gold(winner, (gold - 200))
                             g_lose = add_gold(loser, -gold)
-                            await ctx.send(f"The winner is {winner.display_name}, {winner.display_name} you won ``{g_win}`` gold and {loser.display_name} lost ``{g_lose}``...")
+                            await ctx.send(f"The winner is {winner.display_name}! {winner.display_name} you won ``{g_win}`` gold and {loser.display_name} lost ``{g_lose}``...")
                             break
 
                         questn = pseudorandomizer(server, questlen, "questnumbers") #Random number to give a random question
@@ -640,7 +643,7 @@ class Quizes(commands.Cog):
                         else:
                             if compare_strings(msg.author, msg.content, questvalues[questn])[1]:     #If there is one correct answer
                                 await channel.send(f"**{random.choice(rightansw)}**.")
-                                if msg.author == author:
+                                if msg.author == author:        #give a point for the right answer
                                     questionsanswered1 += 1
                                 elif msg.author == opponent:
                                     questionsanswered2 += 1
@@ -649,7 +652,7 @@ class Quizes(commands.Cog):
                                     await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
                                 else:
                                     channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
-                                if msg.author == author:
+                                if msg.author == author:       #take away a point for a wrong answer
                                     questionsanswered1 -= 1
                                 elif msg.author == opponent:
                                     questionsanswered2 -= 1
@@ -818,10 +821,6 @@ class Quizes(commands.Cog):
         except KeyError:
             pass
 
-
-
-
-
     @quiz.error
     async def quizerror(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
@@ -845,7 +844,7 @@ class Quizes(commands.Cog):
         if isinstance(error, commands.CommandOnCooldown):
             users = open_json("users.json")
             if 5000 in ast.literal_eval(users[str(ctx.message.author.id)]["items"]):
-                if error.retry_after < 7.5:
+                if error.retry_after < 12.5:
                     await ctx.reinvoke()
                     return
                 else:
