@@ -105,7 +105,7 @@ questdict = {"What is Dark Seer's ultimate ability?":("Wall of Replica", "vacuum
 "Who only wanted to kill everyone?":("Venomancer", "veno"), "Fill in the blank: Shuttle and loom, I ___ your doom.":"weave", """Which hero has the voiceline: "Death is my bitch."?""":("Wraith King", "wk"), "Fill in the blank: You can't run from ___.":"heaven",
 "Name an item that was removed but returned as a neutral item.":["Poor Mans Shield", "pms", "Ring of Aquila", "aquila", "Iron Talon"], "Which hero was the first to get a custom persona?":("Invoker", "carl", "injoker"), "Which hero is a creature of the black mist?":("Abaddon", "lord of avernus"),
 "What race is Shadow Shaman?":("Hill Troll", "troll"), "Who's Tusk's pub nemesis?":("Bristleback", "bb", "bristle"), "Who's the lord of hell?":("Doom", "lucifer"), "Which hero is obsessed with Blink Dagger?":"Earthshaker", "Name a hero with no turn-rate.":["Io", "io", "pango", "Pangolier"],
-"Which hero's every active ability deal pure damage?":("Timbersaw", "timber", "rizzrack")}
+"Which hero's every active ability deal pure damage?":("Timbersaw", "timber", "rizzrack"), ("Which hero carries this symbol?", "Treant_sym.png"):("Treant Protector", "treant"), ("Which hero wears this symbol?", "Necro_sym.png"):("Necrophos", "necro"), ("Which hero wears this symbol?", "Luna_sym.png"):"Luna"}
 #Getting the dictionary length and it's keys and values as seperate lists.
 questlen = len(questdict)-1
 questkeys, questvalues = list(questdict.keys()), list(questdict.values())
@@ -385,11 +385,11 @@ class Quizes(commands.Cog):
         ncorrectansws = 0
         while True:
             if lives < 0.4:
-                g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 2  n = ncorrectansws
+                g = add_gold(author, ncorrectansws*(accumulated_g+ncorrectansws-1)) #((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
                 await ctx.send(f"You ran out of lives, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
                 break
             elif lives == 322:
-                g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 2  n = ncorrectansws
+                g = add_gold(author, ncorrectansws*(accumulated_g+ncorrectansws-1)) #((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
                 await ctx.send(f"You have stopped the iconquiz, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
                 break
             iconn = pseudorandomizer(server, iconquizlen, "iconquiznumbers") #Random number to give a random icon
@@ -430,15 +430,15 @@ class Quizes(commands.Cog):
         ncorrectansws = 0              #number of items they completed
         while True:                   #while lives are more than 0 it keeps sending new items to build once the previous item is completed/skipped
             if lives <= 0.4:            #ends the shopquiz
-                g = add_gold(author, accumulated_g + (5*ncorrectansws*(ncorrectansws - 1)))
+                g = add_gold(author, ncorrectansws*(accumulated_g+(5*ncorrectansws)-5)) #a = accumulated_g, d = 10, n = ncorrectansws
                 await ctx.send(f"**{author.display_name}** You're out of lives, You built ``{ncorrectansws}`` items and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
                 break
             elif lives == 322:          #if the quiz is stopped by command
-                g = add_gold(author, accumulated_g + (5*ncorrectansws*(ncorrectansws - 1)))
+                g = add_gold(author, ncorrectansws*(accumulated_g+(5*ncorrectansws)-5)) #a = accumulated_g, d = 10, n = ncorrectansws
                 await ctx.send(f"**{author.display_name}** You built ``{ncorrectansws}`` items and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
                 break
             elif correctitems == 85:
-                g = add_gold(author, (accumulated_g+5000))
+                g = add_gold(author, (ncorrectansws*(accumulated_g+(5*ncorrectansws)-5))+15000) #a = accumulated_g, d = 10, n = ncorrectansws
                 await ctx.send(f"**{author.display_name}** You built every item and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
                 break
             shopkeepn = pseudorandomizer(server, shopkeeplen, "shopkeepnumbers")
@@ -522,7 +522,7 @@ class Quizes(commands.Cog):
         while True:
             time.sleep(0.3)
             if time.time() > timeout:                    #stop the blitz, add accumulated gold to user.
-                g = add_gold(author, (accumulated_g + (2*ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 4  n = ncorrectanswsers
+                g = add_gold(author, ncorrectansws*(accumulated_g+(2*ncorrectansws)-2)) #((2a+d(n-1))/2)n a = 0 d = 4  n = ncorrectanswsers
                 await ctx.send(f"**{author.display_name}** you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold during the blitz.")
                 break
             questn = pseudorandomizer(server, questlen, "questnumbers") #Random number to give a random question
@@ -672,11 +672,11 @@ class Quizes(commands.Cog):
                 lives = aegis(author, 5)
                 while True:              #keeps asking questions till it breaks
                     if lives < 0.4:               #break the whole command if lives are 0 or 322(which means the command was stopped by user)
-                        g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1)))) #((2a+d(n-1))/2)n a = 0 d = 2  n = ncorrectansws
+                        g = add_gold(author, add_gold(author, ncorrectansws*(accumulated_g+ncorrectansws-1))) #((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
                         await ctx.send(f"You ran out of lives and you accumulated ``{g}`` gold by getting ``{ncorrectansws}`` correct answers.")
                         break
                     if lives == 322:
-                        g = add_gold(author, (accumulated_g + (ncorrectansws*(ncorrectansws - 1))))
+                        g = add_gold(author, add_gold(author, ncorrectansws*(accumulated_g+ncorrectansws-1))) #((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
                         await ctx.send(f"You have stopped the endless quiz, you accumulated ``{g}`` gold by getting ``{ncorrectansws}`` correct answers.")
                         break
                     decider = random.randint(0, 2)
