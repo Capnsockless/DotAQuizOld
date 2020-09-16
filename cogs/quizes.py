@@ -102,10 +102,10 @@ questdict = {"What is Dark Seer's ultimate ability?":("Wall of Replica", "vacuum
 "Name a hero voiced by Barry Dennen.":["Rubick", "Phantom Lancer", "pl", "Chaos Knight", "ck"], "Which TI final ended with a 3:0 score?":("TI7", "7", "seven"), "Which hero has slain a Sea Dragon?":"Slardar", """Who has the voiceline"Your body was a cage, I just let you free!"?""":("Slark", "nightcrawler"),
 "Fill in the blank: My trigger finger is itching for _____.":"vengence", """Who has the voiceline: "It was but a scratch."?""":("Sven", "rogue knight"), "Name one of the goblins of Techies.":["Squee", "Speel", "Spoon"], "Which hero is from the hell of hells?":("Terrorblade", "tb"),
 """Which hero has the voiceline: "It's probably not a problem, probably."?""":("Tinker", "dr. kleiner"), "Fill in the blank: ___ are not so good with motion, you know.":"trees", "Who's also known as the Snowball from Cobalt?":("Tusk", "ymir"), "Which hero loves gummy vitamins?":("Undying", "dirge"),
-"Who only wanted to kill everyone?":("Venomancer", "veno"), "Fill in the blank: Shuttle and loom, I ___ your doom.":"weave", """Which hero has the voiceline: "Death is my bitch."?""":("Wraith King", "wk"), "Fill in the blank: You can't run from ___.":"heaven",
+"Which hero transformed from a Herbalist to The Deathbringer?":("Venomancer", "veno"), "Fill in the blank: Shuttle and loom, I ___ your doom.":"weave", """Which hero has the voiceline: "Death is my bitch."?""":("Wraith King", "wk"), "Fill in the blank: You can't run from ___.":"heaven",
 "Name an item that was removed but returned as a neutral item.":["Poor Mans Shield", "pms", "Ring of Aquila", "aquila", "Iron Talon"], "Which hero was the first to get a custom persona?":("Invoker", "carl", "injoker"), "Which hero is a creature of the black mist?":("Abaddon", "lord of avernus"),
 "What race is Shadow Shaman?":("Hill Troll", "troll"), "Who's Tusk's pub nemesis?":("Bristleback", "bb", "bristle"), "Who's the lord of hell?":("Doom", "lucifer"), "Which hero is obsessed with Blink Dagger?":"Earthshaker", "Name a hero with no turn-rate.":["Io", "io", "pango", "Pangolier"],
-"Which hero's every active ability deal pure damage?":("Timbersaw", "timber", "rizzrack"), ("Which hero carries this symbol?", "Treant_sym.png"):("Treant Protector", "treant"), ("Which hero wears this symbol?", "Necro_sym.png"):("Necrophos", "necro"), ("Which hero wears this symbol?", "Luna_sym.png"):"Luna"}
+"Which hero's every active ability deals pure damage?":("Timbersaw", "timber", "rizzrack"), ("Which hero carries this symbol?", "Treant_sym.png"):("Treant Protector", "treant"), ("Which hero wears this symbol?", "Necro_sym.png"):("Necrophos", "necro"), ("Which hero wears this symbol?", "Luna_sym.png"):"Luna"}
 #Getting the dictionary length and it's keys and values as seperate lists.
 questlen = len(questdict)-1
 questkeys, questvalues = list(questdict.keys()), list(questdict.values())
@@ -437,7 +437,7 @@ class Quizes(commands.Cog):
                 g = add_gold(author, ncorrectansws*(accumulated_g+(5*ncorrectansws)-5)) #a = accumulated_g, d = 10, n = ncorrectansws
                 await ctx.send(f"**{author.display_name}** You built ``{ncorrectansws}`` items and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
                 break
-            elif correctitems == 85:
+            elif ncorrectansws == 85:
                 g = add_gold(author, (ncorrectansws*(accumulated_g+(5*ncorrectansws)-5))+15000) #a = accumulated_g, d = 10, n = ncorrectansws
                 await ctx.send(f"**{author.display_name}** You built every item and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
                 break
@@ -460,8 +460,8 @@ class Quizes(commands.Cog):
             await ctx.send("List the items that are required to assemble the shown item **One By One**.", file=discord.File(f"./shopkeepimages/{shopkeepkeys[shopkeepn]}"))
             while True:                    #while item is yet to be completed it takes in answers, checks them and uses them
                 if len(itemanswersmerged) == 0:      #stops the single item answer collecting
-                    correctitems += 1
-                    accumulated_g += 10
+                    ncorrectansws += 1
+                    accumulated_g += 8
                     await ctx.send("*Item complete.*")
                     break
                 elif lives == 322 or lives <= 0.4:
@@ -487,7 +487,7 @@ class Quizes(commands.Cog):
                     elif type(itemanswers[0]) == list:                         #if itemanswers has lists of correct answers it checks the correct answ in
                         if compare_strings(author, msg.content, itemanswersmerged)[1]:            #itemanswersmerged, gives reward
                             await ctx.send(f"**{random.choice(rightansw)}**")
-                            accumulated_g += 5
+                            accumulated_g += 2
                             itemstopop = []                                #create a new list of items that must be removed from itemanswersmerged
                             for itemlist in itemanswers:
                                 if compare_strings(author, msg.content, itemlist)[1]:          #check index of correct answer to remove from all lists of itemanswers
@@ -503,7 +503,7 @@ class Quizes(commands.Cog):
                     else:
                         if compare_strings(author, msg.content, itemanswersmerged)[1]:     #if itemanswers is just a list of strings, remove answered item from both lists.
                             await ctx.send(f"**{random.choice(rightansw)}**")
-                            accumulated_g += 6
+                            accumulated_g += 3
                             itemanswers.remove(compare_strings(author, msg.content, itemanswers)[0])
                             itemanswersmerged.remove(compare_strings(author, msg.content, itemanswersmerged)[0])
                         else:
@@ -584,10 +584,10 @@ class Quizes(commands.Cog):
         elif wager > maxwager:
             await ctx.send(f"The maximum wager you can set is {maxwager} gold.")
             self.duel.reset_cooldown(ctx)
-        elif users[str(ctx.author.id)]["gold"] < gold:
+        elif users[str(ctx.author.id)]["gold"] < wager:
             await ctx.send("You don't have enough gold to start a duel.")
             self.duel.reset_cooldown(ctx)
-        elif users[str(opponent.id)]["gold"] < gold:
+        elif users[str(opponent.id)]["gold"] < wager:
             await ctx.send("Your chosen opponent doesn't have enough gold to start a duel.")
             self.duel.reset_cooldown(ctx)
         else:
