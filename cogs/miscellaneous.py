@@ -7,10 +7,10 @@ from discord.ext import commands
 os.chdir(r"D:\Discordbot\DotaQuizbot")
 
 def open_json(jsonfile):
-    with open(jsonfile, "r") as fp:      #load the users.json file
-        return json.load(fp)       #openfunc for jsonfiles
+    with open(jsonfile, "r") as fp:     #load the users.json file
+        return json.load(fp)        #openfunc for jsonfiles
 
-def save_json(jsonfile, name):           #savefunc for jsonfiles
+def save_json(jsonfile, name):      #savefunc for jsonfiles
     with open(jsonfile, "w") as fp:
         json.dump(name, fp)
 
@@ -39,16 +39,16 @@ class Miscellaneous(commands.Cog):
     @commands.command(brief = "See the top 10 cheese collectors.", hidden = True)
     async def cheeseboard(self, ctx):
         users = open_json("users.json")
-        onlycheese = {k: v["cheese"] for k, v in users.items()}          #create a dict of user ids and their cheese
-        sort = {k: v for k, v in sorted(onlycheese.items(), key=lambda item: item[1])}  #sort the dictionary according to cheese amounts
-        sortkeys, sortvalues = list(sort.keys()), list(sort.values())     #obtain lists of the keys and values for later use
+        onlycheese = {k: v["cheese"] for k, v in users.items()}         #create a dict of user ids and their cheese
+        sort = {k: v for k, v in sorted(onlycheese.items(), key=lambda item: item[1])}      #sort the dictionary according to cheese amounts
+        sortkeys, sortvalues = list(sort.keys()), list(sort.values())       #obtain lists of the keys and values for later use
         basetext = "Collector:                               Amount:\n"
         for n in range(0, 5):
             user = ctx.guild.get_member(int(sortkeys[n]))
-            if type(user) == discord.Member:                #if user is in the server it will display the name
+            if type(user) == discord.Member:        #if user is in the server it will display the name
                 multiplier = 44 - len(user.display_name)
                 basetext = basetext + str(n+1) + ")" + user.display_name + " "*multiplier + str(sortvalues[n]) + "\n"
-            else:                                           #otherwise it will just say "hidden" instead
+            else:           #otherwise it will just say "hidden" instead
                 basetext = basetext + str(n+1) + ")Hidden" + " "*38 + str(sortvalues[n]) + "\n"
         await ctx.send(f"```{basetext}```")
 
