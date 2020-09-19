@@ -6,12 +6,12 @@ from discord.ext import commands
 
 os.chdir(r"D:\Discordbot\DotaQuizbot")
 
-def strip_str(text):       #function to remove punctuations spaces from string and make it lowercase
+def strip_str(text):        #function to remove punctuations spaces from string and make it lowercase
     punctuations = ''' !-;:`'"\,/_?'''
     text2 = ""
     for char in text:
-       if char not in punctuations:
-           text2 = text2 + char
+        if char not in punctuations:
+            text2 = text2 + char
     return text2.lower().replace("the", "")
 
 async def find_channel(guild):
@@ -36,7 +36,7 @@ class MyHelpCommand(commands.DefaultHelpCommand):
         self.no_category = "Information"
         self.sort_commands = False
 
-    async def send_command_help(self, command):      #gets the full detailed info of a command
+    async def send_command_help(self, command):         #gets the full detailed info of a command
         cmd_info = command_dinfos[strip_str(str(command))]
         await self.get_destination().send(f"``{cmd_info}``")
 
@@ -61,7 +61,7 @@ async def on_ready():
 @bot.event
 async def on_guild_join(guild):
     channel = await find_channel(guild)
-    await channel.send("```Hi, this is DotAQuiz, a bot that allows you to learn many details of DotA you might've never known before. You can test your knowledge of the game with the quiz commands: 322 quiz | 322 blitz | 322 shopquiz | 322 iconquiz | 322 endless (Note that most of these commands can be quite spammy so I recommed you use a channel dedicated to spam for these commands.) and you can challenge others with     322 duel  You can use the gold you earn with these commands to buy items with | 322 buy | that can help improve some stats in these commands. Don't forget to do 322 help and 322 help [command] to see all the information that might interest you. If you find any factual mistakes, typos and want to notify us to fix it or just want to give feedback for the bot do 322 botinfo for an invite to our server.```")
+    await channel.send("```Hi, this is DotAQuiz, a bot that allows you to learn many details of DotA you might've never known before. You can test your knowledge of the game with the quiz commands: 322 quiz | 322 blitz | 322 shopquiz | 322 iconquiz | 322 endless (Note that most of these commands can be quite spammy so I recommed you use a channel dedicated to spam for these commands.) and you can challenge others with  322 duel  You can use the gold you earn with these commands to buy items with | 322 buy | that can help improve some stats in these commands. Don't forget to do 322 help and 322 help [command] to see all the information that might interest you. If you find any factual mistakes, typos and want to notify us to fix it or just want to give feedback for the bot do 322 botinfo for an invite to our server.```")
 
 
 @bot.command(brief = "Bonus info about the bot and an invite to our discord server.")
@@ -83,6 +83,5 @@ async def on_command_error(ctx, error):
         pass
     else:
         raise error
-
 
 bot.run(TOKEN)
