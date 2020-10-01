@@ -6,6 +6,7 @@ import ast
 import time
 import os
 import Levenshtein as lev
+from mutagen.mp3 import MP3
 from discord.ext import commands
 
 os.chdir(r"D:\Discordbot\DotaQuizbot")
@@ -91,21 +92,22 @@ questdict = {"What is Dark Seer's ultimate ability?":("Wall of Replica", "vacuum
 "What's the name of Luna's lion?":"Nova", "Fill in the blank: Failure is just another kind of success. The ____  ___.":"wrong kind", "Which hero is named Kaldr?":("Ancient Apparition", "aa"), "Name a hero that is able to make a greater use of Hand of Midas than others.":["Dazzle", "Ogre magi", "Arc Warden", "zet"],
 "Fill in the blank: You die as you lived: ___ and ignorant.":"insipid", "Which Goddess was Bane born from?":"Nyctasha", """Which hero has the voiceline: "Keepin my knees in the breeze."?""":"Batrider", "Name a hero that has the same voice actor as The Shopkeeper.":["Anti-mage", "am", "Slardar", "Necrophos", "necro",
 "Warlock", "Clockwerk", "rattletrap", "Beastmaster"], """Which hero has the voiceline: "Lie down... have a cookie."?""":("Bloodseeker", "bs"), """Which hero uses this voiceline upon respawning: "Screw business, it just got personal."?""":("Bounty Hunter", "gondar", "bh"),
-"""Which ultimate creates the "boozin' buddies"?""":("Primal Split"), "Fill in the blank: Where ride the ___, death shall follow.":"horsemen", "Who's as swift as the wolves of Icewrack?":("Crystal Maiden", "cm", "rylai"), "What does Dark Willow call her pet wisp?":"Jex",
-"Name a hero with a bipedal mount.":("Alchemist", "Disruptor"), "Fill in the blank: Steel wins battles, ___ wins wars.":"gold", """Which hero has the voiceline: "I know I should respect the dead, but first you have to earn it."?""":("Drow Ranger", "drow", "traxex"),
+"""Which ultimate creates the "boozin' buddies"?""":"Primal Split", "Fill in the blank: Where ride the ___, death shall follow.":"horsemen", "Who's as swift as the wolves of Icewrack?":("Crystal Maiden", "cm", "rylai"), "What does Dark Willow call her pet wisp?":"Jex",
+"Name a hero with a bipedal mount.":["Alchemist", "Disruptor"], "Fill in the blank: Steel wins battles, ___ wins wars.":"gold", """Which hero has the voiceline: "I know I should respect the dead, but first you have to earn it."?""":("Drow Ranger", "drow", "traxex"),
 "Who's the last Worldsmith?":"Elder Titan", """Which hero has the voiceline: "Hey, I'm a predator"?""":"Enchantress", "Fill in the blank: If ___ cannot escape me, what hope have you?":"light", """Which hero has this voiceline upon killing an enemy: "I have seen the future, you're not in it."?""":"Faceless Void",
 "Name a hero with no audible voicelines.":["Io", "wisp", "icarus", "Pheonix"], "How else is Gyrocopters Rocket Barrage often named?":"Raining Hell", "Name a hero that can benefit from being low on health.":["Huskar", "Terrorblade", "tb"], "Fill in the blank: There's a fine line between ___ and stupidity.":"bravery",
 """Which hero says the following voiceline when beginning the battle: "A quest? A quest! A-questing I shall go!"?""":("Keeper of the Light", "kotl"), "What's Lifestealers race?":"Oglodi", "Fill in the blank: It's not the heat, it's the _____.":"humiliation",
 "Name a hero that can change between melee and ranged attacks.":["Troll Warlord", "troll", "Terrorblade", "tb", "Dragon Knight", "dk", "Lone Druid"], """Who has the voiceline: "Let my beauty still your breath."?""":("Medusa", "dusa", "gorgon"), """Which hero has the voiceline: "It was not luck, but skill!"?""":("Mirana", "potm"),
 "Fill in the blank: Day ____, Night Stalker.":"walker", "Fill in the blank: Nyx, Nyx, ___, Nyx.":"Nyx", "Fill in the blank: Running's not as fun as ____. Not one bit fun.":"hitting", """Who has the voiceline: "Like the past, I'm never dead. I'm not even past."?""":"Oracle",
 "Fill in the blank: Good news travels slowly, bad news has ___.":"wings", "Fill in the blank of Pugna's voiceline: Who needs a blade when you have ____?":"oblivion", "Which metal is a great conductor according to Razor?":"Gold", "Which hero is a satyr?":("Riki", "rikimaru"),
-"Name a hero voiced by Barry Dennen.":["Rubick", "Phantom Lancer", "pl", "Chaos Knight", "ck"], "Which TI final ended with a 3:0 score?":("TI7", "7", "seven"), "Which hero has slain a Sea Dragon?":"Slardar", """Who has the voiceline"Your body was a cage, I just let you free!"?""":("Slark", "nightcrawler"),
+"Name a hero voiced by Barry Dennen.":["Rubick", "Phantom Lancer", "pl", "Chaos Knight", "ck"], "Which TI final ended with a 3:0 score?":("TI7", "7", "seven"), "Which hero has slain a Sea Dragon?":"Slardar", """Who has the voiceline "Your body was a cage, I just let you free!"?""":("Slark", "nightcrawler"),
 "Fill in the blank: My trigger finger is itching for _____.":"vengence", """Who has the voiceline: "It was but a scratch."?""":("Sven", "rogue knight"), "Name one of the goblins of Techies.":["Squee", "Speel", "Spoon"], "Which hero is from the hell of hells?":("Terrorblade", "tb"),
 """Which hero has the voiceline: "It's probably not a problem, probably."?""":("Tinker", "dr. kleiner"), "Fill in the blank: ___ are not so good with motion, you know.":"trees", "Who's also known as the Snowball from Cobalt?":("Tusk", "ymir"), "Which hero loves gummy vitamins?":("Undying", "dirge"),
 "Which hero transformed from a Herbalist to The Deathbringer?":("Venomancer", "veno"), "Fill in the blank: Shuttle and loom, I ___ your doom.":"weave", """Which hero has the voiceline: "Death is my bitch."?""":("Wraith King", "wk"), "Fill in the blank: You can't run from ___.":"heaven",
 "Name an item that was removed but returned as a neutral item.":["Poor Mans Shield", "pms", "Ring of Aquila", "aquila", "Iron Talon"], "Which hero was the first to get a custom persona?":("Invoker", "carl", "injoker"), "Which hero is a creature of the black mist?":("Abaddon", "lord of avernus"),
-"What race is Shadow Shaman?":("Hill Troll", "troll"), "Who's Tusk's pub nemesis?":("Bristleback", "bb", "bristle"), "Who's the lord of hell?":("Doom", "lucifer"), "Which hero is obsessed with Blink Dagger?":"Earthshaker", "Name a hero with no turn-rate.":["Io", "io", "pango", "Pangolier"],
-"Which hero's every active ability deals pure damage?":("Timbersaw", "timber", "rizzrack"), ("Which hero carries this symbol?", "Treant_sym.png"):("Treant Protector", "treant"), ("Which hero wears this symbol?", "Necro_sym.png"):("Necrophos", "necro"), ("Which hero wears this symbol?", "Luna_sym.png"):"Luna"}
+"What race is Shadow Shaman?":("Hill Troll", "troll"), "Who's Tusk's pub nemesis?":("Bristleback", "bb", "bristle"), "Who's the lord of hell?":("Doom", "lucifer"), "Which hero is obsessed with Blink Dagger?":"Earthshaker", "Name a hero with no turn-rate.":["Io", "wisp", "pango", "Pangolier"],
+"Which hero's every active ability deals pure damage?":("Timbersaw", "timber", "rizzrack"), ("Which hero carries this symbol?", "Treant_sym.png"):("Treant Protector", "treant"), ("Which hero wears this symbol?", "Necro_sym.png"):("Necrophos", "necro"), ("Which hero wears this symbol?", "Luna_sym.png"):"Luna",
+"Which item causes the Maim debuff?":"Sange"}
 #Getting the dictionary length and it's keys and values as seperate lists.
 questlen = len(questdict)-1
 questkeys, questvalues = list(questdict.keys()), list(questdict.values())
@@ -161,7 +163,7 @@ iconquizdict = {'Acid_Spray.png':'Acid Spray', 'Adaptive_Strike.png':'Adaptive S
 'Dream_Coil.png':'Dream Coil', 'Drunken_Brawler.png':'Drunken Brawler', 'Dual_Breath.png':'Dual Breath', 'Duel.png':'Duel', 'Earthbind.png':'Earthbind', 'Earthshock.png':'Earthshock', 'Earth_Spike.png':'Earth Spike', 'Earth_Splitter.png':'Earth Splitter', 'Echo_Slam.png':('Echo Slam', "chaos dunk"), 'Echo_Stomp.png':'Echo Stomp',
 'Eclipse.png':'Eclipse', 'Elder_Dragon_Form.png':('Elder Dragon Form', "dragon form"), 'Electric_Vortex.png':'Electric Vortex', 'EMP.png':'EMP', 'Empower.png':'Empower', 'Enchant.png':'Enchant', 'Enchant_Totem.png':'Enchant Totem', 'Enfeeble.png':'Enfeeble', 'Enrage.png':'Enrage', 'Ensnare(2).png':'Ensnare', 'Ensnare.png':'Ensnare',
 'Entangling_Claws.png':'Entangling Claws', 'Epicenter.png':'Epicenter', 'Essence_Flux.png':'Essence Flux', 'Essence_Shift.png':'Essence Shift', 'Ethereal_Jaunt.png':'Ethereal Jaunt', 'Ether_Shock.png':'Ether Shock', 'Exorcism.png':'Exorcism', 'Eyes_in_the_Forest.png':'Eyes in the Forest', 'Eye_of_the_Storm.png':'Eye of the Storm',
-'Fade_Bolt.png':'Fade Bolt', 'False_Promise.png':'False Promise', 'Fatal_Bonds.png':'Fatal Bonds', "Fate's_Edict.png":"Fate's Edict", 'Feast.png':'Feast', 'Feral_Impulse.png':'Feral Impulse', 'Fervor.png':'Fervor', "Fiend's_Grip.png":"Fiend's Grip", 'Fiery_Soul.png':'Fiery Soul', 'Finger_of_Death.png':'Finger of Death', 'Fireball.png':'Fireball',
+'Fade_Bolt.png':'Fade Bolt', 'False_Promise.png':'False Promise', 'Fatal_Bonds.png':'Fatal Bonds', "Fate's_Edict.png":"Fate's Edict", 'Feast.png':'Feast', 'Feral_Impulse.png':'Feral Impulse', 'Fervor.png':'Fervor', "Fiend's_Grip.png":"Fiend's Grip", 'Fiery_Soul.png':'Fiery Soul', 'Finger_of_Death.png':('Finger of Death', "finger"), 'Fireball.png':'Fireball',
 'Fireblast.png':'Fireblast', 'Firefly.png':'Firefly', 'Firesnap_Cookie.png':'Firesnap Cookie', 'Firestorm.png':'Firestorm', 'Fire_Remnant.png':'Fire Remnant', 'Fire_Spirits.png':'Fire Spirits', 'Fissure.png':'Fissure', 'Flak_Cannon.png':'Flak Cannon', 'Flamebreak.png':'Flamebreak', 'Flame_Guard.png':'Flame Guard',
 'Flaming_Lasso.png':'Flaming Lasso', 'Flesh_Golem.png':'Flesh Golem', 'Flesh_Heap.png':'Flesh Heap', 'Flux.png':'Flux', 'Focused_Detonate.png':('Focused Detonate', "detonate"), 'Focus_Fire.png':'Focus Fire', 'Forge_Spirit.png':'Forge Spirit', "Fortune's_End.png":"Fortune's End", 'Freezing_Field.png':'Freezing Field', 'Frostbite.png':'Frostbite',
 'Frost_Arrows.png':'Frost Arrows', 'Frost_Attack.png':'Frost Attack', 'Frost_Blast.png':'Frost Blast', 'Frost_Shield.png':'Frost Shield', 'Fury_Swipes.png':'Fury Swipes', 'Geminate_Attack.png':'Geminate Attack', 'Geomagnetic_Grip.png':'Geomagnetic Grip', 'Ghostship.png':'Ghostship', 'Ghost_Shroud.png':'Ghost Shroud',
@@ -171,7 +173,7 @@ iconquizdict = {'Acid_Spray.png':'Acid Spray', 'Adaptive_Strike.png':'Adaptive S
 'Homing_Missile.png':'Homing Missile', 'Hoof_Stomp.png':'Hoof Stomp', 'Hookshot.png':'Hookshot', 'Howl.png':'Howl', 'Hunter_in_the_Night.png':'Hunter in the Night', 'Hurl_Boulder.png':'Hurl Boulder', 'Icarus_Dive.png':'Icarus Dive', 'Ice_Blast.png':'Ice Blast', 'Ice_Path.png':'Ice Path', 'Ice_Shards.png':'Ice Shards',
 'Ice_Vortex.png':'Ice Vortex', 'Ice_Wall.png':'Ice Wall', 'Ignite.png':'Ignite', 'Illuminate.png':'Illuminate', 'Illusory_Orb.png':'Illusory Orb', 'Impale.png':'Impale', 'Impetus.png':'Impetus', 'Incapacitating_Bite.png':'Incapacitating Bite', 'Infernal_Blade.png':'Infernal Blade', 'Infest.png':'Infest', 'Ink_Swell.png':'Ink Swell',
 'Inner_Beast.png':'Inner Beast', 'Inner_Fire.png':'Inner Fire', 'Insatiable_Hunger.png':'Insatiable Hunger', 'Invoke.png':'Invoke', 'Ion_Shell.png':'Ion Shell', 'Jinada.png':'Jinada', 'Jingu_Mastery.png':'Jingu Mastery', 'Juxtapose.png':'Juxtapose', 'Kinetic_Field.png':'Kinetic Field', 'Kraken_Shell.png':'Kraken Shell',
-'Laguna_Blade.png':'Laguna Blade', 'Laser.png':'Laser', 'Last_Word.png':'Last Word', 'Leap.png':'Leap', 'Leech_Seed.png':'Leech Seed', 'Life_Break.png':'Life Break', 'Life_Drain.png':'Life Drain', 'Lightning_Bolt.png':'Lightning Bolt', 'Lightning_Storm.png':'Lightning Storm', 'Light_Strike_Array.png':'Light Strike Array',
+'Laguna_Blade.png':('Laguna Blade', "laguna"), 'Laser.png':'Laser', 'Last_Word.png':'Last Word', 'Leap.png':'Leap', 'Leech_Seed.png':'Leech Seed', 'Life_Break.png':'Life Break', 'Life_Drain.png':'Life Drain', 'Lightning_Bolt.png':'Lightning Bolt', 'Lightning_Storm.png':'Lightning Storm', 'Light_Strike_Array.png':'Light Strike Array',
 "Lil'_Shredder.png":"Lil' Shredder", 'Liquid_Fire.png':'Liquid Fire', 'Living_Armor.png':'Living Armor', 'Lucent_Beam.png':'Lucent Beam', 'Lucky_Shot.png':'Lucky Shot', 'Lunar_Blessing.png':'Lunar Blessing', 'Macropyre.png':'Macropyre', 'Magic_Missile.png':'Magic Missile', 'Magnetic_Field.png':'Magnetic Field', 'Magnetize.png':'Magnetize',
 'Maledict.png':'Maledict', 'Malefice.png':'Malefice', 'Mana_Break.png':'Mana Break', 'Mana_Burn (2).png':'Mana Burn', 'Mana_Burn.png':'Mana Burn', 'Mana_Drain.png':'Mana Drain', 'Mana_Shield.png':'Mana Shield', 'Mana_Void.png':'Mana Void', 'March_of_the_Machines.png':'March of the Machines', 'Marksmanship.png':'Marksmanship',
 'Mass_Serpent_Ward.png':'Mass Serpent Ward', 'Meat_Hook.png':'Meat Hook', 'Meld.png':'Meld', 'Metamorphosis.png':'Metamorphosis', 'Midnight_Pulse.png':'Midnight Pulse', 'Minefield_Sign.png':'Minefield Sign', 'Mirror_Image.png':'Mirror Image', 'Mischief.png':'Mischief', 'Mist_Coil.png':'Mist Coil', 'Moment_of_Courage.png':'Moment of Courage',
@@ -204,6 +206,64 @@ iconquizdict = {'Acid_Spray.png':'Acid Spray', 'Adaptive_Strike.png':'Adaptive S
 iconquizlen = len(iconquizdict)-1
 iconquizkeys, iconquizvalues = list(iconquizdict.keys()), list(iconquizdict.values())
 
+#The dictionary of item and spell sound effects, some abilities and spells can be named in multiple different ways which are put in tuples, some sound effects can be linked to multiple spells or items so they're put in lists
+audioquizdict = {'Abyssal_Blade.mp3.mpeg': ('Abyssal Blade', "superbasher"), 'Adaptive_Strike.mp3.mpeg': 'Adaptive Strike', 'Aeon_Disk.mp3.mpeg': 'Aeon Disk', 'Aether_Remnant.mpeg': 'Aether Remnant.mpeg', 'Alacrity.mp3.mpeg': 'Alacrity', 'Amplify_Damage.mp3.mpeg': ("Corrosive Haze", 'amplify damage'),
+'Anchor_Smash.mp3.mpeg': 'Anchor Smash', 'Ancient_Seal.mp3.mpeg': 'Ancient Seal', 'Aphotic_Shield.mp3.mpeg': 'Aphotic Shield', 'Arcane_Bolt.mp3.mpeg': 'Arcane Bolt', 'Arcane_Orb.mp3.mpeg': 'Arcane Orb', 'Arctic_Burn.mp3.mpeg': 'Arctic Burn', 'Arc_Lightning.mp3.mpeg': 'Arc Lightning',
+'Arena_of_Blood.mp3.mpeg': 'Arena of Blood', 'Assassinate.mp3.mpeg': 'Assassinate', 'Astral_Imprisonment.mp3.mpeg': 'Astral Imprisonment', 'Avalanche.mp3.mpeg': 'Avalanche', 'Ball_Lightning.mp3.mpeg': 'Ball Lightning', 'Battery_Assault.mp3.mpeg': 'Battery Assault',
+'Battle_Hunger.mp3.mpeg': 'Battle Hunger', 'Battle_Trance.mp3.mpeg': 'Battle Trance', 'Bedlam.mp3.mpeg': 'Bedlam', 'Black_Hole.mp3.mpeg': 'Black Hole', 'Black_King_Bar.mp3.mpeg': 'Black King Bar', 'Blade_Fury.mp3.mpeg': 'Blade Fury', 'Blade_Mail.mp3.mpeg': 'Blade Mail',
+'Blast_Off!.mp3.mpeg': 'Blast Off!', 'Blinding_Light.mp3.mpeg': 'Blinding Light', 'Blink_Dagger.mp3.mpeg': ['Blink Dagger', "Blink", "Flicker"], 'Blink_Strike.mp3.mpeg': 'Blink Strike', 'Bloodlust.mp3.mpeg': 'Bloodlust', 'Bloodrage.mp3.mpeg': 'Bloodrage', 'Blood_Rite.mp3.mpeg': 'Blood Rite',
+'Borrowed_Time.mp3.mpeg': 'Borrowed Time', 'Boundless_Strike.mp3.mpeg': 'Boundless Strike', 'Brain_Sap.mp3.mpeg': 'Brain Sap', 'Bramble_Maze.mp3.mpeg': 'Bramble Maze', 'Breathe_Fire.mp3.mpeg': 'Breathe Fire', 'Burning_Spear.mp3.mpeg': 'Burning Spear', 'Burrow.mp3.mpeg': 'Burrow',
+'Burrowstrike.mp3.mpeg': 'Burrowstrike', 'Call_Down.mp3.mpeg': 'Call Down', 'Call_of_the_Wild_Boar.mp3.mpeg': 'Call of the Wild Boar', 'Call_of_the_Wild_Hawk.mp3.mpeg': 'Call of the Wild Hawk', 'Caustic_Finale.mp3.mpeg': 'Caustic Finale', 'Chain_Frost.mp3.mpeg': 'Chain Frost',
+'Chakram.mp3.mpeg': 'Chakram', 'Chakra_Magic.mp3.mpeg': 'Chakra Magic', 'Chaos_Bolt.mp3.mpeg': 'Chaos Bolt', 'Chaos_Meteor.mp3.mpeg': 'Chaos Meteor', 'Chaotic_Offering.mp3.mpeg': 'Chaotic Offering', 'Charge_of_Darkness.mp3.mpeg': 'Charge of Darkness', 'Cheese.mp3.mpeg': 'Cheese',
+'Chemical_Rage.mp3.mpeg': 'Chemical Rage', 'Chilling_Touch.mp3.mpeg': 'Chilling Touch', 'Chronosphere.mp3.mpeg': 'Chronosphere', 'Cold_Embrace.mp3.mpeg': 'Cold Embrace', 'Cold_Feet.mp3.mpeg': 'Cold Feet', 'Cold_Snap.mp3.mpeg': 'Cold Snap', 'Concussive_Shot.mp3.mpeg': 'Concussive Shot',
+'Counter_Helix.mp3.mpeg': 'Counter Helix', 'Coup_de_Grace.mp3.mpeg': 'Coup de Grace', 'Crimson_Guard.mp3.mpeg': 'Crimson Guard', 'Crippling_Fear.mp3.mpeg': 'Crippling Fear', 'Crypt_Swarm.mp3.mpeg': 'Crypt Swarm', 'Crystal_Nova.mp3.mpeg': 'Crystal Nova', 'Culling_Blade.mp3.mpeg': 'Culling Blade',
+'Dagon.mp3.mpeg': 'Dagon', 'Darkness.mp3.mpeg': 'Darkness', 'Dark_Pact.mp3.mpeg': 'Dark Pact', 'Dark_Rift.mp3.mpeg': 'Dark Rift', 'Deafening_Blast.mp3.mpeg': 'Deafening Blast', 'Death_Pact.mp3.mpeg': 'Death Pact', 'Death_Pulse.mp3.mpeg': 'Death Pulse', 'Death_Ward.mp3.mpeg': 'Death Ward',
+'Decay.mp3.mpeg': 'Decay', 'Demonic_Conversion.mp3.mpeg': 'Demonic Conversion', 'Demonic_Purge.mp3.mpeg': 'Demonic Purge', 'Devour.mp3.mpeg': 'Devour', 'Diffusal_Blade.mp3.mpeg': ('Diffusal Blade', "diffusal"), 'Dismember.mp3.mpeg': 'Dismember', 'Disruption.mp3.mpeg': 'Disruption', 'Doom.mp3.mpeg': 'Doom',
+'Doppelganger.mp3.mpeg': 'Doppelganger', 'Double_Edge.mp3.mpeg': 'Double Edge', 'Dragon_Slave.mp3.mpeg': 'Dragon Slave', 'Dragon_Tail.mp3.mpeg': 'Dragon Tail', 'Dream_Coil.mp3.mpeg': 'Dream Coil', 'Drum_of_Endurance.mp3.mpeg': 'Drum of Endurance', 'Drunken_Haze.mp3.mpeg': 'Drunken Haze',
+'Dual_Breath.mp3.mpeg': 'Dual Breath', 'Duel.mp3.mpeg': 'Duel', 'Earthbind.mp3.mpeg': 'Earthbind', 'Earthshock.mp3.mpeg': 'Earthshock', 'Earth_Spike.mp3.mpeg': 'Earth Spike', 'Earth_Splitter.mp3.mpeg': 'Earth Splitter', 'Echo_Slam.mp3.mpeg': ('Echo Slam', "chaos dunk"), 'Echo_Stomp.mp3.mpeg': 'Echo Stomp',
+'Elder_Dragon_Form.mp3.mpeg': 'Elder Dragon Form', 'Electric_Vortex.mp3.mpeg': 'Electric Vortex', 'EMP.mp3.mpeg': 'EMP', 'Empower.mp3.mpeg': 'Empower', 'Enchant.mp3.mpeg': 'Enchant', 'Enchant_Totem.mp3.mpeg': 'Enchant Totem', 'Enrage.mp3.mpeg': 'Enrage', 'Ensnare.mp3.mpeg': 'Ensnare',
+'Epicenter.mp3.mpeg': 'Epicenter', 'Ethereal_Blade.mp3.mpeg': ('Ethereal Blade', "eblade", "ethereal"), 'Ethereal_Jaunt.mp3.mpeg': 'Ethereal Jaunt', 'Ether_Shock.mp3.mpeg': 'Ether Shock', "Eul's_Scepter_of_Divinity.mp3.mpeg": "Eul's Scepter of Divinity", 'Exorcism.mp3.mpeg': 'Exorcism',
+'Eye_of_the_Storm.mp3.mpeg': 'Eye of the Storm', 'Fade_Bolt.mp3.mpeg': 'Fade Bolt', 'Faerie_Fire.mp3.mpeg': 'Faerie Fire', 'False_Promise.mp3.mpeg': 'False Promise', 'Fatal_Bonds.mp3.mpeg': 'Fatal Bonds', "Fate's_Edict.mp3.mpeg": "Fate's Edict", 'Finger_of_Death.mp3.mpeg': ('Finger of Death', "finger"),
+'Fireblast.mp3.mpeg': 'Fireblast', 'Firestorm.mp3.mpeg': 'Firestorm', 'Fissure.mp3.mpeg': 'Fissure', 'Flak_Cannon.mp3.mpeg': 'Flak Cannon', 'Flamebreak.mp3.mpeg': 'Flamebreak', 'Flame_Guard.mp3.mpeg': 'Flame Guard', 'Flaming_Lasso.mp3.mpeg': 'Flaming Lasso', 'Flesh_Golem.mp3.mpeg': 'Flesh Golem',
+'Flux.mp3.mpeg': 'Flux', 'Focus_Fire.mp3.mpeg': 'Focus Fire', 'Force_Staff.mp3.mpeg': 'Force Staff', 'Forge_Spirit.mp3.mpeg': 'Forge Spirit', "Fortune's_End.mp3.mpeg": "Fortune's End", 'Frostbite.mp3.mpeg': 'Frostbite', 'Frost_Blast.mp3.mpeg': 'Frost Blast', 'Ghost_Ship.mp3.mpeg': 'Ghost Ship',
+'Ghost_Shroud.mp3.mpeg': 'Ghost Shroud', 'Glaives_of_Wisdom.mp3.mpeg': 'Glaives of Wisdom', 'Glimmer_Cape.mp3.mpeg': ('Glimmer Cape', "glimmer"), 'Glimpse.mp3.mpeg': 'Glimpse', 'Global_Silence.mp3.mpeg': 'Global Silence', "God's_Rebuke.mpeg": "God's Rebuke.mpeg", "God's_Strength.mp3.mpeg": "God's Strength",
+'Grave_Chill.mp3.mpeg': 'Grave Chill', 'Greater_Bash.mp3.mpeg': 'Greater Bash', 'Guardian_Angel.mp3.mpeg': 'Guardian Angel', 'Guardian_Greaves.mp3.mpeg': ('Guardian Greaves', "greaves"), 'Gush.mp3.mpeg': 'Gush', 'Gust.mpeg': 'Gust.mpeg', 'Hand_of_Midas.mp3.mpeg': ('Hand of Midas', "midas"), 'Haunt.mp3.mpeg': 'Haunt',
+'Heat-Seeking_Missile.mp3.mpeg': 'Heat-Seeking Missile', "Heaven's_Halberd.mp3.mpeg": ("Heaven's Halberd", "halberd"), 'Hex_(Lion).mp3.mpeg': 'Hex', 'Hex_(Shadow_Shaman).mp3.mpeg': 'Hex', 'Holy_Persuasion.mp3.mpeg': 'Holy Persuasion', 'Hoof_Stomp.mp3.mpeg': 'Hoof Stomp', 'Hookshot.mp3.mpeg': 'Hookshot',
+'Howl.mp3.mpeg': 'Howl', 'Hurricane_Pike.mp3.mpeg': 'Hurricane Pike', 'Icarus_Dive.mp3.mpeg': 'Icarus Dive', 'Ice_Armor.mp3.mpeg': 'Ice Armor', 'Ice_Blast.mp3.mpeg': 'Ice Blast', 'Ice_Path.mp3.mpeg': 'Ice Path', 'Ice_Shards.mp3.mpeg': 'Ice Shards', 'Ignite.mp3.mpeg': 'Ignite',
+'Illuminate.mp3.mpeg': 'Illuminate', 'Illusory_Orb.mp3.mpeg': 'Illusory Orb', 'Impale.mp3.mpeg': 'Impale', 'Impetus.mp3.mpeg': 'Impetus', 'Infest.mp3.mpeg': 'Infest', 'Infused_Raindrop.mp3.mpeg': 'Infused Raindrop', 'Ink_Swell.mp3.mpeg': 'Ink Swell', 'Insatiable_Hunger.mp3.mpeg': 'Insatiable Hunger',
+'Invoke.mp3.mpeg': 'Invoke', 'Ion_Shell.mp3.mpeg': 'Ion Shell', 'Iron_Talon.mp3.mpeg': 'Iron Talon', 'Kinetic_Field.mp3.mpeg': 'Kinetic Field', 'Laguna_Blade.mp3.mpeg': ('Laguna Blade', "laguna"), 'Land_Mines.mp3.mpeg': 'Land Mines', 'Laser.mp3.mpeg': 'Laser', 'Last_Word.mp3.mpeg': 'Last Word', 'Leap.mp3.mpeg': 'Leap',
+'Leech_Seed.mp3.mpeg': 'Leech Seed', 'Life_Break.mp3.mpeg': 'Life Break', 'Life_Drain.mp3.mpeg': 'Life Drain', 'Lightning_Bolt.mp3.mpeg': 'Lightning Bolt', 'Lightning_Storm.mp3.mpeg': 'Lightning Storm', 'Light_Strike_Array.mp3.mpeg': 'Light Strike Array', "Lil'_Shredder.mp3.mpeg": "Lil' Shredder",
+'Liquid_Fire.mp3.mpeg': 'Liquid Fire', 'Living_Armor.mp3.mpeg': 'Living Armor', 'Lotus_Orb.mp3.mpeg': 'Lotus Orb', 'Lucent_Beam.mp3.mpeg': 'Lucent Beam', 'Macropyre.mp3.mpeg': 'Macropyre', 'Magic_Missile.mp3.mpeg': 'Magic Missile', 'Magnetic_Field.mp3.mpeg': 'Magnetic Field',
+'Magnetize.mp3.mpeg': 'Magnetize', 'Maledict.mp3.mpeg': 'Maledict', 'Malefice.mp3.mpeg': 'Malefice', 'Mana_Break.mp3.mpeg': 'Mana Break', 'Mana_Burn.mp3.mpeg': 'Mana Burn', 'Mana_Drain.mp3.mpeg': 'Mana Drain', 'Mana_Void.mp3.mpeg': 'Mana Void', 'Manta_Style.mp3.mpeg': ('Manta Style', "manta"),
+'March_of_the_Machines.mp3.mpeg': 'March of the Machines', 'Mask_of_Madness.mp3.mpeg': 'Mask of Madness', 'Mass_Serpent_Ward.mp3.mpeg': 'Mass Serpent Ward', 'Meat_Hook.mp3.mpeg': 'Meat Hook', 'Medallion_of_Courage.mp3.mpeg': ('Medallion of Courage', "medallion"), 'Meld.mp3.mpeg': 'Meld',
+'Meteor_Hammer.mp3.mpeg': ['Meteor Hammer', "meme hammer", "Fallen Sky"], 'Mirror_Image.mp3.mpeg': 'Mirror Image', 'Mist_Coil.mp3.mpeg': 'Mist Coil', 'Moonlight_Shadow.mp3.mpeg': 'Moonlight Shadow', 'Moon_Shard.mp3.mpeg': 'Moon Shard', 'Mystic_Flare.mp3.mpeg': 'Mystic Flare', 'Mystic_Snake.mp3.mpeg': 'Mystic Snake',
+"Nature's_Call.mp3.mpeg": "Nature's Call", 'Necronomicon.mp3.mpeg': 'Necronomicon', 'Nethertoxin.mp3.mpeg': 'Nethertoxin', 'Nether_Blast.mp3.mpeg': 'Nether Blast', 'Nether_Strike.mp3.mpeg': 'Nether Strike', 'Nether_Swap.mp3.mpeg': 'Nether Swap', 'Nether_Ward.mp3.mpeg': 'Nether Ward',
+'Nightmare.mp3.mpeg': 'Nightmare', 'Nullifier.mp3.mpeg': 'Nullifier', 'Omnislash.mp3.mpeg': 'Omnislash', 'Open_Wounds.mp3.mpeg': 'Open Wounds', 'Orchid_Malevolence.mp3.mpeg': ('Orchid Malevolence', "orchid"), 'Overgrowth.mp3.mpeg': 'Overgrowth', 'Overpower.mp3.mpeg': 'Overpower',
+'Overwhelming_Odds.mp3.mpeg': 'Overwhelming Odds', 'Paralyzing_Cask.mp3.mpeg': 'Paralyzing Cask', 'Penitence.mp3.mpeg': 'Penitence', 'Phantasm.mp3.mpeg': 'Phantasm', 'Phase_Shift.mp3.mpeg': 'Phase Shift', 'Pit_of_Malice.mp3.mpeg': 'Pit of Malice', 'Plague_Ward.mp3.mpeg': 'Plague Ward',
+'Plasma_Field.mp3.mpeg': 'Plasma Field', 'Poison_Nova.mp3.mpeg': 'Poison Nova', 'Poison_Touch.mp3.mpeg': 'Poison Touch', 'Poof.mp3.mpeg': 'Poof', 'Pounce.mp3.mpeg': 'Pounce', 'Powershot.mp3.mpeg': 'Powershot', 'Power_Cogs.mp3.mpeg': 'Power Cogs', 'Press_the_Attack.mp3.mpeg': 'Press the Attack',
+'Primal_Roar.mp3.mpeg': 'Primal Roar', 'Primal_Split.mp3.mpeg': 'Primal Split', 'Primal_Spring.mp3.mpeg': 'Primal Spring', 'Psionic_Trap.mp3.mpeg': 'Psionic Trap', 'Psi_Blades.mp3.mpeg': 'Psi Blades', 'Purification.mp3.mpeg': 'Purification', 'Purifying_Flames.mp3.mpeg': 'Purifying Flames',
+'Quill_Spray.mp3.mpeg': 'Quill Spray', 'Rage.mp3.mpeg': 'Rage', 'Ravage.mp3.mpeg': 'Ravage', 'Reality_Rift.mp3.mpeg': 'Reality Rift', "Reaper's_Scythe.mp3.mpeg": "Reaper's Scythe", 'Rearm.mp3.mpeg': 'Rearm', 'Refraction.mp3.mpeg': 'Refraction', 'Refresher_Orb.mp3.mpeg': ['Refresher Orb', "refresher", "Refresher Shard"],
+'Relocate.mp3.mpeg': 'Relocate', 'Remote_Mines.mp3.mpeg': 'Remote Mines', 'Requiem_of_Souls.mp3.mpeg': 'Requiem of Souls', 'Return_Astral_Spirit.mp3.mpeg': 'Return Astral Spirit', 'Reverse_Polarity.mp3.mpeg': 'Reverse Polarity', 'Rip_Tide.mp3.mpeg': 'Rip Tide', 'Rocket_Barrage.mp3.mpeg': 'Rocket Barrage',
+'Rocket_Flare.mp3.mpeg': 'Rocket Flare', 'Rod_of_Atos.mp3.mpeg': ('Rod of Atos', "atos"), 'Rolling_Boulder.mp3.mpeg': 'Rolling Boulder', 'Rune_Forge.mp3.mpeg': 'Rune Forge', 'Rupture.mp3.mpeg': 'Rupture', 'Sacred_Arrow.mp3.mpeg': 'Sacred Arrow', 'Sacrifice.mp3.mpeg': 'Sacrifice', 'Sand_Storm.mp3.mpeg': 'Sand Storm',
+"Sanity's_Eclipse.mp3.mpeg": "Sanity's Eclipse", 'Satanic.mp3.mpeg': 'Satanic', 'Savage_Roar.mp3.mpeg': 'Savage Roar', 'Scatterblast.mp3.mpeg': 'Scatterblast', 'Scream_of_Pain.mp3.mpeg': 'Scream of Pain', 'Searing_Arrows.mp3.mpeg': 'Searing Arrows', 'Searing_Chains.mp3.mpeg': 'Searing Chains',
+'Shackles.mp3.mpeg': 'Shackles', 'Shackleshot.mp3.mpeg': 'Shackleshot', 'Shadowraze.mp3.mpeg': 'Shadowraze', 'Shadow_Poison.mp3.mpeg': 'Shadow Poison', 'Shadow_Realm.mp3.mpeg': 'Shadow Realm', 'Shadow_Strike.mp3.mpeg': 'Shadow Strike', 'Shadow_Walk.mp3.mpeg': 'Shadow Walk',
+'Shadow_Wave.mp3.mpeg': 'Shadow Wave', 'Shallow_Grave.mp3.mpeg': 'Shallow Grave', 'Shapeshift.mp3.mpeg': 'Shapeshift', 'Shield_Crash.mp3.mpeg': 'Shield Crash', "Shiva's_Guard.mp3.mpeg": ("Shiva's Guard", "shiva"), 'Shockwave.mp3.mpeg': 'Shockwave', 'Shrapnel.mp3.mpeg': 'Shrapnel',
+'Shuriken_Toss.mp3.mpeg': 'Shuriken Toss', 'Silence.mp3.mpeg': 'Silence', 'Silver_Edge.mp3.mpeg': 'Silver Edge', 'Skeleton_Walk.mp3.mpeg': 'Skeleton Walk', 'Skewer.mp3.mpeg': 'Skewer', 'Slithereen_Crush.mp3.mpeg': 'Slithereen Crush', 'Smoke_Screen.mp3.mpeg': 'Smoke Screen', 'Snowball.mp3.mpeg': 'Snowball',
+'Solar_Crest.mp3.mpeg': 'Solar Crest', 'Song_of_the_Siren.mp3.mpeg': 'Song of the Siren', 'Sonic_Wave.mp3.mpeg': 'Sonic Wave', 'Soulbind.mp3.mpeg': 'Soulbind', 'Soul_Assumption.mp3.mpeg': 'Soul Assumption', 'Soul_Catcher.mp3.mpeg': 'Soul Catcher', 'Soul_Rip.mp3.mpeg': 'Soul Rip',
+'Spawn_Spiderlings.mp3.mpeg': 'Spawn Spiderlings', 'Spectral_Dagger.mp3.mpeg': 'Spectral Dagger', 'Spell_Shield.mp3.mpeg': 'Spell Shield', 'Spell_Steal.mp3.mpeg': 'Spell Steal', 'Spiked_Carapace.mp3.mpeg': ('Spiked Carapace', "carapace"), 'Spin_Web.mp3.mpeg': 'Spin Web', 'Spirits.mp3.mpeg': 'Spirits',
+'Spirit_Lance.mp3.mpeg': 'Spirit Lance', 'Spirit_Siphon.mp3.mpeg': 'Spirit Siphon', 'Splinter_Blast.mp3.mpeg': 'Splinter Blast', 'Split_Earth.mp3.mpeg': 'Split Earth', 'Sprint.mp3.mpeg': 'Sprint', 'Sprout.mp3.mpeg': 'Sprout', 'Stampede.mp3.mpeg': 'Stampede', 'Starstorm.mp3.mpeg': 'Starstorm',
+'Stasis_Trap.mp3.mpeg': 'Stasis Trap', 'Static_Link.mp3.mpeg': 'Static Link', 'Static_Remnant.mp3.mpeg': 'Static Remnant', 'Stifling_Dagger.mp3.mpeg': 'Stifling Dagger', 'Stone_Gaze.mp3.mpeg': 'Stone Gaze', 'Storm_Hammer.mp3.mpeg': ('Storm Hammer', "storm bolt"), 'Strafe.mp3.mpeg': 'Strafe',
+'Stroke_of_Fate.mp3.mpeg': 'Stroke of Fate', 'Summon_Familiars.mp3.mpeg': 'Summon Familiars', 'Summon_Spirit_Bear.mp3.mpeg': 'Summon Spirit Bear', 'Summon_Wolves.mp3.mpeg': 'Summon Wolves', 'Sunder.mp3.mpeg': 'Sunder', 'Sun_Ray.mp3.mpeg': 'Sun Ray', 'Sun_Strike.mp3.mpeg': 'Sun Strike',
+'Supernova.mp3.mpeg': 'Supernova', 'Surge.mp3.mpeg': 'Surge', 'Swashbuckle.mp3.mpeg': 'Swashbuckle', 'Telekinesis.mp3.mpeg': 'Telekinesis', 'Teleportation.mp3.mpeg': 'Teleportation', 'Tempest_Double.mp3.mpeg': 'Tempest Double', 'Terrorize.mp3.mpeg': 'Terrorize', 'Test_of_Faith.mp3.mpeg': 'Test of Faith',
+'Tether.mp3.mpeg': 'Tether', 'The_Swarm.mp3.mpeg': 'The Swarm', "Thundergod's_Wrath.mp3.mpeg": "Thundergod's Wrath", 'Thunder_Clap.mp3.mpeg': 'Thunder Clap', 'Thunder_Strike.mp3.mpeg': 'Thunder Strike', 'Tidebringer.mp3.mpeg': 'Tidebringer', 'Timber_Chain.mp3.mpeg': 'Timber Chain',
+'Time_Dilation.mp3.mpeg': 'Time Dilation', 'Time_Lapse.mp3.mpeg': 'Time Lapse', 'Time_Walk.mp3.mpeg': 'Time Walk', 'Tornado.mp3.mpeg': 'Tornado', 'Torrent.mp3.mpeg': 'Torrent', 'Toss.mp3.mpeg': 'Toss', 'Track.mp3.mpeg': 'Track', 'Tree_Throw.mp3.mpeg': 'Tree Throw',
+'Tricks_of_the_Trade.mp3.mpeg': 'Tricks of the Trade', 'True_Form.mp3.mpeg': 'True Form', 'Vacuum.mp3.mpeg': 'Vacuum', 'Veil_of_Discord.mp3.mpeg': ('Veil of Discord', "veil"), 'Vendetta.mp3.mpeg': 'Vendetta', 'Venomous_Gale.mp3.mpeg': 'Venomous Gale', 'Viper_Strike.mp3.mpeg': 'Viper Strike',
+'Viscous_Nasal_Goo.mp3.mpeg': ('Viscous Nasal Goo', "nasal goo"), 'Void.mp3.mpeg': 'Void', 'Wall_of_Replica.mp3.mpeg': 'Wall of Replica', 'Walrus_Punch.mp3.mpeg': 'Walrus Punch', 'Waning_Rift.mp3.mpeg': 'Waning Rift', 'Warcry.mp3.mpeg': 'Warcry', 'Waveform.mp3.mpeg': 'Waveform',
+'Wave_of_Terror.mp3.mpeg': 'Wave of Terror', 'Whirling_Axes_(Melee).mp3.mpeg': 'Whirling Axes', 'Whirling_Axes_(Ranged).mp3.mpeg': 'Whirling Axes', 'Whirling_Death.mp3.mpeg': 'Whirling Death', 'Wild_Axes.mp3.mpeg': 'Wild Axes', 'Windrun.mp3.mpeg': 'Windrun',
+"Winter's_Curse.mp3.mpeg": "Winter's Curse", 'Wraithfire_Blast.mp3.mpeg': 'Wraithfire Blast', 'Wrath_of_Nature.mp3.mpeg': 'Wrath of Nature', "Wukong's_Command.mp3.mpeg": "Wukong's Command", 'X_Marks_the_Spot.mp3.mpeg': 'X Marks the Spot'}
+audioquizlen = len(audioquizdict)-1
+audioquizkeys, audioquizvalues = list(audioquizdict.keys()), list(audioquizdict.values())
+
 #lists of Replies in case of right, wrong or no/late answers
 rightansw = ["That is correct!", "That's correct.", "Correct answer!", "You're right!", "Your answer is correct!", "Nice one.", "That answer is correct!"]
 wrongansw = ["That's not quite right.", "That's not right...", "Your answer isn't correct.", "You're mistaken.", "Not correct...", "Not quite it...", "From the Ghastly Eyrie I can see to the ends of the world, and from this vantage point I declare with utter certainty that your answer is wrong." , "YOU GET NOTHING, GOOD DAY SIR!"]
@@ -218,29 +278,33 @@ def save_json(jsonfile, name):	#savefunc for jsonfiles
 	with open(jsonfile, "w") as fp:
 		json.dump(name, fp)
 
+def check_user(user):		#checks if user is included in users.json and adds user id to the dict if not
+	users = open_json("users.json")
+	id = str(user.id)
+	if id not in users.keys():
+		users[id] = {"gold":10, "items":"[]", "cheese":0}
+		save_json("users.json", users)
+	else:
+		pass
+
 def add_gold(user: discord.User, newgold: int):		#add gold to users
 	users = open_json("users.json")
 	id = str(user.id)
-	if id not in users.keys():			#if user not already in users.json add user
-		users[id] = {"gold":10, "items":"[]", "cheese":0}
+	check_user(user)
+	if 2200 in ast.literal_eval(users[id]["items"]):
+		users[id]["gold"] = users[id]["gold"] + round(newgold*1.25)
+		save_json("users.json", users)
+		return round(newgold*1.25)
+	else:
 		users[id]["gold"] = users[id]["gold"] + round(newgold)
 		save_json("users.json", users)
 		return round(newgold)
-	else:
-		if 2200 in ast.literal_eval(users[id]["items"]):
-			users[id]["gold"] = users[id]["gold"] + round(newgold*1.25)
-			save_json("users.json", users)
-			return round(newgold*1.25)
-		else:
-			users[id]["gold"] = users[id]["gold"] + round(newgold)
-			save_json("users.json", users)
-			return round(newgold)
 
 def pseudorandomizer(server, length, listkey: str):		#pseudorandomizer used in par with the rngfix.json file to avoid repeating numbers(questions)
 	rng = open_json("rngfix.json")
 	serv_id = str(server.id)
 	if serv_id not in rng.keys():			#add channel to rngfix.json if not already in
-		rng[serv_id] = {"questnumbers":"[]", "shopkeepnumbers":"[]", "iconquiznumbers":"[]", "vacuumcd":16}
+		rng[serv_id] = {"questnumbers":"[]", "shopkeepnumbers":"[]", "iconquiznumbers":"[]", "audioquiznumbers":"[]", "vacuumcd":16}
 		save_json("rngfix.json", rng)
 	numlist = ast.literal_eval(rng[serv_id][listkey])			#convert list string to list
 	if len(numlist) > round(length*5/6):			#if amount of numbers surpass 5/6ths of the total amount delete a chunk of the numbers at the start
@@ -349,6 +413,7 @@ class Quizes(commands.Cog):
 	@commands.cooldown(1, 7, commands.BucketType.user)
 	async def quiz(self, ctx):
 		server, channel, author = ctx.guild, ctx.channel, ctx.author		#the server, channel and author of the command activator
+		check_user(author)
 		questn = pseudorandomizer(server, questlen, "questnumbers")			#Random number to give a random question
 		correctansw = ""				#Find the correct answer to be displayed incase user gets it wrong
 		if type(questvalues[questn]) == str:
@@ -382,6 +447,7 @@ class Quizes(commands.Cog):
 	@commands.cooldown(1, 50, commands.BucketType.user)
 	async def iconquiz(self, ctx):
 		server, channel, author = ctx.guild, ctx.channel, ctx.author	#the server, channel and author of the command activator
+		check_user(author)
 		lives = aegis(author, 3)
 		accumulated_g = 0
 		ncorrectansws = 0
@@ -427,6 +493,7 @@ class Quizes(commands.Cog):
 	@commands.cooldown(1, 50, commands.BucketType.user)
 	async def shopquiz(self, ctx):
 		server, channel, author = ctx.guild, ctx.channel, ctx.author		#get users server, channel and author
+		check_user(author)
 		accumulated_g = 0			#gold that will be given to the user at the end
 		lives = aegis(author, 3)		#tries they have for the shopkeeperquiz
 		ncorrectansws = 0			#number of items they completed
@@ -512,10 +579,73 @@ class Quizes(commands.Cog):
 							lives -= 1
 							await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
 
+	@commands.command(brief = "Plays DotA2 sound effects to recognize.")
+	@commands.cooldown(1, 50, commands.BucketType.user)
+	async def audioquiz(self, ctx):
+		server, channel, author = ctx.guild, ctx.channel, ctx.author		#get users server, channel and author
+		check_user(author)
+		timeout = time.time() + set_time(author, 37)						#timeout set
+		accumulated_g = 0													#gold that will be given to the user at the end
+		ncorrectansws = 0													#number of sounds they answered
+		if author.voice is None:								#if user not in a vc
+			await ctx.send("You must be in a visible voice channel to use this command.")
+			self.audioquiz.reset_cooldown(ctx)
+		else:
+			voicechannel = await author.voice.channel.connect()
+			await ctx.send(f"""You have base ``{set_time(author, 37)}`` seconds for the audioquiz each correct answer grants you 3 more seconds, answer which **item** or **spell** makes the played sound effect, don't forget to type in **skip** to a sounds entirely to replay the sound effect.""")
+			time.sleep(3.7)
+			while True:
+				if time.time() > timeout:			#stop the quiz, add accumulated gold to user.
+					g = add_gold(author, ncorrectansws*(accumulated_g+(2*ncorrectansws)-2))		#((2a+d(n-1))/2)n a = 0 d = 4  n = ncorrectanswsers
+					await ctx.send(f"**{author.display_name}** you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold during the audioquiz.")
+					await ctx.voice_client.disconnect()
+					break
+				time.sleep(0.3)
+				audion = pseudorandomizer(server, audioquizlen, "audioquiznumbers")		#Random number to give a random audioion
+				correctansw = ""						#find correct answer to display later
+				if type(audioquizvalues[audion]) == str:
+					correctansw = audioquizvalues[audion]
+				elif type(audioquizvalues[audion]) == tuple:
+					correctansw = audioquizvalues[audion][0]
+				else:
+					correctansw = random.choice([z for z in audioquizvalues[audion] if z[0].isupper()])
+				duration = round(MP3(f".\soundquizaudio\{audioquizkeys[audion]}").info.length+3)   #duration of the audiofile in seconds
+				source = await discord.FFmpegOpusAudio.from_probe(f".\soundquizaudio\{audioquizkeys[audion]}")	#convert audio to opus
+				ctx.voice_client.stop()			#stop audio to make sure next sound can play
+				ctx.voice_client.play(source)
+				def check(m):
+					return m.channel == channel and m.author == author		#checks if the reply came from the same person in the same channel
+				try:					#vvvv calc_time() takes strings as arguments so duration is converted to a string by multiplying "a"
+					msg = await self.bot.wait_for("message", check=check, timeout=set_time(author, calc_time("a"*7*duration, audioquizvalues[audion])))
+				except asyncio.TimeoutError:			#If too late
+					await channel.send(f"**{random.choice(lateansw)}**, The correct answer was ``{correctansw}``.")
+					accumulated_g -= 10
+				else:
+					if strip_str(msg.content) == "skip":		#if user wants to move onto the next audioion
+						accumulated_g -= 4
+						if type(audioquizvalues[audion]) == str or type(audioquizvalues[audion]) == tuple:
+							await channel.send(f"The correct answer was ``{correctansw}``.")
+						else:
+							await channel.send(f"One of the possible answers was ``{correctansw}``.")
+					elif strip_str(msg.content) == "stop" or strip_str(msg.content) == "stfu":		#if user stops the quiz
+						timeout = 35
+					elif compare_strings(author, msg.content, audioquizvalues[audion])[1] and strip_str(msg.content) != "skip" and strip_str(msg.content) != "stop" and strip_str(msg.content) != "stfu":	#If there is one correct answer
+						await ctx.send(f"**{random.choice(rightansw)}**")
+						timeout += 3.2							#add time before timeout for every correct answer
+						accumulated_g += 14
+						ncorrectansws += 1
+					else:
+						accumulated_g -= 4
+						if type(audioquizvalues[audion]) == list:
+							await channel.send(f"**{random.choice(wrongansw)}** One of the possible answers was ``{correctansw}``")
+						else:
+							await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``.")
+
 	@commands.command(brief = "Rapid questions that give more gold but with a risk.")
 	@commands.cooldown(1, 52, commands.BucketType.channel)
 	async def blitz(self, ctx):
 		server, channel, author = ctx.guild, ctx.channel, ctx.author
+		check_user(author)
 		timeout = time.time() + set_time(author, 50)		#full time for blitz round
 		accumulated_g = 0
 		ncorrectansws = 0
@@ -605,19 +735,19 @@ class Quizes(commands.Cog):
 					questionsasked = 0
 					questionsanswered1 = 0
 					questionsanswered2 = 0
-					await ctx.send("The opponent has accepted the duel, ``17`` questions will be asked and the one to get the most amount of correct answers wins!")
+					await ctx.send("The opponent has accepted the duel, ``15`` questions will be asked and the one to get the most amount of correct answers wins!")
 					time.sleep(3.25)
 					while True:
 						time.sleep(0.75)
-						if questionsasked == 17:
+						if questionsasked == 15:
 							if questionsanswered1 > questionsanswered2:
 								winner = author
 								loser = opponent
 							else:
 								winner = opponent
 								loser = author
-							g_win = add_gold(winner, (gold - 200))
-							g_lose = add_gold(loser, -gold)
+							g_win = add_gold(winner, (wager - 200))
+							g_lose = add_gold(loser, -wager)
 							await ctx.send(f"The winner is {winner.display_name}! {winner.display_name} you won ``{g_win}`` gold and {loser.display_name} lost ``{g_lose}``...")
 							break
 
@@ -644,7 +774,7 @@ class Quizes(commands.Cog):
 							await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``")
 						else:
 							if compare_strings(msg.author, msg.content, questvalues[questn])[1]:		#If there is one correct answer
-								await channel.send(f"**{random.choice(rightansw)}**.")
+								await channel.send(f"**{random.choice(rightansw)}**")
 								if msg.author == author:		#give a point for the right answer
 									questionsanswered1 += 1
 								elif msg.author == opponent:
@@ -653,7 +783,7 @@ class Quizes(commands.Cog):
 								if type(questvalues[questn]) == list:
 									await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
 								else:
-									channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
+									await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
 								if msg.author == author:			#take away a point for a wrong answer
 									questionsanswered1 -= 1
 								elif msg.author == opponent:
@@ -667,6 +797,7 @@ class Quizes(commands.Cog):
 	async def endless(self, ctx):
 		users = open_json("users.json")
 		server, channel, author = ctx.guild, ctx.channel, ctx.author		#the server, channel and author of the command activator
+		check_user(author)
 		try:
 			if 4200 in ast.literal_eval(users[str(author.id)]["items"]):
 				accumulated_g = 0		#accumulated gold during the quiz
@@ -890,6 +1021,11 @@ class Quizes(commands.Cog):
 		elif isinstance(error, commands.BadArgument):
 			await ctx.send("That user doesn't exist or isn't in this server, try duelling someone else.")
 			self.duel.reset_cooldown(ctx)
+
+	@audioquiz.error
+	async def audioquizerror(self, ctx, error):
+		if isinstance(error, commands.CommandOnCooldown):
+			await ctx.send("**Audioquiz** is currently on cooldown. You can purchase an Octarine Core to decrease command cooldowns.")
 
 	async def cog_command_error(self, ctx, error):		#Errors to be ignored
 		if isinstance(error, (commands.CommandOnCooldown, commands.MissingRequiredArgument, commands.BadArgument)):
