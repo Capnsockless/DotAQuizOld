@@ -14,7 +14,7 @@ def strip_str(text):        #function to remove punctuations spaces from string 
             text2 = text2 + char
     return text2.lower().replace("the", "")
 
-async def find_channel(guild):
+async def find_channel(guild):      #find the first usable channel for intro message
     for chnnl in guild.text_channels:
         if not chnnl.permissions_for(guild.me).send_messages:
             continue
@@ -27,8 +27,9 @@ command_dinfos = {"quiz":"A single question which gives 14-18 gold with 22 secon
 "endless":"""Endlessly sends questions, item icons and ability icons randomly, you are given 5 lives. You're given 14 seconds to type in each answer or item. Gives bonus gold according to the amount of current correct answers. You can type in "skip" to skip a question and "stop" to stop the quiz entirely any time. **Aghanim's Scepter is required to use this command**""",
 "iconquiz":"""Endlessly sends DotA2 ability icons that must be named, you are given 3 lives, you earn more gold the more icons you name correctly. You type "skip" to jump to the next icon to lose less hp and type stop to "stop" the quiz entirely.""",
 "duel":"Usage: 322 duel @User <gold amount> | Both duellers must have enough gold to start a duel. After a short delay, sends 15 questions(one by one) which can be answered by both duel participants, first to answer gets +1 point, if the first answer to be sent is incorrect the challenger will lose 1 point. After all 15 questions are answered the winner will get 200 less gold than the wager while the loser loses the full amount of gold. Minimum wager is 300 gold while the maximum is 1000 unless the initiator has a Pirate Hat.", "audioquiz":"""You must be in a accesible voice channel to use this command. Plays sound effects from the game and must be answered in the chat by typing in the name of the item or spell that makes the sound. You can use "skip" to skip a sound or "stop" to disconnect the bot entirely. Each correct answer gives additional 3.2 seconds and every next answer gives more gold.""",
+"freeforall":"Asks 25(35 if initiator has a Necronomicon) questions in a channel which anyone can answer. The prize pool increases exponentially according to how many users participated by giving at least one correct answer and how many questions were answered correctly in total. The prize pool is then distributed among the top 5 players as 60%, 20%, 10%, 5%, 5% of the total prize pool.",
 "buy":"Buy one of the items from the store to improve some stats for the quiz commands.", "sell":"Sell an item you already own for half its price.", "store":"Check available items, their prices and what they do.", "inventory":"Check which items you have in your inventory.", "gold":"Check the amount of gold you currently have.", "oversight":"The biggest oversight.", "hohoohahaa":"The Shifting Snow.", "newpatch":"Icefrog releases a new patch.",
-"givecheese":"Usage: 322 givecheese @User <cheese amount> Give another user any amount of cheese.", "cheeseboard":"Check the top 10 users who have the most cheese. Users in different servers have their names hidden but the cheese amount is visible.", "missedhook":"Check why you missed your hook."}
+"givecheese":"Usage: 322 givecheese @User <cheese amount> Give another user any amount of cheese.", "cheeseboard":"Check the top 10 users who have the most cheese. Users in different servers have their names hidden but the cheese amount is visible.", "missedhook":"Check why you missed your hook.", "serverinvite":"Get a server invite to our discord server!"}
 
 #Help command
 class MyHelpCommand(commands.DefaultHelpCommand):
@@ -43,9 +44,9 @@ class MyHelpCommand(commands.DefaultHelpCommand):
 
 bot = commands.Bot(command_prefix='322 ', case_insensitive=True, help_command=MyHelpCommand())
 
-startcogs = ["cogs.quizes", "cogs.miscellaneous", "cogs.store"]
+startcogs = ["cogs.quizes", "cogs.miscellaneous", "cogs.store"]     #list of cogs to load
 
-if __name__ == '__main__':
+if __name__ == '__main__':              #loading the cogs from the directory ./cogs
     for extension in startcogs:
         try:
             bot.load_extension(extension)
@@ -60,13 +61,13 @@ async def on_ready():
     print('online')
 
 @bot.event
-async def on_guild_join(guild):
+async def on_guild_join(guild):         #sends message in the first usable channel when joining a new server
     channel = await find_channel(guild)
-    await channel.send("```Hi, this is DotAQuiz, a bot that allows you to learn many details of DotA you might've never known before. You can test your knowledge of the game with the quiz commands: 322 quiz | 322 blitz | 322 shopquiz | 322 iconquiz | 322 endless (Note that most of these commands can be quite spammy so I recommed you use a channel dedicated to spam for these commands.) and you can challenge others with  322 duel  You can use the gold you earn with these commands to buy items with | 322 buy | that can help improve some stats in these commands. Don't forget to do 322 help and 322 help [command] to see all the information that might interest you. If you find any factual mistakes, typos and want to notify us to fix it or just want to give feedback for the bot do 322 botinfo for an invite to our server.```")
+    await channel.send("```Hi, this is DotAQuiz, a bot that allows you to learn many details of DotA you might've never known before. You can test your knowledge of the game with the quiz commands: 322 quiz | 322 blitz | 322 shopquiz | 322 audioquiz | 322 iconquiz | 322 endless (Note that most of these commands can be quite spammy so I recommed you use a channel dedicated to spam for these commands.) and you can challenge others with  322 duel  You can use the gold you earn with these commands to buy items with | 322 buy | that can help improve some stats in these commands. Don't forget to do 322 help and 322 help [command] to see all the information that might interest you. If you find any factual mistakes, typos and want to notify us to fix it or just want to give feedback for the bot do 322 serverinvite for an invite to our server.```")
 
 
 @bot.command(brief = "Bonus info about the bot and an invite to our discord server.")
-async def botinfo(ctx):
+async def serverinvite(ctx):             #sends bot information and server invite link to the server
     user = bot.get_user(ctx.author.id)
     try:
         await user.send("This bot revolves around DotA 2, all the images/icons are taken from DotA 2(except the profile picture, which is based on the DotA 2 logo), this bot was made just for fun, it doesn't serve any real purpose so it's not meant to be professional. The bot isn't always online since I simply host it on my pc and I don't keep it turned on all day. You can use Quiz commands to gain money and buy items to gain some buffs from them, I recommend you use a channel dedicated to spam since some of these commands can be spammy. The questions are all in english and only accept English versions of DotA words, names and terms. Also note that many of the questions used by this bot were written without factchecking so you might find some incorrect information, typos and grammatical errors, if you wish to report these mistakes, just want to give feedback and suggestions or wish to see updates you can do so on this discord server:  https://discord.gg/nhBvdqV ")
@@ -76,7 +77,7 @@ async def botinfo(ctx):
 
 
 #event for wrong "322 cmnd"
-@bot.event
+@bot.event              #ignore and raise certain errors
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send("""That command doesn't exist, try "**322 help**" to see the existing commands.""")
