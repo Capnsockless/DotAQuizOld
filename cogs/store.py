@@ -7,11 +7,11 @@ from discord.ext import commands
 os.chdir(r"D:\Discordbot\DotaQuizbot")
 
 #The store system:
-store_items = {"Hand of Midas":2200, "Aghanim's Scepter":4200, "Shiva's guard":4850, "Monkey King Bar":4852,
+store_items = {"Hand of Midas":2200, "Aghanim's Scepter":4200, "Necronomicon":4550, "Shiva's guard":4850, "Monkey King Bar":4852,
 "Octarine Core":5000, "Pirate Hat":6500, "Aegis":8000, "Cheese":20000, "Cursed Rapier":100000}
 store_descriptions = {"Hand of Midas":"Earn 25% bonus gold.", "Cheese":"Alternate, tradable currency.", "Octarine Core":"Lower cooldowns for commands by 25%.",
 "Cursed Rapier":"Weird flex.", "Shiva's guard":"Add 30% time to answer quizes.", "Aegis":"One extra life for certain commands.", "Aghanim's Scepter":"Allows you to use 322 endless.",
-"Pirate Hat":"Increases the max wager of duel by 1k.", "Monkey King Bar":"Improves typo recognition for quizes."}
+"Pirate Hat":"Increases the max wager of duel by 10k.", "Monkey King Bar":"Improves typo recognition for quizes.", "Necronomicon":"Increases number of quizes in 322 freeforall."}
 storekeys, storevalues = list(store_items.keys()), list(store_items.values())
 
 def open_json(jsonfile):
@@ -58,7 +58,6 @@ class Store(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-#store commands
     @commands.command(brief = "Check how much gold and cheese you own.")
     async def gold(self, ctx):
         users = open_json("users.json")
@@ -151,9 +150,9 @@ class Store(commands.Cog):
         artifacts = ""
         for item in store_items:        #concatenates all the names and prices together to form a list of store items
             multiplier = 18 - len(item)
-            multiplier2 = 10 - len(str(store_items[item]))
+            multiplier2 = 9 - len(str(store_items[item]))
             artifacts = artifacts + item + (multiplier * " ") + str(store_items[item]) + (multiplier2 * " ") + store_descriptions[item] + " \n"
-        await ctx.send(f"``` Item:          Price:     Description: \n{artifacts}```")
+        await ctx.send(f"``` Item:          Price:    Description: \n{artifacts}```")
 
     @commands.command(brief = "Give someone cheese.")
     async def givecheese(self, ctx, reciever: discord.Member, amount:int):

@@ -320,7 +320,7 @@ def pseudorandomizer(server, length, listkey: str):		#pseudorandomizer used in p
 			save_json("rngfix.json", rng)
 			return n
 
-def strip_str(text):			#function to remove punctuations, spaces and "the" from string and make it lowercase,
+def strip_str(text):		#function to remove punctuations, spaces and "the" from string and make it lowercase,
 	punctuations = ''' !-;:`'"\,/_?'''			# in order to compare bot answers and user replies
 	text2 = ""
 	for char in text:
@@ -360,9 +360,17 @@ def compare_strings(author, text, answer):			#function to compare user input and
 			else:
 				output.append(0)
 				return output
-		print(type(output))		
+		print(type(output))
 	except KeyError:
 		pass
+
+def find_correct_answer(dictvalue):			#function to find the correct answer to a quiz, used for all quiz commands except shopquiz
+	if type(dictvalue) == str:
+		return dictvalue
+	elif type(dictvalue) == tuple:
+		return dictvalue[0]
+	else:
+		return random.choice([z for z in dictvalue if z[0].isupper()])
 
 def calc_time(question, answer):			#Function to calculate time for each question according to its size(for blitz)
 	queslen = len(question)
@@ -388,7 +396,7 @@ def set_time(author, duration):				#Set duration for quiz commands(30% more time
 	except KeyError:
 		pass
 
-def aegis(author, lives):				#Set amount of lives(+1 if the user has aegis)
+def aegis(author, lives):		#Set amount of lives(+1 if the user has aegis)
 	users = open_json("users.json")
 	try:
 		if 8000 in ast.literal_eval(users[str(author.id)]["items"]):
@@ -428,13 +436,7 @@ class Quizes(commands.Cog):
 		server, channel, author = ctx.guild, ctx.channel, ctx.author		#the server, channel and author of the command activator
 		check_user(author)
 		questn = pseudorandomizer(server, questlen, "questnumbers")			#Random number to give a random question
-		correctansw = ""				#Find the correct answer to be displayed incase user gets it wrong
-		if type(questvalues[questn]) == str:
-			correctansw = questvalues[questn]
-		elif type(questvalues[questn]) == tuple:
-			correctansw = questvalues[questn][0]
-		else:
-			correctansw = random.choice([z for z in questvalues[questn] if z[0].isupper()])
+		correctansw = find_correct_answer(questvalues[questn])		#Find the correct answer to be displayed incase user gets it wrong
 		if type(questkeys[questn]) == tuple:			#if the question comes with an image
 			await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
 		else:											#for normal string questions
@@ -474,11 +476,7 @@ class Quizes(commands.Cog):
 				await ctx.send(f"You have stopped the iconquiz, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
 				break
 			iconn = pseudorandomizer(server, iconquizlen, "iconquiznumbers")	#Random number to give a random icon
-			correctansw = ""		#Find the correct answer to be displayed incase user gets it wrong
-			if type(iconquizvalues[iconn]) == str:
-				correctansw = iconquizvalues[iconn]
-			else:
-				correctansw = iconquizvalues[iconn][0]
+			correctansw = find_correct_answer(iconquizvalues[iconn])	#Find the correct answer to be displayed incase user gets it wrong
 			await ctx.send(f"**``Name the shown ability.``**", file=discord.File(f"./iconquizimages/{iconquizkeys[iconn]}"))
 			def check(m):
 				return m.channel == channel and m.author == author		#checks if the reply came from the same person in the same channel
@@ -615,13 +613,7 @@ class Quizes(commands.Cog):
 					break
 				time.sleep(0.3)
 				audion = pseudorandomizer(server, audioquizlen, "audioquiznumbers")		#Random number to give a random audioion
-				correctansw = ""						#find correct answer to display later
-				if type(audioquizvalues[audion]) == str:
-					correctansw = audioquizvalues[audion]
-				elif type(audioquizvalues[audion]) == tuple:
-					correctansw = audioquizvalues[audion][0]
-				else:
-					correctansw = random.choice([z for z in audioquizvalues[audion] if z[0].isupper()])
+				correctansw = find_correct_answer(audioquizvalues[audion])	#find correct answer to display later
 				duration = round(MP3(f".\soundquizaudio\{audioquizkeys[audion]}").info.length+3)   #duration of the audiofile in seconds
 				source = await discord.FFmpegOpusAudio.from_probe(f".\soundquizaudio\{audioquizkeys[audion]}")	#convert audio to opus
 				ctx.voice_client.stop()			#stop audio to make sure next sound can play
@@ -671,13 +663,7 @@ class Quizes(commands.Cog):
 				await ctx.send(f"**{author.display_name}** you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold during the blitz.")
 				break
 			questn = pseudorandomizer(server, questlen, "questnumbers")		#Random number to give a random question
-			correctansw = ""
-			if type(questvalues[questn]) == str:
-				correctansw = questvalues[questn]
-			elif type(questvalues[questn]) == tuple:
-				correctansw = questvalues[questn][0]
-			else:
-				correctansw = random.choice([z for z in questvalues[questn] if z[0].isupper()])
+			correctansw = find_correct_answer(questvalues[questn])
 			if type(questkeys[questn]) == tuple:		#if the question comes with an image
 				await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
 				giventime = set_time(author, calc_time(questkeys[questn][0], questvalues[questn]))
@@ -765,14 +751,7 @@ class Quizes(commands.Cog):
 							break
 
 						questn = pseudorandomizer(server, questlen, "questnumbers")		#Random number to give a random question
-						correctansw = ""			#Find the correct answer to be displayed incase user gets it wrong
-						if type(questvalues[questn]) == str:
-							correctansw = questvalues[questn]
-						elif type(questvalues[questn]) == tuple:
-							correctansw = questvalues[questn][0]
-						else:
-							correctansw = random.choice([z for z in questvalues[questn] if z[0].isupper()])
-
+						correctansw = find_correct_answer(questvalues[questn])	#Find the correct answer to be displayed incase user gets it wrong
 						if type(questkeys[questn]) == tuple:			#if the question comes with an image
 							await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
 							questionsasked += 1
@@ -808,60 +787,61 @@ class Quizes(commands.Cog):
 	@commands.command(brief = "Set of quizes multiple people can answer.")
 	@commands.cooldown(1, 80, commands.BucketType.channel)
 	async def freeforall(self, ctx):
-		server, channel, author = ctx.guild, ctx.channel, ctx.author
+		server, channel, author = ctx.guild, ctx.channel, ctx.author		#the server, channel and author of the command activator
 		check_user(author)
-		usersdict = {author:0}
-		nquestions = necronomicon(author, 25)
+		usersdict = {author:0}			#dictionary that consists of all the participants and their correct answers
+		nquestions = necronomicon(author, 25)		#number of questions that will be asked
+		ncorrectansws = 0			#number of correctly answered questions by everyone
 		while True:
-			if nquestions <= 0:
-				prizepool = 100*(8*(len(usersdict)**2))
-				sortedusersdict = {k: v for k, v in sorted(usersdict.items(), key=lambda item: item[1], reverse=True)}
-				sortedkeys, sortedvalues = list(sortedusersdict.keys()), list(sortedusersdict.values())
-				basestr = "Participant: 		Correct answers:		Prize:\n"
+			if nquestions <= 0:				#stop the quiz
+				prizepool = 56*(ncorrectansws*(len(usersdict)**2))
+				sortedusersdict = {k: v for k, v in sorted(usersdict.items(), key=lambda item: item[1], reverse=True)}	#sorting users according to
+				sortedkeys, sortedvalues = list(sortedusersdict.keys()), list(sortedusersdict.values())	#their correct answers and getting the keys and values
+				basestr = "Participant: 		Correct answers:		Prize:\n"		#base of the ending message
 				if len(sortedusersdict) > 5:
-					for i in range(0, 5):
-						userprize = prizepool * prizeperc[i]
-						multiplier1 = 20 - len(sortedkeys[i].display_name)
-						multiplier2 = 10 - len(str(sortedvalues[i]))
-						basestr = basestr + (i + 1) + ")" + sortedkeys[i].display_name + " "*multiplier1 + str(sortedvalues[i]) + " "*multiplier2 + str(userprize) + "\n"
-						add_gold(sortedkeys, userprize)
+					for i in range(0, 5):			#display the top 5 players
+						userprize = round(prizepool * prizeperc[i])
+						multiplier1 = 32 - len(sortedkeys[i].display_name)
+						multiplier2 = 12 - len(str(sortedvalues[i]))
+						basestr = basestr + str(i + 1) + ")" + sortedkeys[i].display_name + " "*multiplier1 + str(sortedvalues[i]) + " "*multiplier2 + str(userprize) + "gold\n"
+						add_gold(sortedkeys[i], userprize)		#give each person their deserved gold
 				else:
-					for i in range(0, len(sortedusersdict)):
-						userprize = prizepool * prizeperc[i]
-						multiplier1 = 20 - len(sortedkeys[i].display_name)
-						multiplier2 = 10 - len(str(sortedvalues[i]))
-						basestr = basestr + (i + 1) + ")" + sortedkeys[i].display_name + " "*multiplier1 + str(sortedvalues[i]) + " "*multiplier2 + str(userprize) + "\n"
-						add_gold(sortedkeys, userprize)
+					for i in range(0, len(sortedusersdict)):		#same here happens here as above but it only displays <5 users
+						userprize = round(prizepool * prizeperc[i])
+						multiplier1 = 32 - len(sortedkeys[i].display_name)
+						multiplier2 = 12 - len(str(sortedvalues[i]))
+						basestr = basestr + str(i + 1) + ")" + sortedkeys[i].display_name + " "*multiplier1 + str(sortedvalues[i]) + " "*multiplier2 + str(userprize) + "gold\n"
+						add_gold(sortedkeys[i], userprize)
 				await ctx.send(f"```{basestr}```")
 				break
 			questn = pseudorandomizer(server, questlen, "questnumbers")		#Random number to give a random question
 			nquestions -= 1
-			correctansw = ""
-			if type(questvalues[questn]) == str:
-				correctansw = questvalues[questn]
-			elif type(questvalues[questn]) == tuple:
-				correctansw = questvalues[questn][0]
-			else:
-				correctansw = random.choice([z for z in questvalues[questn] if z[0].isupper()])
+			correctansw = find_correct_answer(questvalues[questn])
 			if type(questkeys[questn]) == tuple:		#if the question comes with an image
 				await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
 			else:										#for normal string questions
 				await ctx.send(f"**```{questkeys[questn]}```**")
 			def check(m):
-				return m.channel == channel		#checks if the reply came from the same person in the same channel
+				return m.channel == channel		#checks if the reply came from the same channel
 			try:
-				msg = await self.bot.wait_for("message", check=check, timeout=25.322)
+				msg = await self.bot.wait_for("message", check=check, timeout=20.322)
 			except asyncio.TimeoutError:			#If too late
 				await channel.send(f"**{random.choice(lateansw)}**, The correct answer was ``{correctansw}``.")
 			else:
 				currentauthor = msg.author
 				if compare_strings(currentauthor, msg.content, questvalues[questn])[1]:		#If there is one correct answer
 					await channel.send(f"**{random.choice(rightansw)}**")
-					if currentauthor in list(usersdict.keys()):
+					if currentauthor in list(usersdict.keys()):		#if user is already listed in the dict increment the correct answers
 						usersdict[currentauthor] += 1
-					else:
+					else:											#if not set the new user as a key and set 1 correct answer
 						check_user(currentauthor)
 						usersdict.update({currentauthor:1})
+					ncorrectansws += 1
+				else:			#if there are multiple answers
+					if type(questvalues[questn]) == list:
+						await channel.send(f"**{random.choice(wrongansw)}** One of the possible answers was ``{correctansw}``")
+					else:
+						await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``.")
 
 	@commands.command(brief = "Endless mix of questions, items and icons.")
 	@commands.cooldown(1, 400, commands.BucketType.user)
@@ -886,13 +866,7 @@ class Quizes(commands.Cog):
 					decider = random.randint(0, 2)
 					if decider == 0:		#if random number is 0 the question will be quiz
 							questn = pseudorandomizer(server, questlen, "questnumbers")			#Random number to give a random question
-							correctansw = ""		#obtaining the correct answer to display later
-							if type(questvalues[questn]) == str:
-								correctansw = questvalues[questn]
-							elif type(questvalues[questn]) == tuple:
-								correctansw = questvalues[questn][0]
-							else:
-								correctansw = random.choice([z for z in questvalues[questn] if z[0].isupper()])
+							correctansw = find_correct_answer(questvalues[questn])		#obtaining the correct answer to display later
 							if type(questkeys[questn]) == tuple:		#if the question comes with an image
 								await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
 							else:					#for normal string questions
@@ -992,12 +966,7 @@ class Quizes(commands.Cog):
 
 					else:
 						iconn = pseudorandomizer(server, iconquizlen, "iconquiznumbers")		#Random number to give a random icon
-						correctansw = ""		#Find the correct answer to be displayed incase user gets it wrong
-						if type(iconquizvalues[iconn]) == str:
-							correctansw = iconquizvalues[iconn]
-						else:
-							correctansw = iconquizvalues[iconn][0]
-
+						correctansw = find_correct_answer(iconquizvalues[iconn])		#Find the correct answer to be displayed incase user gets it wrong
 						await ctx.send(f"**``Name the shown ability.``**", file=discord.File(f"./iconquizimages/{iconquizkeys[iconn]}"))
 						def check(m):
 							return m.channel == channel and m.author == author	#checks if the reply came from the same person in the same channel
@@ -1038,10 +1007,18 @@ class Quizes(commands.Cog):
 			else:
 				await ctx.send("**Quiz** is on **cooldown** at the moment. You can buy an Octarine Core in the store to decrease command cooldowns.")
 
-	@blitz.error
-	async def blitzerror(self, ctx, error):
+	@iconquiz.error
+	async def iconquizerror(self, ctx, error):
 		if isinstance(error, commands.CommandOnCooldown):
-			await ctx.send("**Blitz** is on being used in this channel at the moment, wait a bit or play on a different channel.")
+			users = open_json("users.json")
+			if 5000 in ast.literal_eval(users[str(ctx.message.author.id)]["items"]):
+				if error.retry_after < 13:
+					await ctx.reinvoke()
+					return
+				else:
+					await ctx.send("**IconQuiz** is on **cooldown** at the moment.")
+			else:
+				await ctx.send("**IconQuiz** is on **cooldown** at the moment. You can buy an Octarine Core in the store to decrease command cooldowns.")
 
 	@shopquiz.error
 	async def shopquizerror(self, ctx, error):
@@ -1056,6 +1033,32 @@ class Quizes(commands.Cog):
 			else:
 				await ctx.send("**Shopkeepers quiz** is on **cooldown** at the moment. You can buy an Octarine Core in the store to decrease command cooldowns.")
 
+	@audioquiz.error
+	async def audioquizerror(self, ctx, error):
+		if isinstance(error, commands.CommandOnCooldown):
+			await ctx.send("**Audioquiz** is currently on cooldown. You can purchase an Octarine Core to decrease command cooldowns.")
+
+	@blitz.error
+	async def blitzerror(self, ctx, error):
+		if isinstance(error, commands.CommandOnCooldown):
+			await ctx.send("**Blitz** is on being used in this channel at the moment, wait a bit or play on a different channel.")
+
+	@duel.error
+	async def duelerror(self, ctx, error):
+		if isinstance(error, commands.CommandOnCooldown):
+			await ctx.send("**Duel** is currently on cooldown in this channel, try another channel or wait a bit.")
+		elif isinstance(error, commands.MissingRequiredArgument):
+			await ctx.send("You need to specify who you're duelling and how much gold the wager is, like this: 322 duel @user gold")
+			self.duel.reset_cooldown(ctx)
+		elif isinstance(error, commands.BadArgument):
+			await ctx.send("That user doesn't exist or isn't in this server, try duelling someone else.")
+			self.duel.reset_cooldown(ctx)
+
+	@freeforall.error
+	async def freeforallerror(self, ctx, error):
+		if isinstance(error, commands.CommandOnCooldown):
+			await ctx.send("**Freeforall** is currently on cooldown in this channel, try another channel or wait a bit.")
+
 	@endless.error
 	async def endlesserror(self, ctx, error):
 		if isinstance(error, commands.CommandOnCooldown):
@@ -1069,36 +1072,8 @@ class Quizes(commands.Cog):
 			else:
 				await ctx.send("**Endless** is on **cooldown** at the moment. You can buy an Octarine Core in the store to decrease command cooldowns.")
 
-	@iconquiz.error
-	async def iconquizerror(self, ctx, error):
-		if isinstance(error, commands.CommandOnCooldown):
-			users = open_json("users.json")
-			if 5000 in ast.literal_eval(users[str(ctx.message.author.id)]["items"]):
-				if error.retry_after < 13:
-					await ctx.reinvoke()
-					return
-				else:
-					await ctx.send("**IconQuiz** is on **cooldown** at the moment.")
-			else:
-				await ctx.send("**IconQuiz** is on **cooldown** at the moment. You can buy an Octarine Core in the store to decrease command cooldowns.")
-
-	@duel.error
-	async def duelerror(self, ctx, error):
-		if isinstance(error, commands.CommandOnCooldown):
-			await ctx.send("**Duel** is currently on cooldown in this channel, try another channel or wait a bit.")
-		elif isinstance(error, commands.MissingRequiredArgument):
-			await ctx.send("You need to specify who you're duelling and how much gold the wager is, like this: 322 duel @user gold")
-			self.duel.reset_cooldown(ctx)
-		elif isinstance(error, commands.BadArgument):
-			await ctx.send("That user doesn't exist or isn't in this server, try duelling someone else.")
-			self.duel.reset_cooldown(ctx)
-
-	@audioquiz.error
-	async def audioquizerror(self, ctx, error):
-		if isinstance(error, commands.CommandOnCooldown):
-			await ctx.send("**Audioquiz** is currently on cooldown. You can purchase an Octarine Core to decrease command cooldowns.")
-
-	async def cog_command_error(self, ctx, error):		#Errors to be ignored
+	async def cog_command_error(self, ctx, error):
+		#Errors to be ignored
 		if isinstance(error, (commands.CommandOnCooldown, commands.MissingRequiredArgument, commands.BadArgument)):
 			pass
 		else:
