@@ -85,41 +85,33 @@ def strip_str(text):		#function to remove punctuations, spaces and "the" from st
 			text2 = text2 + char
 	return text2.lower().replace("the", "")
 
+class CompareOutput():		#class for compare_strings() to contain the answer which the user put in and also if it's correct or not
+    def __init__(self, answer, success):
+        self.answer = answer
+        self.success = success
 def compare_strings(author, text, answer):			#function to compare user input and actual answer
 	users = open_json("users.json")
-	output = []						#output is a list of the most similar answer and the boolean which shows if it's true enough
 	striptext = strip_str(text)		#first we use strip_str on both strings which removes spaces, "the" and unwanted symbols
 	stripanswer = ""
+	bool = 0
 	if type(answer) == str:
 		stripanswer = strip_str(answer)
 		ratio = lev.ratio(striptext, stripanswer)
-		output.append(stripanswer)
 	else:						#if there are multiple answers we pick out the answer that is most similar to the input
 		stripanswers = [strip_str(x) for x in answer]
 		ratios = []
-		for i in stripanswers:
+		for i in stripanswers:			#fill a list with levenshtein ratios
 			ratios.append(lev.ratio(striptext, i))
-		ratio = max(ratios)
+		ratio = max(ratios)				#take the max value, its index and the actual string by the index
 		answerindex = ratios.index(ratio)
-		output.append(stripanswers[answerindex])
-	try:
-		if 4852 in ast.literal_eval(users[str(author.id)]["items"]):		#if user has monkey king bar they get away with more mistakes
-			if ratio > 0.835:
-				output.append(1)
-				return output
-			else:
-				output.append(0)
-				return output
-		else:
-			if ratio > 0.97:
-				output.append(1)
-				return output
-			else:
-				output.append(0)
-				return output
-		print(type(output))
-	except KeyError:
-		pass
+		stripanswer = stripanswers[answerindex]		#just use stripanswer
+	if 4852 in ast.literal_eval(users[str(author.id)]["items"]):		#if user has monkey king bar they get away with more mistakes
+		if ratio > 0.835:		#change bool to 1 if it's correct
+			bool = 1
+	else:
+		if ratio > 0.97:
+			bool = 1
+	return CompareOutput(stripanswer, bool)         ###USER MUST BE IN users.json
 
 def find_correct_answer(dictvalue):			#function to find the correct answer to a quiz, used for all quiz commands except shopquiz
 	if type(dictvalue) == str:
@@ -153,7 +145,7 @@ def set_time(author, duration):				#Set duration for quiz commands(30% more time
 	except KeyError:
 		pass
 
-def aegis(author, lives):		#Set amount of lives(+1 if the user has aegis)
+def aegis(author, lives):				#Set amount of lives(+1 if the user has aegis)
 	users = open_json("users.json")
 	try:
 		if 8000 in ast.literal_eval(users[str(author.id)]["items"]):
@@ -206,7 +198,7 @@ class Quizes(commands.Cog):
 			await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``")
 			add_gold(author, -4)
 		else:
-			if compare_strings(author, msg.content, questvalues[questn])[1]:
+			if compare_strings(author, msg.content, questvalues[questn]).success:
 				g = add_gold(author, 16)
 				await channel.send(f"**{random.choice(rightansw)}** you got ``{g}`` gold.")
 			else:
@@ -249,7 +241,7 @@ class Quizes(commands.Cog):
 					await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` lives remaining.")
 				elif strip_str(msg.content) == "stop":
 					lives = 322
-				elif compare_strings(author, msg.content, iconquizvalues[iconn])[1]:
+				elif compare_strings(author, msg.content, iconquizvalues[iconn]).success:
 					await channel.send(f"**{random.choice(rightansw)}**")
 					accumulated_g += 10
 					ncorrectansws += 1
@@ -322,13 +314,14 @@ class Quizes(commands.Cog):
 						await ctx.send(f"This item could've been built with ``{correctansw}``, you have ``{lives}`` lives remaining.")
 						break
 					elif type(itemanswers[0]) == list:					#if itemanswers has lists of correct answers it checks the correct answ in
-						if compare_strings(author, msg.content, itemanswersmerged)[1]:			#itemanswersmerged, gives reward
+						if compare_strings(author, msg.content, itemanswersmerged).success:			#itemanswersmerged, gives reward
 							await ctx.send(f"**{random.choice(rightansw)}**")
 							accumulated_g += 2
 							itemstopop = []					#create a new list of items that must be removed from itemanswersmerged
 							for itemlist in itemanswers:
-								if compare_strings(author, msg.content, itemlist)[1]:			#check index of correct answer to remove from all lists of itemanswers
-									n = itemlist.index(compare_strings(author, msg.content, itemlist)[0])
+								result = compare_strings(author, msg.content, itemlist)
+								if result.success:					#check index of correct answer to remove from all lists of itemanswers
+									n = itemlist.index(result.answer)
 							for index, itemlist in enumerate(itemanswers):
 								itemstopop.append(itemanswers[index][n])
 								itemanswers[index].pop(n)			#pop answered item out of all lists of the itemanswers
@@ -338,11 +331,12 @@ class Quizes(commands.Cog):
 							lives -= 1
 							await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
 					else:
-						if compare_strings(author, msg.content, itemanswersmerged)[1]:			#if itemanswers is just a list of strings, remove answered item from both lists.
+						result = compare_strings(author, msg.content, itemanswersmerged)
+						if result.success:			#if itemanswers is just a list of strings, remove answered item from both lists.
 							await ctx.send(f"**{random.choice(rightansw)}**")
 							accumulated_g += 3
-							itemanswers.remove(compare_strings(author, msg.content, itemanswers)[0])
-							itemanswersmerged.remove(compare_strings(author, msg.content, itemanswersmerged)[0])
+							itemanswers.remove(result.answer)
+							itemanswersmerged.remove(result.answer)
 						else:
 							lives -= 1
 							await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
@@ -391,7 +385,7 @@ class Quizes(commands.Cog):
 							await channel.send(f"One of the possible answers was ``{correctansw}``.")
 					elif strip_str(msg.content) == "stop" or strip_str(msg.content) == "stfu":		#if user stops the quiz
 						timeout = 35
-					elif compare_strings(author, msg.content, audioquizvalues[audion])[1] and strip_str(msg.content) != "skip" and strip_str(msg.content) != "stop" and strip_str(msg.content) != "stfu":	#If there is one correct answer
+					elif compare_strings(author, msg.content, audioquizvalues[audion]).success and strip_str(msg.content) != "skip" and strip_str(msg.content) != "stop" and strip_str(msg.content) != "stfu":	#If there is one correct answer
 						await ctx.send(f"**{random.choice(rightansw)}**")
 						timeout += 3.2							#add time before timeout for every correct answer
 						accumulated_g += 14
@@ -441,7 +435,7 @@ class Quizes(commands.Cog):
 						await channel.send(f"The correct answer was ``{correctansw}``.")
 					else:
 						await channel.send(f"One of the possible answers was ``{correctansw}``.")
-				elif compare_strings(author, msg.content, questvalues[questn])[1] and strip_str(msg.content) != "skip":		#If there is one correct answer
+				elif compare_strings(author, msg.content, questvalues[questn]).success and strip_str(msg.content) != "skip":		#If there is one correct answer
 					accumulated_g += 14
 					ncorrectansws += 1
 				else:
@@ -522,7 +516,7 @@ class Quizes(commands.Cog):
 						except asyncio.TimeoutError:		#If too late
 							await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``")
 						else:
-							if compare_strings(msg.author, msg.content, questvalues[questn])[1]:		#If there is one correct answer
+							if compare_strings(msg.author, msg.content, questvalues[questn]).success:		#If there is one correct answer
 								await channel.send(f"**{random.choice(rightansw)}**")
 								if msg.author == author:		#give a point for the right answer
 									questionsanswered1 += 1
@@ -587,7 +581,7 @@ class Quizes(commands.Cog):
 				await channel.send(f"**{random.choice(lateansw)}**, The correct answer was ``{correctansw}``.")
 			else:
 				currentauthor = msg.author
-				if compare_strings(currentauthor, msg.content, questvalues[questn])[1]:		#If there is one correct answer
+				if compare_strings(currentauthor, msg.content, questvalues[questn]).success:		#If there is one correct answer
 					await channel.send(f"**{random.choice(rightansw)}**")
 					if currentauthor in list(usersdict.keys()):		#if user is already listed in the dict increment the correct answers
 						usersdict[currentauthor] += 1
@@ -645,7 +639,7 @@ class Quizes(commands.Cog):
 									await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` remaining.")
 								elif strip_str(msg.content) == "stop":	#if user stops the "endless" quiz
 									lives = 322
-								elif compare_strings(author, msg.content, questvalues[questn])[1] and strip_str(msg.content) != "skip" and strip_str(msg.content) != "stop":	#If there is only one correct answer
+								elif compare_strings(author, msg.content, questvalues[questn]).success and strip_str(msg.content) != "skip" and strip_str(msg.content) != "stop":	#If there is only one correct answer
 									accumulated_g += 12
 									ncorrectansws += 1
 								else:
@@ -699,13 +693,14 @@ class Quizes(commands.Cog):
 									lives = 322
 									break
 								elif type(itemanswers[0]) == list:		#if itemanswers has lists of correct answers it checks the correct answ in
-									if compare_strings(author, msg.content, itemanswersmerged)[1]:		#itemanswersmerged, gives reward
+									if compare_strings(author, msg.content, itemanswersmerged).success:		#itemanswersmerged, gives reward
 										await ctx.send(f"**{random.choice(rightansw)}**")
 										accumulated_g += 3
 										itemstopop = []			#create a new list of items that must be removed from itemanswersmerged
 										for itemlist in itemanswers:
-											if compare_strings(author, msg.content, itemlist)[1]:	#check index of correct answer to remove from all lists of itemanswers
-												n = itemlist.index(compare_strings(author, msg.content, itemlist)[0])
+											result = compare_strings(author, msg.content, itemlist)
+											if result.success:				#check index of correct answer to remove from all lists of itemanswers
+												n = itemlist.index(result.answer)
 										for index, itemlist in enumerate(itemanswers):
 											itemstopop.append(itemanswers[index][n])
 											itemanswers[index].pop(n)		#pop answered item out of all lists of the itemanswers
@@ -715,11 +710,12 @@ class Quizes(commands.Cog):
 										lives -= 1
 										await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
 								else:
-									if compare_strings(author, msg.content, itemanswers)[1]:	#if itemanswers is just a list of strings, remove answered item from both lists.
+									result = compare_strings(author, msg.content, itemanswers)
+									if result.success:	#if itemanswers is just a list of strings, remove answered item from both lists.
 										await ctx.send(f"**{random.choice(rightansw)}**")
 										accumulated_g += 4
-										itemanswers.remove(compare_strings(author, msg.content, itemanswers)[0])
-										itemanswersmerged.remove(compare_strings(author, msg.content, itemanswersmerged)[0])
+										itemanswers.remove(result.answer)
+										itemanswersmerged.remove(result.answer)
 									else:
 										lives -= 1
 										await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
@@ -742,7 +738,7 @@ class Quizes(commands.Cog):
 								await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` lives remaining.")
 							elif strip_str(msg.content) == "stop":
 								lives = 322
-							elif compare_strings(author, msg.content, iconquizvalues[iconn])[1]:
+							elif compare_strings(author, msg.content, iconquizvalues[iconn]).success:
 								accumulated_g += 9
 								ncorrectansws += 1
 							else:
@@ -759,7 +755,7 @@ class Quizes(commands.Cog):
 		if isinstance(error, commands.CommandOnCooldown):
 			users = open_json("users.json")
 			if 5000 in ast.literal_eval(users[str(ctx.message.author.id)]["items"]):
-				if error.retry_after < 2:		#if user has octarine and the remaining time of the cooldown is Less
+				if error.retry_after < 3:		#if user has octarine and the remaining time of the cooldown is Less
 					await ctx.reinvoke()		#than the time octarine saves the user just bypasses the cooldownerror
 					return
 				else:
