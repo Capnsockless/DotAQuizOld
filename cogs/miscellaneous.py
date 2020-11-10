@@ -14,6 +14,7 @@ def save_json(jsonfile, name):      #savefunc for jsonfiles
     with open(jsonfile, "w") as fp:
         json.dump(name, fp)
 
+
 class Miscellaneous(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -31,25 +32,31 @@ class Miscellaneous(commands.Cog):
         rng = open_json("rngfix.json")
         id = str(ctx.guild.id)
         if id not in rng.keys():
-            rng[id] = {"questnumbers": "[]", "shopkeepnumbers":"[]", "iconquiznumbers":"[]", "vacuumcd":16}
+            rng[id] = {"questnumbers":"[]", "shopkeepnumbers":"[]", "iconquiznumbers":"[]", "audioquiznumbers":"[]", "vacuumcd":16}
         rng[id]["vacuumcd"] += random.randint(1, 3)
         await ctx.send(f"""Vacuum cooldown has been increased, it is now **{rng[id]["vacuumcd"]}** seconds long.""")
         save_json("rngfix.json", rng)
 
-    @commands.command(brief = "See the top 10 cheese collectors.", hidden = True)
+    @commands.command(brief = "See the top 10 cheese collectors.")
     async def cheeseboard(self, ctx):
         users = open_json("users.json")
         onlycheese = {k: v["cheese"] for k, v in users.items()}         #create a dict of user ids and their cheese
-        sort = {k: v for k, v in sorted(onlycheese.items(), key=lambda item: item[1])}      #sort the dictionary according to cheese amounts
+        sort = {k: v for k, v in sorted(onlycheese.items(), key=lambda item: item[1], reverse=True)}      #sort the dictionary according to cheese amounts
         sortkeys, sortvalues = list(sort.keys()), list(sort.values())       #obtain lists of the keys and values for later use
-        basetext = "Collector:                               Amount:\n"
-        for n in range(0, 5):
+        basetext = "Collector:                         Cheese amount:\n"
+        for n in range(0, 10):
             user = ctx.guild.get_member(int(sortkeys[n]))
             if type(user) == discord.Member:        #if user is in the server it will display the name
                 multiplier = 44 - len(user.display_name)
-                basetext = basetext + str(n+1) + ")" + user.display_name + " "*multiplier + str(sortvalues[n]) + "\n"
+                if n == 9:          #if it's the 10th user it will be less indented to be in line with other users
+                    basetext = basetext + str(n+1) + ")" + user.display_name + " "*(multiplier-1) + str(sortvalues[n])
+                else:
+                    basetext = basetext + str(n+1) + ")" + user.display_name + " "*multiplier + str(sortvalues[n]) + "\n"
             else:           #otherwise it will just say "hidden" instead
-                basetext = basetext + str(n+1) + ")Hidden" + " "*38 + str(sortvalues[n]) + "\n"
+                if n == 9:        #if it's the 10th user it will be less indented to be in line with other users
+                    basetext = basetext + str(n+1) + ")[Hidden]" + " "*35 + str(sortvalues[n])
+                else:
+                    basetext = basetext + str(n+1) + ")[Hidden]" + " "*36 + str(sortvalues[n]) + "\n"
         await ctx.send(f"```{basetext}```")
 
     @commands.command()

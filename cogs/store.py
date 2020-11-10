@@ -7,11 +7,12 @@ from discord.ext import commands
 os.chdir(r"D:\Discordbot\DotaQuizbot")
 
 #The store system:
-store_items = {"Hand of Midas":2200, "Aghanim's Scepter":4200, "Necronomicon":4550, "Shiva's guard":4850, "Monkey King Bar":4852,
-"Octarine Core":5000, "Pirate Hat":6500, "Aegis":8000, "Cheese":20000, "Cursed Rapier":100000}
-store_descriptions = {"Hand of Midas":"Earn 25% bonus gold.", "Cheese":"Alternate, tradable currency.", "Octarine Core":"Lower cooldowns for commands by 25%.",
+store_items = {"Hand of Midas":2200, "Helm of Dominator":2350, "Aghanim's Scepter":4200, "Necronomicon":4550, "Shiva's guard":4850,
+"Monkey King Bar":4852, "Octarine Core":5000, "Pirate Hat":6500, "Aegis":8000, "Cheese":20000, "Cursed Rapier":100000}
+store_descriptions = {"Hand of Midas":"Earn 20% bonus gold.", "Cheese":"Alternate, tradable currency.", "Octarine Core":"Lower cooldowns for commands by 25%.",
 "Cursed Rapier":"Weird flex.", "Shiva's guard":"Add 30% time to answer quizes.", "Aegis":"One extra life for certain commands.", "Aghanim's Scepter":"Allows you to use 322 endless.",
-"Pirate Hat":"Increases the max wager of duel by 10k.", "Monkey King Bar":"Improves typo recognition for quizes.", "Necronomicon":"Increases number of quizes in 322 freeforall."}
+"Pirate Hat":"Increases the max wager of duel by 10k.", "Monkey King Bar":"Improves typo recognition for quizes.", "Necronomicon":"Increases number of quizes in 322 freeforall.",
+"Helm of Dominator":"Gives 5% discount on all items."}
 storekeys, storevalues = list(store_items.keys()), list(store_items.values())
 
 def open_json(jsonfile):
@@ -22,22 +23,24 @@ def save_json(jsonfile, name):          #savefunc for jsonfiles
     with open(jsonfile, "w") as fp:
         json.dump(name, fp)
 
-def add_gold(user: discord.User, newgold: int):     #add gold to users
-    id = str(user.id)
-    if id not in users.keys():      #if user not already in users.json add user
-        users[id] = {"gold" : 10, "items":"[]"}
-        users[id]["gold"] = users[id]["gold"] + round(newgold)
-        return round(newgold)
-        save_json("users.json", users)
-    else:
-        if 2200 in ast.literal_eval(users[id]["items"]):
-            users[id]["gold"] = users[id]["gold"] + round(newgold*1.25)
-            return round(newgold*1.25)
-            save_json("users.json", users)
-        else:
-            users[id]["gold"] = users[id]["gold"] + round(newgold)
-            return round(newgold)
-            save_json("users.json", users)
+def add_gold(user: discord.User, newgold: int):		#add gold to users
+	users = open_json("users.json")
+	id = str(user.id)
+	if 2200 in ast.literal_eval(users[id]["items"]):
+		users[id]["gold"] = users[id]["gold"] + round(newgold*1.2)
+		save_json("users.json", users)
+		return round(newgold*1.2)
+	else:
+		users[id]["gold"] = users[id]["gold"] + round(newgold)
+		save_json("users.json", users)
+		return round(newgold)
+
+def prechecker(user):		#checks user to make sure it's on user.json, if not it will be added
+	users = open_json("users.json")
+	id = str(user.id)
+	if id not in users.keys():
+		users[id] = {"gold":10, "items":"[]", "cheese":0}
+		save_json("users.json", users)
 
 def strip_str(text):        #function to remove punctuations spaces from string and make it lowercase
     punctuations = ''' !-;:'`"\,/_?'''
@@ -54,6 +57,12 @@ def take_index(l1, l2):     #Function to find the index of items in a list that 
             indexi.append(index)
     return indexi
 
+def helm_of_dominator(author, price):       #give discount if userhas helm of the dominator
+    users = open_json("users.json")
+    if 2350 in ast.literal_eval(users[str(author.id)]["items"]):
+        price *= 0.95
+    return round(price)
+
 class Store(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -61,6 +70,7 @@ class Store(commands.Cog):
     @commands.command(brief = "Check how much gold and cheese you own.")
     async def gold(self, ctx):
         users = open_json("users.json")
+        prechecker(ctx.author)
         if str(ctx.author.id) in users.keys():
             authorgold = users[str(ctx.author.id)]["gold"]
             authorcheese = users[str(ctx.author.id)]["cheese"]
@@ -71,40 +81,40 @@ class Store(commands.Cog):
     @commands.command(brief = "Buy an item from the store.")
     async def buy(self, ctx, *, purchase):
         users = open_json("users.json")
+        prechecker(ctx.author)
         id = str(ctx.author.id)
-        if id not in users.keys():      #if user not already in users.json add user
-            users[id] = {"gold":10, "items":"[]", "cheese":0}
-            save_json("users.json", users)
-
         purchasestr = strip_str(purchase)
         user_items = ast.literal_eval(users[id]["items"])       #turn string of list into list
         user_gold = users[id]["gold"]
         if purchasestr not in [strip_str(x) for x in storekeys]:
             await ctx.send("That item doesn't exist.")
         elif purchasestr == "cheese":
-            if user_gold < 20000:
+            price = helm_of_dominator(ctx.author, 20000)
+            if user_gold < price:
                 await ctx.send("You don't have enough gold to purchase cheese yet, it costs ``20000`` gold.")
             else:
                 users[id]["cheese"] = users[id]["cheese"] + 1
-                users[id]["gold"] = users[id]["gold"] - 20000
+                users[id]["gold"] = users[id]["gold"] - price
                 await ctx.send("You have purchased a cheese!")
                 save_json("users.json", users)
         else:                   #list of user items is stored as the item prices in json file
-            itemindex = [strip_str(x) for x in storekeys].index(purchasestr)            #get the index of the item being purchased
+            itemindex = [strip_str(x) for x in storekeys].index(purchasestr)        #get the index of the item being purchased
+            price = helm_of_dominator(ctx.author, storevalues[itemindex])
             if storevalues[itemindex] in user_items:            #if item is already bought
                 await ctx.send("You already have that item.")
-            elif storevalues[itemindex] > user_gold:            #if item is too expensive
+            elif price > user_gold:             #if item is too expensive
                 await ctx.send(f"You don't have enough gold, this item costs {storevalues[itemindex]} gold.")
             else:               #item being purchased
                 user_items.append(storevalues[itemindex])       #new item price is appended to users item list
-                users[id]["items"] = str(user_items)            #update the list back as a string of a list
-                users[id]["gold"] = users[id]["gold"] - storevalues[itemindex]      #take away gold
+                users[id]["items"] = str(user_items)        #update the list back as a string of a list
+                users[id]["gold"] = users[id]["gold"] - price      #take away gold
                 await ctx.send("You have purchased the item.")
                 save_json("users.json", users)
 
     @commands.command(brief = "Sell an item from your inventory.")
     async def sell(self, ctx, *, itemtosell):
         users = open_json("users.json")
+        prechecker(ctx.author)
         id = str(ctx.author.id)
         soldstr = strip_str(itemtosell)             #stripped item to be sold
         user_items = ast.literal_eval(users[id]["items"])           #user inventory
@@ -122,7 +132,6 @@ class Store(commands.Cog):
             itemcost = storevalues[itemindex]
             if itemcost in user_items:          #if item is inside user inventory
                 user_items.remove(itemcost)     #remove the item from inventory, add half the gold in
-                save_json("users.json", users)
                 users[id]["items"] = str(user_items)
                 users[id]["gold"] = users[id]["gold"] + int(itemcost/2)
                 await ctx.send(f"You sold the item for {int(itemcost/2)} gold.")
@@ -135,6 +144,7 @@ class Store(commands.Cog):
     @commands.command(brief = "Check your inventory.")
     async def inventory(self, ctx):         #check inventory
         users = open_json("users.json")
+        prechecker(ctx.author)
         id = str(ctx.author.id)
         str_itemlist = ast.literal_eval(users[id]["items"])         #get list of items the user has(they're integers)
         if len(str_itemlist) == 0:              #if inventory is empty
@@ -180,6 +190,13 @@ class Store(commands.Cog):
     async def buyerror(self, ctx, error):
         if isinstance (error, commands.MissingRequiredArgument):
             await ctx.send("""You need to specify what item you're purchasing, try "322 store" to see available items.""")
+
+    @givecheese.error
+    async def givecheeseerror(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send("You need to specify who you're giving to and how much cheese you're transfering, like so: 322 givecheese @user 1")
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("That user doesn't exist or isn't in this server.")
 
 
     async def cog_command_error(self, ctx, error):
