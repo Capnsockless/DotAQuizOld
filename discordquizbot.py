@@ -26,8 +26,8 @@ command_dinfos = {"quiz":"A single question which gives 14-18 gold with 22 secon
 "shopquiz":"""Endlessly sends icons of a DotA2 items until you run out of the 3 lives you get, a life is lost whenever the player types in an incorrect item or is too late to answer(you have 20 seconds to type in each item), you must type in the items required to assemble the shown item **One by One** in no particular order, you can message "skip" to skip an item and "stop" to stop the quiz entirely at any point. Gives bonus gold according to the amount of correct answers.""",
 "endless":"""Endlessly sends questions, item icons and ability icons randomly, you are given 5 lives. You're given 14 seconds to type in each answer or item. Gives bonus gold according to the amount of current correct answers. You can type in "skip" to skip a question and "stop" to stop the quiz entirely any time. **Aghanim's Scepter is required to use this command**""",
 "iconquiz":"""Endlessly sends DotA2 ability icons that must be named, you are given 3 lives, you earn more gold the more icons you name correctly. You type "skip" to jump to the next icon to lose less hp and type stop to "stop" the quiz entirely.""",
-"duel":"Usage: 322 duel @User <gold amount> | Both duellers must have enough gold to start a duel. After a short delay, sends 15 questions(one by one) which can be answered by both duel participants, first to answer gets +1 point, if the first answer to be sent is incorrect the challenger will lose 1 point. After all 15 questions are answered the winner will get 200 less gold than the wager while the loser loses the full amount of gold. Minimum wager is 300 gold while the maximum is 1000 unless the initiator has a Pirate Hat.", "audioquiz":"""You must be in a accesible voice channel to use this command. Plays sound effects from the game and must be answered in the chat by typing in the name of the item or spell that makes the sound. You can use "skip" to skip a sound or "stop" to disconnect the bot entirely. Each correct answer gives additional 3.2 seconds and every next answer gives more gold.""",
-"freeforall":"Asks 25(35 if initiator has a Necronomicon) questions in a channel which anyone can answer. The prize pool increases exponentially according to how many users participated by giving at least one correct answer and how many questions were answered correctly in total. The prize pool is then distributed among the top 5 players as 60%, 20%, 10%, 5%, 5% of the total prize pool.",
+"duel":"Usage: 322 duel @User <gold amount> | Both duellers must have enough gold to start a duel. After a short delay, sends 15 questions(one by one) which can be answered by both duel participants, first to answer gets +1 point, if the first answer to be sent is incorrect the challenger will lose 1 point. After all 15 questions are answered the winner will get 200 less gold than the wager while the loser loses the full amount of gold. Minimum wager is 300 gold while the maximum is 1000 unless the initiator has a Pirate Hat.", "audioquiz":"""You must be in an accesible voice channel to use this command. Plays sound effects from the game and must be answered in the chat by typing in the name of the item or spell that makes the sound. You can use "skip" to skip a sound or "stop" to disconnect the bot entirely. Each correct answer gives additional 3.2 seconds and every next answer gives more gold.""",
+"freeforall":"Asks 25(35 if initiator has a Necronomicon) questions in a channel which anyone can answer. The prize pool increases exponentially according to the amount of participants who gave at least one correct answer and how many questions were answered correctly in total. Players get points for correct answers and lose a point for a wrong answer. The prize pool is then distributed among the top 5 players as 60%, 20%, 10%, 5%, 5% of the total prize pool.",
 "buy":"Buy one of the items from the store to improve some stats for the quiz commands.", "sell":"Sell an item you already own for half its price.", "store":"Check available items, their prices and what they do.", "inventory":"Check which items you have in your inventory.", "gold":"Check the amount of gold you currently have.", "oversight":"The biggest oversight.", "hohoohahaa":"The Shifting Snow.", "newpatch":"Icefrog releases a new patch.",
 "givecheese":"Usage: 322 givecheese @User <cheese amount> Give another user any amount of cheese.", "cheeseboard":"Check the top 10 users who have the most cheese. Users in different servers have their names hidden but the cheese amount is visible.", "missedhook":"Check why you missed your hook.", "serverinvite":"Get a server invite to our discord server!"}
 
@@ -42,7 +42,9 @@ class MyHelpCommand(commands.DefaultHelpCommand):
         cmd_info = command_dinfos[strip_str(str(command))]
         await self.get_destination().send(f"``{cmd_info}``")
 
-bot = commands.Bot(command_prefix='322 ', case_insensitive=True, help_command=MyHelpCommand())
+intents = discord.Intents(messages=True, members=True, guilds=True, typing=False, presences=False, voice_states=True)
+bot = commands.Bot(command_prefix='322 ', case_insensitive=True, help_command=MyHelpCommand(), intents=intents)
+
 
 startcogs = ["cogs.quizes", "cogs.miscellaneous", "cogs.store"]     #list of cogs to load
 
@@ -74,7 +76,6 @@ async def serverinvite(ctx):             #sends bot information and server invit
         await ctx.send("Info has been sent to you.")
     except Exception:
         await ctx.send("Info can't be sent to you in direct messages(Due to your account privacy settings).")
-
 
 #event for wrong "322 cmnd"
 @bot.event              #ignore and raise certain errors
