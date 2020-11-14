@@ -100,10 +100,13 @@ def compare_strings(author, text, answer, users):			#function to compare user in
 		ratio = max(ratios)				#take the max value, its index and the actual string by the index
 		answerindex = ratios.index(ratio)
 		stripanswer = stripanswers[answerindex]		#just use stripanswer
+#	try:
 	if 4852 in ast.literal_eval(users[str(author.id)]["items"]):		#if user has monkey king bar they get away with more mistakes
 		bool = (ratio > 86)	#change bool to 1 if it's correct
 	else:
 		bool = (ratio > 97)
+#	except KeyError:
+#		bool = (ratio > 95)
 	return CompareOutput(stripanswer, bool)         ###USER MUST BE IN users.json
 
 def find_correct_answer(dictvalue):			#function to find the correct answer to a quiz, used for all quiz commands except shopquiz
@@ -194,13 +197,14 @@ class Quizes(commands.Cog):
 		lives = aegis(author, 3, users)
 		accumulated_g = 0
 		ncorrectansws = 0
+		ncorrectanswsinarow = 0
 		while True:
-			if lives < 0.4:
-				g = add_gold(author, ncorrectansws*(accumulated_g+ncorrectansws-1), users)		#((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
+			if lives < 0.4:		#ncorrectansws*(accumulated_g+ncorrectansws-1)
+				g = add_gold(author, accumulated_g, users)		#((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
 				await ctx.send(f"You ran out of lives, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
 				break
 			elif lives == 322:
-				g = add_gold(author, ncorrectansws*(accumulated_g+ncorrectansws-1), users)		#((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
+				g = add_gold(author, accumulated_g, users)		#((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
 				await ctx.send(f"You have stopped the iconquiz, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
 				break
 			iconn = unique_int_randomizer(server, iconquizlen, "iconquiznumbers", rng)	#Random number to give a random icon
@@ -214,18 +218,21 @@ class Quizes(commands.Cog):
 				lives -= 1
 				await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 				accumulated_g -= 10
+				ncorrectanswsinarow = 0
 			else:
 				if strip_str(msg.content) == "skip":
 					lives -= 0.5
+					ncorrectanswsinarow = 0
 					await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` lives remaining.")
 				elif strip_str(msg.content) == "stop":
 					lives = 322
 				elif compare_strings(author, msg.content, iconquizvalues[iconn], users).success:
 					await channel.send(f"**{random.choice(rightansw)}**")
-					accumulated_g += 10
-					ncorrectansws += 1
+					accumulated_g += 8 + 2*ncorrectanswsinarow
+					ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 				else:
 					lives -= 1
+					ncorrectanswsinarow = 0
 					await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 
 	@commands.command(brief = "Endlessly sends DotA2 items to be assembled.")
@@ -236,17 +243,18 @@ class Quizes(commands.Cog):
 		accumulated_g = 0			#gold that will be given to the user at the end
 		lives = aegis(author, 3, users)		#tries they have for the shopkeeperquiz
 		ncorrectansws = 0			#number of items they completed
+		ncorrectanswsinarow = 0
 		while True:					#while lives are more than 0 it keeps sending new items to build once the previous item is completed/skipped
 			if lives <= 0.4:		#ends the shopquiz
-				g = add_gold(author, ncorrectansws*(accumulated_g+(5*ncorrectansws)-5), users)		#a = accumulated_g, d = 10, n = ncorrectansws
+				g = add_gold(author, accumulated_g, users)		#a = accumulated_g, d = 10, n = ncorrectansws
 				await ctx.send(f"**{author.display_name}** You're out of lives, You built ``{ncorrectansws}`` items and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
 				break
 			elif lives == 322:		#if the quiz is stopped by command
-				g = add_gold(author, ncorrectansws*(accumulated_g+(5*ncorrectansws)-5), users)		#a = accumulated_g, d = 10, n = ncorrectansws
+				g = add_gold(author, accumulated_g, users)		#a = accumulated_g, d = 10, n = ncorrectansws
 				await ctx.send(f"**{author.display_name}** You built ``{ncorrectansws}`` items and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
 				break
 			elif ncorrectansws == 85:
-				g = add_gold(author, (ncorrectansws*(accumulated_g+(5*ncorrectansws)-5))+15000, users)		#a = accumulated_g, d = 10, n = ncorrectansws
+				g = add_gold(author, accumulated_g+100000, users)		#a = accumulated_g, d = 10, n = ncorrectansws
 				await ctx.send(f"**{author.display_name}** You built every item and accumulated ``{g}`` gold during the Shopkeepers Quiz.")
 				break
 			shopkeepn = unique_int_randomizer(server, shopkeeplen, "shopkeepnumbers", rng)
@@ -268,8 +276,8 @@ class Quizes(commands.Cog):
 			await ctx.send("List the items that are required to assemble the shown item **One By One**.", file=discord.File(f"./shopkeepimages/{shopkeepkeys[shopkeepn]}"))
 			while True:						#while item is yet to be completed it takes in answers, checks them and uses them
 				if len(itemanswersmerged) == 0:			#stops the single item answer collecting
-					ncorrectansws += 1
-					accumulated_g += 8
+					accumulated_g += 4 + 10*ncorrectanswsinarow
+					ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 					await ctx.send("*Item complete.*")
 					break
 				elif lives == 322 or lives <= 0.4:
@@ -284,12 +292,14 @@ class Quizes(commands.Cog):
 					lives -= 1
 					await channel.send(f"**{random.choice(lateansw)}**, you have ``{lives}`` lives remaining.")
 					accumulated_g -= 10
+					ncorrectanswsinarow = 0
 				else:
 					if strip_str(msg.content) == "stop":		#changes lives number to 322 and stops the quiz
 						lives = 322
 						break
 					elif strip_str(msg.content) == "skip":		#skip a single item and lose 0.5 life for it
 						lives -= 0.5
+						ncorrectanswsinarow = 0
 						await ctx.send(f"This item could've been built with ``{correctansw}``, you have ``{lives}`` lives remaining.")
 						break
 					elif type(itemanswers[0]) == list:					#if itemanswers has lists of correct answers it checks the correct answ in
@@ -308,6 +318,7 @@ class Quizes(commands.Cog):
 								itemanswersmerged.remove(item)
 						else:
 							lives -= 1
+							ncorrectanswsinarow = 0
 							await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
 					else:
 						result = compare_strings(author, msg.content, itemanswersmerged, users)
@@ -318,6 +329,7 @@ class Quizes(commands.Cog):
 							itemanswersmerged.remove(result.answer)
 						else:
 							lives -= 1
+							ncorrectanswsinarow = 0
 							await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
 
 	@commands.command(brief = "Plays DotA2 sound effects to recognize.")
@@ -532,8 +544,8 @@ class Quizes(commands.Cog):
 							g = add_gold(sortedkeys[i], userprize, users)
 						else:
 							break
-						multiplier1 = 28 - len(sortedkeys[i].display_name)
-						multiplier2 = 11 - len(str(sortedvalues[i]))
+						multiplier1 = 35 - len(sortedkeys[i].display_name)
+						multiplier2 = 17 - len(str(sortedvalues[i]))
 						basestr = basestr + str(i + 1) + ")" + sortedkeys[i].display_name + " "*multiplier1 + str(sortedvalues[i]) + " "*multiplier2 + str(g) + "gold\n"
 				else:
 					for i in range(0, len(sortedusersdict)):		#same here happens here as above but it only displays <5 users
@@ -542,33 +554,35 @@ class Quizes(commands.Cog):
 							g = add_gold(sortedkeys[i], userprize, users)
 						else:
 							break
-						multiplier1 = 28 - len(sortedkeys[i].display_name)
-						multiplier2 = 11 - len(str(sortedvalues[i]))
+						multiplier1 = 35 - len(sortedkeys[i].display_name)
+						multiplier2 = 17 - len(str(sortedvalues[i]))
 						basestr = basestr + str(i + 1) + ")" + sortedkeys[i].display_name + " "*multiplier1 + str(sortedvalues[i]) + " "*multiplier2 + str(g) + "gold\n"
 				await ctx.send(f"```{basestr}```")
 				break
-			time.sleep(0.4)
+			time.sleep(0.35)
 			questn = unique_int_randomizer(server, questlen, "questnumbers", rng)		#Random number to give a random question
 			nquestions -= 1
 			correctansw = find_correct_answer(questvalues[questn])
 			if type(questkeys[questn]) == tuple:		#if the question comes with an image
 				await ctx.send(f"**```{questkeys[questn][0]}```**", file=discord.File(f"./quizimages/{questkeys[questn][1]}"))
+				giventime = calc_time(questkeys[questn][0], questvalues[questn])
 			else:										#for normal string questions
 				await ctx.send(f"**```{questkeys[questn]}```**")
+				giventime = calc_time(questkeys[questn], questvalues[questn])
 			def check(m):
 				return m.channel == channel		#checks if the reply came from the same channel
 			try:
-				msg = await self.bot.wait_for("message", check=check, timeout=20.322)
+				msg = await self.bot.wait_for("message", check=check, timeout=giventime+15)
 			except asyncio.TimeoutError:			#If too late
 				await channel.send(f"**{random.choice(lateansw)}**, The correct answer was ``{correctansw}``.")
 			else:
 				currentauthor = msg.author
+				prepare_quiz(currentauthor, server)
 				if compare_strings(currentauthor, msg.content, questvalues[questn], users).success:		#If there is one correct answer
 					await channel.send(f"**{random.choice(rightansw)}**")
 					if currentauthor in list(usersdict.keys()):		#if user is already listed in the dict increment the correct answers
 						usersdict[currentauthor] += 1
 					else:											#if not set the new user as a key and set 1 correct answer
-						prepare_quiz(currentauthor, server)
 						usersdict.update({currentauthor:1})
 					ncorrectansws += 1
 				else:			#if there are multiple answers
@@ -589,14 +603,15 @@ class Quizes(commands.Cog):
 			if 4200 in ast.literal_eval(users[str(author.id)]["items"]):
 				accumulated_g = 0		#accumulated gold during the quiz
 				ncorrectansws = 0		#number of correct answers
+				ncorrectanswsinarow = 0
 				lives = aegis(author, 5, users)
 				while True:			#keeps asking questions till it breaks
 					if lives < 0.4:		#break the whole command if lives are 0 or 322(which means the command was stopped by user)
-						g = add_gold(author, add_gold(author, ncorrectansws*(accumulated_g+ncorrectansws-1)), users)	#((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
+						g = add_gold(author, accumulated_g, users)	#((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
 						await ctx.send(f"You ran out of lives and you accumulated ``{g}`` gold by getting ``{ncorrectansws}`` correct answers.")
 						break
 					if lives == 322:
-						g = add_gold(author, add_gold(author, ncorrectansws*(accumulated_g+ncorrectansws-1)), users)	#((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
+						g = add_gold(author, accumulated_g, users)	#((2a+d(n-1))/2)n a = accumulated_g d = 2  n = ncorrectansws
 						await ctx.send(f"You have stopped the endless quiz, you accumulated ``{g}`` gold by getting ``{ncorrectansws}`` correct answers.")
 						break
 					decider = random.randint(0, 2)
@@ -615,17 +630,20 @@ class Quizes(commands.Cog):
 								lives -= 1
 								await channel.send(f"**{random.choice(lateansw)}**, the correct answer was ``{correctansw}``, ``{lives}`` lives left.")
 								accumulated_g -= 25
+								ncorrectanswsinarow = 0
 							else:
 								if strip_str(msg.content) == "skip":	#if user skips a question
 									lives -= 0.5
+									ncorrectanswsinarow = 0
 									await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` remaining.")
 								elif strip_str(msg.content) == "stop":	#if user stops the "endless" quiz
 									lives = 322
 								elif compare_strings(author, msg.content, questvalues[questn], users).success and strip_str(msg.content) != "skip" and strip_str(msg.content) != "stop":	#If there is only one correct answer
-									accumulated_g += 12
-									ncorrectansws += 1
+									accumulated_g += 10 + 2*ncorrectansws
+									ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 								else:
 									lives -= 1
+									ncorrectanswsinarow = 0
 									if type(questvalues[questn]) == list:
 										await ctx.send(f"**{random.choice(wrongansw)}** One of the possible answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 									else:
@@ -651,8 +669,8 @@ class Quizes(commands.Cog):
 						await ctx.send("List the items that are required to assemble the shown item **One By One**.", file=discord.File(f"./shopkeepimages/{shopkeepkeys[shopkeepn]}"))
 						while True:		#while item is yet to be completed it takes in answers, checks them and uses them
 							if len(itemanswersmerged) == 0:		#stops the individual item answer collecting
-								ncorrectansws += 1
-								accumulated_g += 28
+								ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
+								accumulated_g += 28 + 2*ncorrectanswsinarow
 								break
 							elif lives < 0.4:
 								await ctx.send(f"You could've built this item with ``{correctansw}``.")
@@ -666,9 +684,11 @@ class Quizes(commands.Cog):
 								lives -= 1#If too late
 								await channel.send(f"**{random.choice(lateansw)}**, you have ``{lives}`` lives remaining.")
 								accumulated_g -= 18
+								ncorrectanswsinarow = 0
 							else:
 								if strip_str(msg.content) == "skip":	#to skip an item
 									lives -= 0.5
+									ncorrectanswsinarow = 0
 									await ctx.send(f"You have ``{lives}`` lives remaining, this item is built with ``{correctansw}``.")
 									break
 								elif strip_str(msg.content) == "stop":	#to stop the endless quiz
@@ -690,6 +710,7 @@ class Quizes(commands.Cog):
 											itemanswersmerged.remove(item)
 									else:
 										lives -= 1
+										ncorrectanswsinarow = 0
 										await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
 								else:
 									result = compare_strings(author, msg.content, itemanswers, users)
@@ -700,6 +721,7 @@ class Quizes(commands.Cog):
 										itemanswersmerged.remove(result.answer)
 									else:
 										lives -= 1
+										ncorrectanswsinarow = 0
 										await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
 
 					else:
@@ -714,17 +736,20 @@ class Quizes(commands.Cog):
 							lives -= 1
 							await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 							accumulated_g -= 15
+							ncorrectanswsinarow = 0
 						else:
 							if strip_str(msg.content) == "skip":
 								lives -= 0.5
+								ncorrectanswsinarow = 0
 								await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` lives remaining.")
 							elif strip_str(msg.content) == "stop":
 								lives = 322
 							elif compare_strings(author, msg.content, iconquizvalues[iconn], users).success:
-								accumulated_g += 9
-								ncorrectansws += 1
+								accumulated_g += 9 + 2*ncorrectanswsinarow
+								ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 							else:
 								lives -= 1
+								ncorrectanswsinarow = 0
 								await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 			else:
 				self.endless.reset_cooldown(ctx)
