@@ -13,10 +13,10 @@ os.chdir(r"D:\Discordbot\DotaQuizbot")
 
 #importing all quizes from quizdata
 import quizdata
-#questdict is for quiz, blitz, duel, freeforall, shopkeepdict is for shopquiz, iconquizdict - iconquiz, audioquiz - audioquiz
-questdict, shopkeepdict, iconquizdict, audioquizdict = quizdata.questdict, quizdata.shopkeepdict, quizdata.iconquizdict, quizdata.audioquizdict
-#getting their lengths
-questlen, shopkeeplen, iconquizlen, audioquizlen = len(questdict)-1, len(shopkeepdict)-1, len(iconquizdict)-1, len(audioquizdict)-1
+#questdict is for quiz, blitz, duel, freeforall, shopkeepdict is for shopquiz, iconquizdict - iconquiz, audioquiz - audioquiz, scramblelist - scramble
+questdict, shopkeepdict, iconquizdict, audioquizdict, scramblelist = quizdata.questdict, quizdata.shopkeepdict, quizdata.iconquizdict, quizdata.audioquizdict, quizdata.scramblelist
+#getting their lengths for the indicies, hence the -1
+questlen, shopkeeplen, iconquizlen, audioquizlen, scramblelen = len(questdict)-1, len(shopkeepdict)-1, len(iconquizdict)-1, len(audioquizdict)-1, len(scramblelist)-1
 #getting all of their keys and values as seperate lists
 questkeys, questvalues = list(questdict.keys()), list(questdict.values())
 shopkeepkeys, shopkeepvalues = list(shopkeepdict.keys()), list(shopkeepdict.values())
@@ -25,7 +25,8 @@ audioquizkeys, audioquizvalues = list(audioquizdict.keys()), list(audioquizdict.
 
 #lists of Replies in case of right, wrong or no/late answers
 rightansw, wrongansw, lateansw = quizdata.rightansw, quizdata.wrongansw, quizdata.lateansw
-
+#for scramble
+charemojies = quizdata.charemojies
 #Prize percentages for 322 freeforall
 prizeperc = {0:0.6, 1:0.2, 2:0.1, 3:0.05, 4:0.05}
 
@@ -46,7 +47,7 @@ def prepare_quiz(user, server):		#checks user and server to make sure they're on
 	rng = open_json("rngfix.json")		#server
 	serv_id = str(server.id)
 	if serv_id not in rng.keys():
-		rng[serv_id] = {"questnumbers":"[]", "shopkeepnumbers":"[]", "iconquiznumbers":"[]", "audioquiznumbers":"[]", "vacuumcd":16}
+		rng[serv_id] = {"questnumbers":"[]", "shopkeepnumbers":"[]", "iconquiznumbers":"[]", "audioquiznumbers":"[]", "scramblenumbers":"[]", "vacuumcd":16}
 		save_json("rngfix.json", rng)
 	return users, rng
 
@@ -78,10 +79,11 @@ def unique_int_randomizer(server, length, listkey: str, rng):		#unique_int_rando
 def strip_str(text):		#function to remove punctuations, spaces and "the" from string and make it lowercase,
 	punctuations = ''' !-;:`'"\,/_?'''			# in order to compare bot answers and user replies
 	text2 = ""
+	text.replace("the ", "")
 	for char in text:
 		if char not in punctuations:
 			text2 = text2 + char
-	return text2.lower().replace("the", "")
+	return text2.lower()
 
 class CompareOutput():		#class for compare_strings() to contain the answer which the user put in and also if it's correct or not
     def __init__(self, answer, success):
@@ -100,13 +102,10 @@ def compare_strings(author, text, answer, users):			#function to compare user in
 		ratio = max(ratios)				#take the max value, its index and the actual string by the index
 		answerindex = ratios.index(ratio)
 		stripanswer = stripanswers[answerindex]		#just use stripanswer
-#	try:
 	if 4852 in ast.literal_eval(users[str(author.id)]["items"]):		#if user has monkey king bar they get away with more mistakes
 		bool = (ratio > 86)	#change bool to 1 if it's correct
 	else:
 		bool = (ratio > 97)
-#	except KeyError:
-#		bool = (ratio > 95)
 	return CompareOutput(stripanswer, bool)         ###USER MUST BE IN users.json
 
 def find_correct_answer(dictvalue):			#function to find the correct answer to a quiz, used for all quiz commands except shopquiz
@@ -228,12 +227,38 @@ class Quizes(commands.Cog):
 					lives = 322
 				elif compare_strings(author, msg.content, iconquizvalues[iconn], users).success:
 					await channel.send(f"**{random.choice(rightansw)}**")
-					accumulated_g += 8 + 2*ncorrectanswsinarow
+					accumulated_g += 16 + 2*ncorrectanswsinarow
 					ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 				else:
 					lives -= 1
 					ncorrectanswsinarow = 0
 					await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
+
+	@commands.command(brief = "Recognize DotA2 words among scrambled letters.")
+	@commands.cooldown(1, 8, commands.BucketType.user)
+	async def scramble(self, ctx):
+		server, channel, author = ctx.guild, ctx.channel, ctx.author		#the server, channel and author of the command activator
+		users, rng = prepare_quiz(author,server)
+		scramblen = unique_int_randomizer(server, scramblelen, "scramblenumbers", rng)			#Random number to give a random question
+		correctansw = scramblelist[scramblen]			#the correct answer
+		scrambledworde = []			#empty list to .join() emojies onto
+		charlist = list(strip_str(correctansw))			#converting string to list
+		for char in random.sample(charlist, len(charlist)):		#shuffling the word list and looping through it
+			scrambledworde.append(charemojies[char])		#picking up values of charemojies of the lowercase characters
+		output = " ".join(scrambledworde)					#joining them to form a string of all emojies to output
+		await ctx.send(f"**``Unscramble this word:``**\n{output}")
+		def check(m):
+			return m.channel == channel and m.author == author		#checks if the reply came from the same person in the same channel
+		try:
+			msg = await self.bot.wait_for("message", check=check, timeout=shiva(author, 25.322, users))
+		except asyncio.TimeoutError:		#If too late
+			await channel.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``")
+		else:
+			if compare_strings(author, msg.content, correctansw, users).success:
+				g = add_gold(author, 40, users)
+				await channel.send(f"**{random.choice(rightansw)}** you got ``{g}`` gold.")
+			else:
+				await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
 
 	@commands.command(brief = "Endlessly sends DotA2 items to be assembled.")
 	@commands.cooldown(1, 50, commands.BucketType.user)
@@ -276,7 +301,7 @@ class Quizes(commands.Cog):
 			await ctx.send("List the items that are required to assemble the shown item **One By One**.", file=discord.File(f"./shopkeepimages/{shopkeepkeys[shopkeepn]}"))
 			while True:						#while item is yet to be completed it takes in answers, checks them and uses them
 				if len(itemanswersmerged) == 0:			#stops the single item answer collecting
-					accumulated_g += 4 + 10*ncorrectanswsinarow
+					accumulated_g += 40 + 11*ncorrectanswsinarow
 					ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 					await ctx.send("*Item complete.*")
 					break
@@ -570,28 +595,36 @@ class Quizes(commands.Cog):
 				await ctx.send(f"**```{questkeys[questn]}```**")
 				giventime = calc_time(questkeys[questn], questvalues[questn])
 			def check(m):
-				return m.channel == channel		#checks if the reply came from the same channel
-			try:
-				msg = await self.bot.wait_for("message", check=check, timeout=giventime+15)
-			except asyncio.TimeoutError:			#If too late
-				await channel.send(f"**{random.choice(lateansw)}**, The correct answer was ``{correctansw}``.")
-			else:
-				currentauthor = msg.author
-				prepare_quiz(currentauthor, server)
-				if compare_strings(currentauthor, msg.content, questvalues[questn], users).success:		#If there is one correct answer
-					await channel.send(f"**{random.choice(rightansw)}**")
-					if currentauthor in list(usersdict.keys()):		#if user is already listed in the dict increment the correct answers
-						usersdict[currentauthor] += 1
-					else:											#if not set the new user as a key and set 1 correct answer
-						usersdict.update({currentauthor:1})
-					ncorrectansws += 1
-				else:			#if there are multiple answers
+				return m.channel == channel and m.author != self.bot.user		#checks if the reply came from the same channel
+			counter = 0				#counter to allow only 3 incorrect answers before moving on
+			while True:
+				if counter >= 3:		#stopping the current one question
 					if type(questvalues[questn]) == list:
-						await channel.send(f"**{random.choice(wrongansw)}** One of the possible answers was ``{correctansw}``")
+						await channel.send(f"One of the possible answers was ``{correctansw}``")
 					else:
-						await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``.")
-					if currentauthor in list(usersdict.keys()):		#if user is already listed in the dict increment the correct answers
-						usersdict[currentauthor] -= 1			#take a point away if answer is wrong
+						await channel.send(f"The correct answer was ``{correctansw}``")
+					break
+				try:
+					msg = await self.bot.wait_for("message", check=check, timeout=giventime+6)
+				except asyncio.TimeoutError:			#If too late instantly moves to next question
+					await channel.send(f"**{random.choice(lateansw)}**, The correct answer was ``{correctansw}``.")
+					break
+				else:
+					currentauthor = msg.author
+					prepare_quiz(currentauthor, server)
+					if compare_strings(currentauthor, msg.content, questvalues[questn], users).success:		#If there is one correct answer
+						await channel.send(f"**{random.choice(rightansw)}**")
+						if currentauthor in list(usersdict.keys()):		#if user is already listed in the dict increment the correct answers
+							usersdict[currentauthor] += 1
+						else:											#if not set the new user as a key and set 1 correct answer
+							usersdict.update({currentauthor:1})
+						ncorrectansws += 1
+						break
+					else:			#if there are multiple answers
+						await channel.send(f"**{random.choice(wrongansw)}**")
+						if currentauthor in list(usersdict.keys()):		#if user is already listed in the dict increment the correct answers
+							usersdict[currentauthor] -= 1			#take a point away if answer is wrong
+						counter += 1
 
 	@commands.command(brief = "Endless mix of questions, items and icons.")
 	@commands.cooldown(1, 400, commands.BucketType.user)
@@ -639,7 +672,7 @@ class Quizes(commands.Cog):
 								elif strip_str(msg.content) == "stop":	#if user stops the "endless" quiz
 									lives = 322
 								elif compare_strings(author, msg.content, questvalues[questn], users).success and strip_str(msg.content) != "skip" and strip_str(msg.content) != "stop":	#If there is only one correct answer
-									accumulated_g += 10 + 2*ncorrectansws
+									accumulated_g += 14 + 2*ncorrectansws
 									ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 								else:
 									lives -= 1
@@ -670,7 +703,7 @@ class Quizes(commands.Cog):
 						while True:		#while item is yet to be completed it takes in answers, checks them and uses them
 							if len(itemanswersmerged) == 0:		#stops the individual item answer collecting
 								ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
-								accumulated_g += 28 + 2*ncorrectanswsinarow
+								accumulated_g += 48 + 2*ncorrectanswsinarow
 								break
 							elif lives < 0.4:
 								await ctx.send(f"You could've built this item with ``{correctansw}``.")
@@ -745,7 +778,7 @@ class Quizes(commands.Cog):
 							elif strip_str(msg.content) == "stop":
 								lives = 322
 							elif compare_strings(author, msg.content, iconquizvalues[iconn], users).success:
-								accumulated_g += 9 + 2*ncorrectanswsinarow
+								accumulated_g += 12 + 2*ncorrectanswsinarow
 								ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 							else:
 								lives -= 1
@@ -782,6 +815,19 @@ class Quizes(commands.Cog):
 					await ctx.send("**IconQuiz** is on **cooldown** at the moment.")
 			else:
 				await ctx.send("**IconQuiz** is on **cooldown** at the moment. You can buy an Octarine Core in the store to decrease command cooldowns.")
+
+	@scramble.error
+	async def scrambleerror(self, ctx, error):
+		if isinstance(error, commands.CommandOnCooldown):
+			users = open_json("users.json")
+			if 5000 in ast.literal_eval(users[str(ctx.message.author.id)]["items"]):
+				if error.retry_after < 3:
+					await ctx.reinvoke()
+					return
+				else:
+					await ctx.send("**Scramble** is on **cooldown** at the moment.")
+			else:
+				await ctx.send("**Scramble** is on **cooldown** at the moment. You can buy an Octarine Core in the store to decrease command cooldowns.")
 
 	@shopquiz.error
 	async def shopquizerror(self, ctx, error):
