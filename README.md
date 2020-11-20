@@ -14,14 +14,15 @@ I didn't include these files here since they are over 900 in total. Folders are 
 You can see these folders being called in various commands in /cogs/quizes.py
 
 # Issues
-There are many issues, mostly OOP related ones:
+There are a few issues, mainly - the help command isn't sorted:
 I can't sort the help command, optimally, it would be as such:
 Quizes:
  - quiz
- - blitz
  - iconquiz
+ - scramble
  - shopquiz
  - audioquiz
+ - freeforall
  - duel
  - endless
  
