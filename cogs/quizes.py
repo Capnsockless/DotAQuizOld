@@ -66,10 +66,9 @@ def unique_int_randomizer(server, length, listkey: str, rng):		#unique_int_rando
 			return n
 
 def strip_str(text):		#function to remove punctuations, spaces and "the" from string and make it lowercase,
-	punctuations = ''' !-;:`'"\,/_?'''			# in order to compare bot answers and user replies
+	punctuations = ''' !-;:`'".,/_?'''			# in order to compare bot answers and user replies
 	text2 = ""
-	text1 = text.lower().replace("the ", "")
-	for char in text1:
+	for char in text.lower().replace("the ", ""):
 		if char not in punctuations:
 			text2 = text2 + char
 	return text2
@@ -166,7 +165,7 @@ class Quizes(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
-	@commands.command(brief = "A single DotA related question for a bit of gold.")
+	@commands.command(brief = "A single DotA related question for a bit of gold.", aliases = ["q"])
 	@commands.cooldown(1, 7, commands.BucketType.user)
 	async def quiz(self, ctx):
 		server, channel, author = ctx.guild, ctx.channel, ctx.author		#the server, channel and author of the command activator
@@ -194,7 +193,7 @@ class Quizes(commands.Cog):
 				else:
 					await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
 
-	@commands.command(brief = "Endlessly sends DotA 2 ability icons to name.")
+	@commands.command(brief = "Endlessly sends DotA 2 ability icons to name.", aliases = ["icon"])
 	@commands.cooldown(1, 50, commands.BucketType.user)
 	async def iconquiz(self, ctx):
 		server, channel, author = ctx.guild, ctx.channel, ctx.author	#the server, channel and author of the command activator
@@ -241,7 +240,7 @@ class Quizes(commands.Cog):
 					ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
 					await channel.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 
-	@commands.command(brief = "Recognize DotA2 words among scrambled letters.")
+	@commands.command(brief = "Recognize DotA2 words among scrambled letters.", aliases = ["shuffle", "mix"])
 	@commands.cooldown(1, 8, commands.BucketType.user)
 	async def scramble(self, ctx):
 		server, channel, author = ctx.guild, ctx.channel, ctx.author		#the server, channel and author of the command activator
@@ -362,7 +361,7 @@ class Quizes(commands.Cog):
 							ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
 							await ctx.send(f"**{random.choice(wrongansw)}** you have ``{lives}`` lives remaining.")
 
-	@commands.command(brief = "Plays DotA2 sound effects to recognize.")
+	@commands.command(brief = "Plays DotA2 sound effects to recognize.", aliases = ["audio"])
 	@commands.cooldown(1, 50, commands.BucketType.user)
 	async def audioquiz(self, ctx):
 		server, channel, author = ctx.guild, ctx.channel, ctx.author		#get users server, channel and author
@@ -564,7 +563,7 @@ class Quizes(commands.Cog):
 				else:
 					await ctx.send("The opponent has declined the offer.")
 
-	@commands.command(brief = "Set of quizes multiple people can answer.")
+	@commands.command(brief = "Set of quizes multiple people can answer.", aliases = ["ffa"])
 	@commands.cooldown(1, 80, commands.BucketType.channel)
 	async def freeforall(self, ctx):
 		server, channel, author = ctx.guild, ctx.channel, ctx.author		#the server, channel and author of the command activator
@@ -579,7 +578,18 @@ class Quizes(commands.Cog):
 				sortedusersdict = {k: v for k, v in sorted(usersdict.items(), key=lambda item: item[1], reverse=True)}	#sorting users according to
 				sortedkeys, sortedvalues = list(sortedusersdict.keys()), list(sortedusersdict.values())	#their points and getting the keys and values
 				basestr = "Participant: 		          Points:	    	Prize:\n"		#base of the ending message
-				for i in range(0, len(sortedusersdict)):		#same here happens here as above but it only displays <5 users
+				if len(sortedusersdict) > 5:
+					for i in range(0, 5):			#display the top 5 players
+						userprize = round(prizepool * prizeperc[i])
+						if sortedvalues[i] > 0:
+							tempplayer = Player(sortedkeys[i], users)
+							g = tempplayer.add_gold(userprize)
+						else:
+							break
+						multiplier1 = 35 - len(sortedkeys[i].display_name)
+						multiplier2 = 15 - len(str(sortedvalues[i]))
+						basestr = basestr + str(i + 1) + ")" + sortedkeys[i].display_name + " "*multiplier1 + str(sortedvalues[i]) + " "*multiplier2 + str(g) + " gold\n"
+				else:
 					userprize = round(prizepool * prizeperc[i])
 					if sortedvalues[i] > 0:
 						tempplayer = Player(sortedkeys[i], users)
@@ -694,7 +704,6 @@ class Quizes(commands.Cog):
 						await ctx.send(f"You have stopped the endless quiz, you accumulated ``{g}`` gold by getting ``{ncorrectansws}`` correct answers.")
 						break
 					decider = random.randint(0, 3)
-					await ctx.send(decider)
 					if decider == 0:		#if random number is 0 the question will be quiz
 							questn = unique_int_randomizer(server, questlen, "questnumbers", rng)			#Random number to give a random question
 							correctansw = find_correct_answer(questvalues[questn])		#obtaining the correct answer to display later

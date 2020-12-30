@@ -7,12 +7,12 @@ from discord.ext import commands
 os.chdir(r"D:\Discordbot\DotaQuizbot")
 
 #The store system:
-store_items = {"Hand of Midas":2200, "Helm of Dominator":2350, "Aghanim's Scepter":4200, "Necronomicon":4550, "Shiva's guard":4850,
+store_items = {"Hand of Midas":2200, "Helm of Dominator":2350, "Aeon Disk":3100, "Aghanim's Scepter":4200, "Necronomicon":4550, "Shiva's guard":4850,
 "Monkey King Bar":4852, "Octarine Core":5000, "Pirate Hat":6500, "Aegis":8000, "Cheese":20000, "Cursed Rapier":100000}
 store_descriptions = {"Hand of Midas":"Earn 20% bonus gold.", "Cheese":"Alternate, tradable currency.", "Octarine Core":"Lower cooldowns for commands by 25%.",
 "Cursed Rapier":"Weird flex.", "Shiva's guard":"Add 30% time to answer quizes.", "Aegis":"One extra life for certain commands.", "Aghanim's Scepter":"Allows you to use 322 endless.",
 "Pirate Hat":"Increases the max wager of duel by 10k.", "Monkey King Bar":"Improves typo recognition for quizes.", "Necronomicon":"Increases number of quizes in 322 freeforall.",
-"Helm of Dominator":"Gives 5% discount on all items."}
+"Helm of Dominator":"Gives 5% discount on all items.", "Aeon Disk":"Saves half of your answer streak."}
 storekeys, storevalues = list(store_items.keys()), list(store_items.values())
 
 def open_json(jsonfile):
@@ -112,11 +112,11 @@ class Store(commands.Cog):
                 save_json("users.json", users)
 
     @commands.command(brief = "Sell an item from your inventory.")
-    async def sell(self, ctx, *, itemtosell):
+    async def sell(self, ctx, *, sale):
         users = open_json("users.json")
         prechecker(ctx.author)
         id = str(ctx.author.id)
-        soldstr = strip_str(itemtosell)             #stripped item to be sold
+        soldstr = strip_str(sale)             #stripped item to be sold
         user_items = ast.literal_eval(users[id]["items"])           #user inventory
         strippeditems = [strip_str(x) for x in storekeys]       #list of stripped store items
         if soldstr == "cheese":
@@ -141,7 +141,7 @@ class Store(commands.Cog):
         else:                 #if item doesn't exist at all
             await ctx.send("That item doesn't exist in the store.")
 
-    @commands.command(brief = "Check your inventory.")
+    @commands.command(brief = "Check your inventory.", aliases = ["inv"])
     async def inventory(self, ctx):         #check inventory
         users = open_json("users.json")
         prechecker(ctx.author)
@@ -155,7 +155,7 @@ class Store(commands.Cog):
             items_listed = "``, ``".join(inventory)         #create a string to be put into the message
             await ctx.send(f"You have ``{items_listed}`` in your inventory.")
 
-    @commands.command(brief = "See what items are available.")
+    @commands.command(brief = "See what items are available.", aliases = ["shop"])
     async def store(self, ctx):
         artifacts = ""
         for item in store_items:        #concatenates all the names and prices together to form a list of store items
@@ -164,7 +164,7 @@ class Store(commands.Cog):
             artifacts = artifacts + item + (multiplier * " ") + str(store_items[item]) + (multiplier2 * " ") + store_descriptions[item] + " \n"
         await ctx.send(f"``` Item:          Price:    Description: \n{artifacts}```")
 
-    @commands.command(brief = "Give someone cheese.")
+    @commands.command(brief = "Give someone cheese.", aliases = ["give"])
     async def givecheese(self, ctx, reciever: discord.Member, amount:int):
         users = open_json("users.json")
         giver = str(ctx.author.id)          #obtain ids of the cheese giver and reciever
@@ -182,7 +182,7 @@ class Store(commands.Cog):
         else:
             users[giver]["cheese"] = users[giver]["cheese"] - amount
             users[reciever]["cheese"] = users[reciever]["cheese"] + amount
-            await ctx.send(f"You have successfully transferred {amount} cheese.")
+            await ctx.send(f"You have successfully transferred {amount} cheese!")
             save_json("users.json", users)
 
 
