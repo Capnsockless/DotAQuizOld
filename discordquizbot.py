@@ -61,7 +61,7 @@ intents = discord.Intents(messages=True, members=True, guilds=True, typing=False
 bot = commands.Bot(command_prefix='322 ', case_insensitive=True, help_command=MyHelpCommand(), intents=intents)
 
 
-startcogs = ["cogs.quizes", "cogs.miscellaneous", "cogs.store"]     #list of cogs to load
+startcogs = ["cogs.quizes", "cogs.store", "cogs.miscellaneous",]     #list of cogs to load
 
 if __name__ == '__main__':              #loading the cogs from the directory ./cogs
     for extension in startcogs:
