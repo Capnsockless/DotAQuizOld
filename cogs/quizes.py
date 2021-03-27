@@ -9,7 +9,7 @@ from fuzzywuzzy import fuzz
 from mutagen.mp3 import MP3
 from discord.ext import commands
 
-os.chdir(r"D:\Discordbot\DotaQuizbot")
+os.chdir(os.getcwd())
 
 #importing all quizes from quizdata
 import quizdata
@@ -27,8 +27,8 @@ audioquizkeys, audioquizvalues = list(audioquizdict.keys()), list(audioquizdict.
 rightansw, wrongansw, lateansw = quizdata.rightansw, quizdata.wrongansw, quizdata.lateansw
 #for scramble
 charemojies = quizdata.charemojies
-#for shopquiz
-ingredients, alphabet = quizdata.ingredients, quizdata.alphabet
+#for shopquiz and simpleiconquiz
+ingredients, iconnames, alphabet = quizdata.ingredients, quizdata.iconnames, quizdata.alphabet
 #Prize percentages for 322 freeforall
 prizeperc = {0:0.6, 1:0.2, 2:0.1, 3:0.05, 4:0.05}
 
@@ -62,7 +62,7 @@ def calc_time(question, answer):			#Function to calculate time for each question
 		answlen = len(answer)
 	else:						#takes the average length of all answers
 		answlen = sum(map(len, answer))/len(answer)
-	seconds = queslen/11 + answlen/4
+	seconds = queslen/12 + answlen/5
 	return seconds
 
 class Player():
@@ -72,7 +72,7 @@ class Player():
 		self.rng = open_json("rngfix.json")
 		id = str(self.author.id)
 		if id not in self.users.keys():
-			users[id] = {"gold":10, "items":"[]", "cheese":0}
+			self.users[id] = {"gold":10, "items":"[]", "cheese":0}
 			save_json("users.json", self.users)
 		serv_id = str(self.server.id)
 		if serv_id not in self.rng.keys():
@@ -116,19 +116,23 @@ class Player():
 
 	def add_gold(self, newgold):		#add gold to users
 		id = str(self.author.id)
+		multiplier = 1
 		if 2200 in self.inventory:
-			newgold *= 1.2
+			multiplier += 0.2
 		if 2476 in self.inventory:
-			newgold *= 1.05
+			multiplier += 0.05
+		newgold *= multiplier
 		self.users[id]["gold"] = self.users[id]["gold"] + round(newgold)
 		save_json("users.json", self.users)
 		return round(newgold)
 
 	def shiva(self, duration):				#Set duration for quiz commands(30% more time if shiva is held)
+		multiplier = 1
 		if 4850 in self.inventory:
-			duration *= 1.3
+			multiplier += 0.3
 		if 2476 in self.inventory:
-			duration *= 0.9
+			multiplier -= 0.1
+		duration *= multiplier
 		return round(duration)
 
 	def aegis(self, lives):				#Set amount of lives(+1 if the user has aegis)
@@ -176,7 +180,7 @@ class Quizes(commands.Cog):
 			await ctx.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``")
 		else:
 			if player.compare_strings(msg.content, answer):
-				g = player.add_gold(16)
+				g = player.add_gold(24)
 				await ctx.send(f"**{random.choice(rightansw)}** you got ``{g}`` gold.")
 			else:
 				if type(answer) == list:
@@ -184,7 +188,7 @@ class Quizes(commands.Cog):
 				else:
 					await ctx.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
 
-	@commands.command(brief = "Recognize DotA2 words among scrambled letters.", aliases = ["shuffle", "mix"])
+	@commands.command(brief = "Recognize hero names among scrambled letters.", aliases = ["shuffle", "mix"])
 	@commands.cooldown(1, 8, commands.BucketType.user)
 	async def scramble(self, ctx):
 		player = Player(ctx.author, ctx)
@@ -204,7 +208,7 @@ class Quizes(commands.Cog):
 			await ctx.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``")
 		else:
 			if player.compare_strings(msg.content, correctansw):
-				g = player.add_gold(100)
+				g = player.add_gold(70)
 				await ctx.send(f"**{random.choice(rightansw)}** you got ``{g}`` gold.")
 			else:
 				await ctx.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
@@ -249,14 +253,85 @@ class Quizes(commands.Cog):
 					lives = 322
 				elif player.compare_strings(msg.content, answer):
 					await ctx.send(f"**{random.choice(rightansw)}**")
-					accumulated_g += 16 + 2*ncorrectanswsinarow
+					accumulated_g += 20 + 5*ncorrectanswsinarow
 					ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 				else:
 					lives -= 1
 					ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
 					await ctx.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 
-	@commands.command(brief = "Endlessly sends DotA2 items to be assembled.")
+	@commands.command(brief = "iconquiz as a multiple choice test.", aliases = ["easyicon"], hidden=True)
+	@commands.cooldown(1, 50, commands.BucketType.user)
+	async def easyiconquiz(self, ctx):
+		player = Player(ctx.author, ctx)
+		lives = player.aegis(3)
+		accumulated_g = 0
+		ncorrectansws = 0
+		ncorrectanswsinarow = 0
+		while True:
+			if lives < 0.4:
+				g = player.add_gold(accumulated_g)
+				await ctx.send(f"You ran out of lives, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
+				break
+			elif lives == 322:
+				g = player.add_gold(accumulated_g)
+				await ctx.send(f"You have stopped the iconquiz, you got ``{ncorrectansws}`` correct answers and accumulated ``{g}`` gold.")
+				break
+			iconn = player.unique_int_randomizer(iconquizlen, "iconquiznumbers")	#Random number to give a random icon
+			question, answer = iconquizkeys[iconn], iconquizvalues[iconn]
+			correctansw = find_correct_answer(answer)	#Find the correct answer to be displayed incase user gets it wrong
+			iconimage = discord.File(f"./iconquizimages/{question}", filename=question)
+			iconembed = discord.Embed(title="Name the displayed icon.", colour=0x9b59b6)
+			iconembed.set_thumbnail(url=f"attachment://{question}")
+			possibleansws = [correctansw]		#all the possible answers
+			while len(possibleansws) < 8:		#adds random icon names
+				possibleansws.append(random.choice(iconnames))
+			shuffled = []		#shuffled list of random and correct names
+			for icon in random.sample(possibleansws, 8):
+				shuffled.append(icon)
+			result = ""		#result to display with proper spacing and all
+			for i in range(8):
+				result += f"**{alphabet[i]})** {shuffled[i]}"
+				if i%2:
+					result += "\n"
+				else:
+					result += " **|		|** "
+			iconembed.add_field(name="Possible answers:", value=result+"*Type in the letter you consider correct.*", inline=True)
+			await ctx.send(file=iconimage, embed=iconembed)
+			def check(m):
+				return m.channel == player.channel and m.author == player.author		#checks if the reply came from the same person in the same channel
+			try:
+				msg = await self.bot.wait_for("message", check=check, timeout=player.shiva(8.322))
+			except asyncio.TimeoutError:			#If too late
+				lives -= 1
+				await ctx.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
+				accumulated_g -= 10
+				time.sleep(0.2)
+			else:
+				if strip_str(msg.content) == "skip":
+					lives -= 0.5
+					await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` lives remaining.")
+				elif strip_str(msg.content) == "stop":
+					lives = 322
+				else:
+					success = True
+					singleletter = strip_str(msg.content).upper()
+					try:
+						letterindex = alphabet.index(singleletter)
+					except ValueError:
+						success = False
+					if success:
+						if shuffled[letterindex] == correctansw:
+							await ctx.send(f"**{random.choice(rightansw)}**")
+							accumulated_g += 8
+							ncorrectansws += 1
+						else:
+							success = False
+					if not success:
+						lives -= 1
+						await ctx.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
+
+	@commands.command(brief = "Endlessly sends DotA2 items to be assembled.", aliases=["recipe"])
 	@commands.cooldown(1, 50, commands.BucketType.user)
 	async def shopquiz(self, ctx):
 		player = Player(ctx.author, ctx)
@@ -281,9 +356,8 @@ class Quizes(commands.Cog):
 			itemembed.set_thumbnail(url=f"attachment://{question}")
 			possibleansws = []		#all the possible answers
 			for item in shopkeepvalues[shopkeepn]:	#starts with correct items
-				possibleansws.append(item)
-			if "Recipe" in possibleansws:		#recipe must be shown as last anyway
-				possibleansws.remove("Recipe")
+				if item != "Recipe":
+					possibleansws.append(item)
 			while len(possibleansws) < 11:		#adds random items
 				possibleansws.append(random.choice(ingredients))
 			shuffled = []		#shuffled list of random and correct items
@@ -296,8 +370,8 @@ class Quizes(commands.Cog):
 				if i%2:
 					result += "\n"
 				else:
-					result += " **| |** "
-			itemembed.add_field(name="Possible answers:", value=result+"*Type in the letters of the items you think are correct.*", inline=True)
+					result += " **|		|** "
+			itemembed.add_field(name="Possible answers:", value=result+"*Type in the letters of the items you consider correct.*", inline=True)
 			await ctx.send(file=itemimage, embed=itemembed)
 			def check(m):
 				return m.channel == player.channel and m.author == player.author
@@ -335,7 +409,7 @@ class Quizes(commands.Cog):
 						ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
 						await ctx.send(f"**{random.choice(wrongansw)}**, This item can be built with ``{correctansw}`` You have ``{lives}`` lives remaining.")
 
-	@commands.command(brief = "Set of quizes multiple people can answer.", aliases = ["ffa"])
+	@commands.command(brief = "Set of questions multiple people can answer.", aliases = ["ffa"])
 	@commands.cooldown(1, 80, commands.BucketType.channel)
 	async def freeforall(self, ctx):
 		player = Player(ctx.author, ctx)
@@ -455,7 +529,7 @@ class Quizes(commands.Cog):
 	@commands.cooldown(1, 50, commands.BucketType.user)
 	async def audioquiz(self, ctx):
 		player = Player(ctx.author, ctx)
-		timeout = time.time() + player.shiva(37)						#timeout set
+		timeout = time.time() + player.shiva(38)						#timeout set
 		accumulated_g = 0													#gold that will be given to the user at the end
 		ncorrectansws = 0													#number of sounds they answered
 		if player.author.voice is None:								#if user not in a vc
@@ -463,7 +537,7 @@ class Quizes(commands.Cog):
 			self.audioquiz.reset_cooldown(ctx)
 		else:
 			voicechannel = await player.author.voice.channel.connect()
-			await ctx.send(f"""You have base ``{player.shiva(37)}`` seconds for the audioquiz each correct answer grants you 3 more seconds, answer which **item** or **spell** makes the played sound effect, don't forget to type in **replay** or **re** to replay the audio or **skip** entirely skip it.""")
+			await ctx.send(f"""You have base ``{player.shiva(38)}`` seconds for the audioquiz each correct answer grants you 3 more seconds, answer which **item** or **spell** makes the played sound effect, don't forget to type in **replay** or **re** to replay the audio or **skip** entirely skip it.""")
 			time.sleep(2)
 			while True:
 				if time.time() > timeout:			#stop the quiz, add accumulated gold to user.
@@ -508,8 +582,8 @@ class Quizes(commands.Cog):
 							ctx.voice_client.play(source)
 						elif player.compare_strings(msg.content, answer):	#If there is one correct answer
 							await ctx.send(f"**{random.choice(rightansw)}**")
-							timeout += 3.5							#add time before timeout for every correct answer
-							accumulated_g += 14
+							timeout += 3							#add time before timeout for every correct answer
+							accumulated_g += 23
 							ncorrectansws += 1
 							break
 						else:
@@ -547,7 +621,7 @@ class Quizes(commands.Cog):
 			def check(m):
 				return m.channel == player.channel and m.author == player.author		#checks if the reply came from the same person in the same channel
 			try:
-				msg = await self.bot.wait_for("message", check=check, timeout=giventime)
+				msg = await self.bot.wait_for("message", check=check, timeout=player.shiva(giventime))
 			except asyncio.TimeoutError:			#If too late
 				await ctx.send(f"**{random.choice(lateansw)}**, The correct answer was ``{correctansw}``.")
 				accumulated_g -= 21
@@ -559,7 +633,7 @@ class Quizes(commands.Cog):
 					else:
 						await ctx.send(f"One of the possible answers was ``{correctansw}``.")
 				elif player.compare_strings(msg.content, answer):		#If there is one correct answer
-					accumulated_g += 14
+					accumulated_g += 18
 					ncorrectansws += 1
 				else:
 					accumulated_g -= 12
@@ -663,7 +737,7 @@ class Quizes(commands.Cog):
 				else:
 					await ctx.send("The opponent has declined the offer.")
 
-	@commands.command(brief = "Endless mix of questions, items and icons.")
+	@commands.command(brief = "Endless mix of questions, items, icons and scrambles.")
 	@commands.cooldown(1, 400, commands.BucketType.user)
 	async def endless(self, ctx):
 		player = Player(ctx.author, ctx)
@@ -709,7 +783,7 @@ class Quizes(commands.Cog):
 								elif strip_str(msg.content) == "stop":	#if user stops the "endless" quiz
 									lives = 322
 								elif player.compare_strings(msg.content, answer):	#If there is only one correct answer
-									accumulated_g += 14 + 2*ncorrectansws
+									accumulated_g += 18 + 5*ncorrectansws
 									ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 								else:
 									lives -= 1
@@ -728,9 +802,8 @@ class Quizes(commands.Cog):
 						itemembed.set_thumbnail(url=f"attachment://{question}")
 						possibleansws = []		#all the possible answers
 						for item in shopkeepvalues[shopkeepn]:	#starts with correct items
-							possibleansws.append(item)
-						if "Recipe" in possibleansws:		#recipe must be shown as last anyway
-							possibleansws.remove("Recipe")
+							if item != "Recipe":
+								possibleansws.append(item)
 						while len(possibleansws) < 11:		#adds random items
 							possibleansws.append(random.choice(ingredients))
 						shuffled = []		#shuffled list of random and correct items
@@ -744,7 +817,7 @@ class Quizes(commands.Cog):
 								result += "\n"
 							else:
 								result += " **| |** "
-						itemembed.add_field(name="Possible answers:", value=result+"*Type in the letters of the items you think are correct.*", inline=True)
+						itemembed.add_field(name="Possible answers:", value=result+"*Type in the letters of the items you consider correct.*", inline=True)
 						await ctx.send(file=itemimage, embed=itemembed)
 						def check(m):
 							return m.channel == player.channel and m.author == player.author
@@ -774,8 +847,7 @@ class Quizes(commands.Cog):
 										success = False
 										break
 								if (len(shopkeepvalues[shopkeepn]) == 0) and success:
-									await ctx.send(f"**{random.choice(rightansw)}**")
-									accumulated_g += 30 + 8*ncorrectanswsinarow
+									accumulated_g += 34 + 8*ncorrectanswsinarow
 									ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 								else:
 									lives -= 1
@@ -804,7 +876,7 @@ class Quizes(commands.Cog):
 							elif strip_str(msg.content) == "stop":
 								lives = 322
 							elif player.compare_strings(msg.content, answer):
-								accumulated_g += 12 + 2*ncorrectanswsinarow
+								accumulated_g += 20 + 5*ncorrectanswsinarow
 								ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 							else:
 								lives -= 1
@@ -836,10 +908,9 @@ class Quizes(commands.Cog):
 							elif strip_str(msg.content) == "stop":	#if user stops the "endless" quiz
 								lives = 322
 							elif player.compare_strings(msg.content, correctansw):
-								accumulated_g += 130
+								accumulated_g += 80 + 6*ncorrectanswsinarow
 								ncorrectansws += 1
 								ncorrectanswsinarow += 1
-								await ctx.send(f"**{random.choice(rightansw)}**")
 							else:
 								lives -= 1
 								await ctx.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}`` You have ``{lives}`` remaining.")
