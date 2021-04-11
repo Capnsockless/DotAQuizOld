@@ -82,6 +82,7 @@ class Player():
 			self.inventory = ast.literal_eval(self.users[str(author.id)]["items"])
 		except KeyError:
 			self.inventory = []
+		self.saves = (4600 in self.inventory)
 
 	def unique_int_randomizer(self, length, listkey):		#player.unique_int_randomizer used in par with the rngfix.json file to avoid repeating numbers(questions)
 		serv_id = str(self.server.id)
@@ -150,12 +151,15 @@ class Player():
 			nquestions += 10
 		return nquestions
 
-	def aeon_disk(self, ncorrectanswsinarow):		#only halve the amount of correct answers in a row instead of clearing them
-		if 3100 in self.inventory:
-			ncorrectanswsinarow = round(ncorrectanswsinarow / 2)
+	def aeon_sphere(self, ncorrectanswsinarow):		#linkens saves one and aeon disk halves the loss
+		if self.saves:
+			output = ncorrectanswsinarow
+			self.saves -= 1
+		elif 3100 in self.inventory:
+			output = round(ncorrectanswsinarow / 2)
 		else:
-			ncorrectanswsinarow = 0
-		return ncorrectanswsinarow
+			output = 0
+		return output
 
 class Quizes(commands.Cog):
 	def __init__(self, bot):
@@ -208,7 +212,7 @@ class Quizes(commands.Cog):
 			await ctx.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``")
 		else:
 			if player.compare_strings(msg.content, correctansw):
-				g = player.add_gold(70)
+				g = player.add_gold(min(12, len(correctansw))*8)
 				await ctx.send(f"**{random.choice(rightansw)}** you got ``{g}`` gold.")
 			else:
 				await ctx.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``")
@@ -242,12 +246,12 @@ class Quizes(commands.Cog):
 				lives -= 1
 				await ctx.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 				accumulated_g -= 10
-				ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+				ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 				time.sleep(0.2)
 			else:
 				if strip_str(msg.content) == "skip":
 					lives -= 0.5
-					ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+					ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 					await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` lives remaining.")
 				elif strip_str(msg.content) == "stop":
 					lives = 322
@@ -257,7 +261,7 @@ class Quizes(commands.Cog):
 					ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 				else:
 					lives -= 1
-					ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+					ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 					await ctx.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 
 	@commands.command(brief = "iconquiz as a multiple choice test.", aliases = ["easyicon"], hidden=True)
@@ -381,7 +385,7 @@ class Quizes(commands.Cog):
 				lives -= 1
 				await ctx.send(f"**{random.choice(lateansw)}** This item can be built with ``{correctansw}`` You have ``{lives}`` lives remaining.")
 				accumulated_g -= 10
-				ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+				ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 				time.sleep(0.2)
 			else:
 				if strip_str(msg.content) == "stop":		#changes lives number to 322 and stops the quiz
@@ -389,7 +393,7 @@ class Quizes(commands.Cog):
 					await ctx.send(f"This item can be built with ``{correctansw}``")
 				elif strip_str(msg.content) == "skip":		#skip a single item and lose 0.5 life for it
 					lives -= 0.5
-					ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+					ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 					await ctx.send(f"This item can be built with ``{correctansw}``, you have ``{lives}`` lives remaining.")
 				else:
 					success = True
@@ -406,7 +410,7 @@ class Quizes(commands.Cog):
 						ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 					else:
 						lives -= 1
-						ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+						ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 						await ctx.send(f"**{random.choice(wrongansw)}**, This item can be built with ``{correctansw}`` You have ``{lives}`` lives remaining.")
 
 	@commands.command(brief = "Set of questions multiple people can answer.", aliases = ["ffa"])
@@ -773,12 +777,12 @@ class Quizes(commands.Cog):
 								lives -= 1
 								await ctx.send(f"**{random.choice(lateansw)}**, the correct answer was ``{correctansw}``, ``{lives}`` lives left.")
 								accumulated_g -= 15
-								ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+								ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 								time.sleep(0.2)
 							else:
 								if strip_str(msg.content) == "skip":	#if user skips a question
 									lives -= 0.5
-									ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+									ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 									await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` remaining.")
 								elif strip_str(msg.content) == "stop":	#if user stops the "endless" quiz
 									lives = 322
@@ -787,7 +791,7 @@ class Quizes(commands.Cog):
 									ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 								else:
 									lives -= 1
-									ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+									ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 									if type(answer) == list:
 										await ctx.send(f"**{random.choice(wrongansw)}** One of the possible answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 									else:
@@ -827,7 +831,7 @@ class Quizes(commands.Cog):
 							lives -= 1
 							await ctx.send(f"**{random.choice(lateansw)}** This item can be built with ``{correctansw}`` You have ``{lives}`` lives remaining.")
 							accumulated_g -= 10
-							ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+							ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 							time.sleep(0.2)
 						else:
 							if strip_str(msg.content) == "stop":		#changes lives number to 322 and stops the quiz
@@ -835,7 +839,7 @@ class Quizes(commands.Cog):
 								await ctx.send(f"This item can be built with ``{correctansw}``")
 							elif strip_str(msg.content) == "skip":		#skip a single item and lose 0.5 life for it
 								lives -= 0.5
-								ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+								ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 								await ctx.send(f"This item can be built with ``{correctansw}``, you have ``{lives}`` lives remaining.")
 							else:
 								success = True
@@ -851,7 +855,7 @@ class Quizes(commands.Cog):
 									ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 								else:
 									lives -= 1
-									ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+									ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 									await ctx.send(f"**{random.choice(wrongansw)}**, This item can be built with ``{correctansw}`` You have ``{lives}`` lives remaining.")
 					elif decider == 2:
 						iconn = player.unique_int_randomizer(iconquizlen, "iconquiznumbers")		#Random number to give a random icon
@@ -866,12 +870,12 @@ class Quizes(commands.Cog):
 							lives -= 1
 							await ctx.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 							accumulated_g -= 15
-							ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+							ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 							time.sleep(0.2)
 						else:
 							if strip_str(msg.content) == "skip":
 								lives -= 0.5
-								ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+								ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 								await ctx.send(f"The correct answer was ``{correctansw}``, you have ``{lives}`` lives remaining.")
 							elif strip_str(msg.content) == "stop":
 								lives = 322
@@ -880,7 +884,7 @@ class Quizes(commands.Cog):
 								ncorrectansws, ncorrectanswsinarow = ncorrectansws + 1, ncorrectanswsinarow + 1
 							else:
 								lives -= 1
-								ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+								ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 								await ctx.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}``, ``{lives}`` lives remaining.")
 					else:
 						scramblen = player.unique_int_randomizer(scramblelen, "scramblenumbers")			#Random number to give a random question
@@ -898,12 +902,12 @@ class Quizes(commands.Cog):
 						except asyncio.TimeoutError:		#If too late
 							lives -= 1
 							await ctx.send(f"**{random.choice(lateansw)}** The correct answer was ``{correctansw}`` You have ``{lives}`` remaining.")
-							ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+							ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 							time.sleep(0.2)
 						else:
 							if strip_str(msg.content) == "skip":	#if user skips a question
 								lives -= 0.5
-								ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+								ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 								await ctx.send(f"The correct answer was ``{correctansw}`` You have ``{lives}`` remaining.")
 							elif strip_str(msg.content) == "stop":	#if user stops the "endless" quiz
 								lives = 322
@@ -914,7 +918,7 @@ class Quizes(commands.Cog):
 							else:
 								lives -= 1
 								await ctx.send(f"**{random.choice(wrongansw)}** The correct answer was ``{correctansw}`` You have ``{lives}`` remaining.")
-								ncorrectanswsinarow = player.aeon_disk(ncorrectanswsinarow)
+								ncorrectanswsinarow = player.aeon_sphere(ncorrectanswsinarow)
 			else:
 				self.endless.reset_cooldown(ctx)
 				await ctx.send("You don't have an **Aghanim's Scepter** to use Endless. Try 322 store to see all items.")

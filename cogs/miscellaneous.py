@@ -5,7 +5,7 @@ import os
 from discord.ext import commands
 import quizdata
 
-os.chdir(r"D:\Discordbot\DotaQuizbot")
+os.chdir(os.getcwd())
 
 copypastas, copypastainfo = quizdata.copypastas, quizdata.copypastainfo
 
@@ -75,7 +75,7 @@ class Miscellaneous(commands.Cog):
         rng = open_json("rngfix.json")
         id = str(ctx.guild.id)
         if id not in rng.keys():
-            rng[id] = {"questnumbers":"[]", "shopkeepnumbers":"[]", "iconquiznumbers":"[]", "audioquiznumbers":"[]", "vacuumcd":16}
+            rng[id] = {"questnumbers":"[]", "shopkeepnumbers":"[]", "iconquiznumbers":"[]", "audioquiznumbers":"[]", "scramblenumbers":"[]", "vacuumcd":16}
         rng[id]["vacuumcd"] += random.randint(1, 3)
         await ctx.send(f"""Vacuum cooldown has been increased, it is now **{rng[id]["vacuumcd"]}** seconds long.""")
         save_json("rngfix.json", rng)
@@ -87,7 +87,7 @@ class Miscellaneous(commands.Cog):
     @copypasta.error
     async def copypastaerror(self, ctx, error):
         if isinstance (error, commands.MissingRequiredArgument):
-            await ctx.send(f"""You need to specify which copypasta you want like so: 322 copypasta <pasta> out of one of these copypastas:\n```{pastalist}```""")
+            await ctx.send("You need to specify which copypasta you want like so: 322 copypasta <pasta> out of one of these copypastas: ", embed=pastalist)
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):

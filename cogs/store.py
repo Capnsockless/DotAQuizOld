@@ -5,7 +5,7 @@ import json
 from discord.ext import commands
 import quizdata
 
-os.chdir(r"D:\Discordbot\DotaQuizbot")
+os.chdir(os.getcwd())
 store_items, store_descriptions = quizdata.store_items, quizdata.store_descriptions
 storekeys, storevalues = list(store_items.keys()), list(store_items.values())
 
